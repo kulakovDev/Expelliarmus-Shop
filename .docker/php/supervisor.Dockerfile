@@ -5,7 +5,7 @@ RUN apk update && apk add --no-cache supervisor \
     postgresql-dev \
         && docker-php-ext-install pdo pdo_pgsql pgsql
 
-RUN mkdir -p "/var/log/jobavel"
+RUN mkdir -p "/var/log/expelliarmus"
 RUN mkdir -p "/etc/supervisor/logs"
 
 ADD ./crontab /etc/cron.d/laravel-cron
