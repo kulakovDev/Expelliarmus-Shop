@@ -5,11 +5,8 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   server: {
-    hmr: {
-      host: 'localhost'
-    },
     host: true,
-    port: 8888,
+    port: 3000,
     strictPort: true
   },
   plugins: [
