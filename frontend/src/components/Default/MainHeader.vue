@@ -12,14 +12,14 @@
     </div>
     <nav class="container mx-auto flex justify-between items-center max-h-24 pt-9 pb-4">
       <div>
-        <span class="text-2xl font-bold">Expelliarmus Shop</span>
+        <router-link class="text-2xl font-bold logo" to="/">Expelliarmus Shop</router-link>
       </div>
       <div>
         <ul class="flex space-x-16 text-base">
-          <li class="hover:underline underline-offset-4 decoration-2"><a href="#">Home</a></li>
+          <li class="hover:underline underline-offset-4 decoration-2"><router-link to="/">Home</router-link></li>
           <li class="hover:underline underline-offset-4 decoration-2"><a href="#">Contact</a></li>
-          <li class="hover:underline underline-offset-4 decoration-2"><a href="#">About</a></li>
-          <li class="hover:underline underline-offset-4 decoration-2"><a href="#">Sign up</a></li>
+          <li class="hover:underline underline-offset-4 decoration-2"><router-link to="#">About</router-link></li>
+          <li class="hover:underline underline-offset-4 decoration-2"><router-link to="/sign-up">Sign up</router-link></li>
         </ul>
       </div>
       <div class="flex items-center space-x-4">
@@ -53,7 +53,7 @@
         </button>
       </div>
     </nav>
-    <hr class="h-px bg-gray-300 border-0">
+    <hr class="h-[2px] bg-gray-300 border-0">
   </header>
 </template>
 

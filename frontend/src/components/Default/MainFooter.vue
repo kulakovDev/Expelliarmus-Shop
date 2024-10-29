@@ -1,7 +1,3 @@
-<script setup>
-
-</script>
-
 <template>
   <footer class="mt-auto bg-black text-[#FAFAFA]">
     <div class="container mx-auto">
@@ -9,7 +5,7 @@
         <div class="flex flex-col flex-shrink-0">
           <div>
             <div class="space-y-6">
-              <p class="text-2xl font-bold">Expelliarmus Shop</p>
+              <router-link class="text-2xl font-bold logo" to="/">Expelliarmus Shop</router-link>
               <p class="text-xl font-medium">Subscribe</p>
             </div>
             <div class="mt-10 max-w-64">
@@ -46,7 +42,7 @@
           <p class="text-xl font-semibold mb-6">Account</p>
           <ul class="list-none space-y-4 text-sm">
             <li><a href="#">My account</a></li>
-            <li><a href="#">Login / Register</a></li>
+            <li><router-link @click.prevent="scrollToTop" to="/log-in">Login / Register</router-link></li>
             <li><a href="#">Cart</a></li>
             <li><a href="#">Wishlist</a></li>
             <li><a href="#">Shop</a></li>
@@ -112,6 +108,19 @@
     </div>
   </footer>
 </template>
+
+<script>
+export default {
+  methods: {
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
+    }
+  }
+}
+</script>
 
 <style scoped>
 
