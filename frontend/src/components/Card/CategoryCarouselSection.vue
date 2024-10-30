@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-between relative">
-    <div class="mt-10 w-3/6d">
+    <div class="mt-10 w-3/6">
       <ul class="space-y-4 text-left">
         <li
             v-for="(category, index) in categories"
@@ -70,10 +70,9 @@ export default {
       this.currentIndex = index;
     },
     autoSlide() {
-      setInterval(
-          (this.currentIndex + 1) % this.slides.length,
-          3000
-      );
+      setInterval(() => {
+        this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+      }, 3000);
     }
   },
   mounted() {
