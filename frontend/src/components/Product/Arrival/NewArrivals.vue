@@ -30,6 +30,8 @@ import Description from "@/components/Product/Arrival/Description.vue";
 export default defineComponent({
   components: {Description}
 })
+
+
 </script>
 
 <style scoped>

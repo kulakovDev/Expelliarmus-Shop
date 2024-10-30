@@ -9,7 +9,7 @@
       </router-link>
     </div>
   </div>
-  <div class="flex items-center gap-11">
+  <div class="grid grid-cols-5 gap-11">
     <slot></slot>
   </div>
 </template>
@@ -31,6 +31,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

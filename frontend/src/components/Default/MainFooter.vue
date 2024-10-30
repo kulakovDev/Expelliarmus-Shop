@@ -5,8 +5,8 @@
         <div class="flex flex-col flex-shrink-0">
           <div>
             <div class="space-y-6">
-              <router-link class="text-2xl font-bold logo" to="/">Expelliarmus Shop</router-link>
-              <p class="text-xl font-medium">Subscribe</p>
+              <router-link v-once class="text-2xl font-bold logo" to="/">Expelliarmus Shop</router-link>
+              <p v-once class="text-xl font-medium">Subscribe</p>
             </div>
             <div class="mt-10 max-w-64">
               <label for="email" class="text-base">Get 10% off your first order</label>
@@ -29,13 +29,13 @@
           </div>
         </div>
         <div class="flex flex-col mt-1 max-w-40">
-          <p class="text-xl font-semibold mb-6">Support</p>
+          <p v-once class="text-xl font-semibold mb-6">Support</p>
           <ul class="list-none space-y-4 text-sm">
-            <li class="text-wrap">
+            <li v-once class="text-wrap">
               111 Bijoy sarani, Dhaka, DH 1515, Bangladesh.
             </li>
-            <li>exclusive@gmail.com</li>
-            <li>+88015-88888-9999</li>
+            <li v-once>exclusive@gmail.com</li>
+            <li v-once>+88015-88888-9999</li>
           </ul>
         </div>
         <div class="flex flex-col mt-1 max-w-40">
@@ -44,7 +44,7 @@
             <li><a href="#">My account</a></li>
             <li><router-link @click.prevent="scrollToTop" to="/log-in">Login / Register</router-link></li>
             <li><a href="#">Cart</a></li>
-            <li><a href="#">Wishlist</a></li>
+            <li><router-link @click.prevent="scrollToTop" to="/wishlist">Wishlist</router-link></li>
             <li><a href="#">Shop</a></li>
           </ul>
         </div>
@@ -102,7 +102,7 @@
     </div>
     <hr class="h-px bg-[#3d3d3d] border-0">
     <div class="flex justify-center items-center py-4">
-      <span class="text-[#3d3d3d] text-sm">
+      <span class="text-[#3d3d3d] text-sm" v-once>
         Copyright Expelliarmus. All right reserved
       </span>
     </div>
