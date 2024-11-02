@@ -3,6 +3,8 @@ import NotFound from "@/components/Default/NotFound.vue";
 import SignUp from "@/views/SignUp.vue";
 import LogIn from "@/views/LogIn.vue";
 import Wishlist from "@/views/Wishlist.vue";
+import AboutUs from "@/views/AboutUs.vue"
+import Contact from "@/views/Contact.vue"
 
 export default [
     {
@@ -20,6 +22,13 @@ export default [
     {
         path: '/wishlist',
         component: Wishlist
+    },
+    {
+        path: '/about-us',
+        component: AboutUs
+    },{
+        path: '/contact',
+        component: Contact
     },
     {
         path: '/:any(.*)*',

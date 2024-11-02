@@ -13,6 +13,12 @@ export default {
                 '272': '17rem',
                 '352': '22rem',
                 '670': '45rem'
+            },
+            fontSize: {
+                '54': '3.375rem'
+            },
+            width: {
+                '68': '16.875rem'
             }
         },
     },

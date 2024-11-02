@@ -45,7 +45,7 @@
             <li><router-link @click.prevent="scrollToTop" to="/log-in">Login / Register</router-link></li>
             <li><a href="#">Cart</a></li>
             <li><router-link @click.prevent="scrollToTop" to="/wishlist">Wishlist</router-link></li>
-            <li><a href="#">Shop</a></li>
+            <li><router-link @click.prevent="scrollToTop" to="/">Shop</router-link></li>
           </ul>
         </div>
         <div class="flex flex-col mt-1 max-w-40">
