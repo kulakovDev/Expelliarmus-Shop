@@ -9,9 +9,9 @@
               <p v-once class="text-xl font-medium">Subscribe</p>
             </div>
             <div class="mt-10 max-w-64">
-              <label for="email" class="text-base">Get 10% off your first order</label>
+              <label for="offer-email" class="text-base">Get 10% off your first order</label>
               <div class="flex items-center justify-between border border-gray-100 mt-4">
-                <input type="text" id="email"
+                <input type="text" id="offer-email"
                        class="rounded-md bg-black text-base leading-3 p-2 relative z-0 w-full focus:outline-none text-white placeholder-gray-500"
                        placeholder="Enter your email"/>
                 <button aria-label="send"
@@ -41,7 +41,7 @@
         <div class="flex flex-col mt-1 max-w-40">
           <p class="text-xl font-semibold mb-6">Account</p>
           <ul class="list-none space-y-4 text-sm">
-            <li><a href="#">My account</a></li>
+            <li><router-link @click.prevent="scrollToTop" to="/account">My account</router-link></li>
             <li><router-link @click.prevent="scrollToTop" to="/log-in">Login / Register</router-link></li>
             <li><a href="#">Cart</a></li>
             <li><router-link @click.prevent="scrollToTop" to="/wishlist">Wishlist</router-link></li>

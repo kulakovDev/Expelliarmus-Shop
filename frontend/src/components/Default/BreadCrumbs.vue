@@ -1,6 +1,6 @@
 <template>
   <div class="space-x-4 text-sm">
-    <template v-for="link in links" :key="link.url">
+    <template v-for="link in linksMapped" :key="link.url">
       <router-link
           :to="link.url"
           :class="link.isLast ? 'text-black' : 'text-gray-400'">
@@ -21,7 +21,7 @@ export default {
     }
   },
   computed: {
-    links() {
+    linksMapped() {
       return this.links.map((link, index) => ({
         ...link,
         isLast: index === this.links.length - 1
