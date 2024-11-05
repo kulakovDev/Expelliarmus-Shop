@@ -44,21 +44,8 @@
         <div class="py-10 px-9 rounded-md bg-white drop-shadow-lg flex-grow">
           <form class="grid gap-y-8">
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div class="flex items-center bg-gray-100 rounded-md px-4 py-4 focus-within:ring-2 focus-within:ring-gray-500">
-                <input
-                    id="name"
-                    type="text"
-                    placeholder="Your Name"
-                    class="w-full bg-gray-100 outline-none text-gray-700 placeholder-gray-500 text-base"
-                />
-              </div>
-              <div class="flex items-center bg-gray-100 rounded-md px-4 py-4 focus-within:ring-2 focus-within:ring-gray-500">
-                <input
-                    type="text"
-                    placeholder="Your Email"
-                    class="w-full bg-gray-100 outline-none text-gray-700 placeholder-gray-500 text-base"
-                />
-              </div>
+              <base-text-input id="name" name="name" placeholder="Your Name"></base-text-input>
+              <base-text-input id="email" name="email" placeholder="Your Email" type="email"></base-text-input>
               <div class="flex items-center bg-gray-100 rounded-md px-4 py-4 focus-within:ring-2 focus-within:ring-gray-500">
                 <input
                     type="text"
@@ -86,9 +73,10 @@
 
 import {defineComponent} from "vue";
 import BreadCrumbs from "@/components/Default/BreadCrumbs.vue";
+import BaseTextInput from "@/components/Default/BaseTextInput.vue";
 
-export default defineComponent({
-  components: {BreadCrumbs},
+export default {
+  components: {BaseTextInput, BreadCrumbs},
   data() {
     return {
       links: [
@@ -103,7 +91,7 @@ export default defineComponent({
       ]
     }
   }
-})
+}
 </script>
 
 <style scoped>

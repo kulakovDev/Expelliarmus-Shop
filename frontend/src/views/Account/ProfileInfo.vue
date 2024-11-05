@@ -85,11 +85,10 @@
 
 <script>
 
-import {defineComponent} from "vue";
 import BaseTextInput from "@/components/Default/BaseTextInput.vue";
 import {TabPanel} from "@headlessui/vue";
 
-export default defineComponent({
+export default {
   components: {TabPanel, BaseTextInput},
   data() {
     return {
@@ -104,7 +103,7 @@ export default defineComponent({
   mounted() {
     console.log('i mounted');
   }
-})
+}
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <template>
   <main-header/>
   <router-view/>
-  <BackToTop/>
+  <back-to-top/>
   <main-footer/>
 </template>
 

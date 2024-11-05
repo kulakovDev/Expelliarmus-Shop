@@ -11,8 +11,10 @@
         </svg>
       </button>
       <button
-          class="absolute bottom-0 left-0 w-full bg-black text-white text-center py-2 opacity-0 translate-y-full transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-        Add to Cart
+          @click="addToCart"
+          :class="{ 'bg-[#db4444]' : isInCart, 'bg-black' : !isInCart }"
+          class="absolute bottom-0 left-0 w-full text-center py-2 text-white opacity-0 translate-y-full transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+        {{ isInCart ? 'Remove From Cart' : 'Add To Cart' }}
       </button>
     </div>
     <div class="flex flex-col space-y-2">
@@ -30,7 +32,8 @@ export default {
   components: {StarRating},
   data() {
     return {
-      isInWishlist: false
+      isInWishlist: false,
+      isInCart: false
     }
   },
   methods: {
@@ -41,6 +44,13 @@ export default {
           ? this.$mitt.emit('add-to-wishlist')
           : this.$mitt.emit('remove-from-wishlist');
     },
+    addToCart() {
+      this.isInCart = !this.isInCart;
+
+      this.isInCart
+          ? this.$mitt.emit('add-to-cart')
+          : this.$mitt.emit('remove-from-cart');
+    }
   }
 }
 </script>

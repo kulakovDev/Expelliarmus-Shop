@@ -66,10 +66,10 @@
             <payment-options/>
           </tab-panel>
           <tab-panel v-show="selectedTab === 3" class="py-10 px-20 space-y-8">
-
+            <my-orders/>
           </tab-panel>
           <tab-panel v-show="selectedTab === 4" class="py-10 px-20 space-y-8">
-
+            <my-cancellations/>
           </tab-panel>
         </tab-panels>
       </tab-group>
@@ -78,17 +78,11 @@
 </template>
 
 <script>
-import { defineAsyncComponent, defineComponent } from "vue";
+import { defineAsyncComponent } from "vue";
 import BreadCrumbs from "@/components/Default/BreadCrumbs.vue";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
-import PaymentOptions from "@/views/Account/PaymentOptions.vue";
 
-export default defineComponent({
-  computed: {
-    PaymentOptions() {
-      return PaymentOptions
-    }
-  },
+export default {
   components: {
     TabPanel,
     TabPanels,
@@ -98,6 +92,8 @@ export default defineComponent({
     BreadCrumbs,
     ProfileInfo: defineAsyncComponent(() => import('@/views/Account/ProfileInfo.vue')),
     PaymentOptions: defineAsyncComponent(() => import('@/views/Account/PaymentOptions.vue')),
+    MyOrders: defineAsyncComponent(() => import('@/views/Account/MyOrders.vue')),
+    MyCancellations: defineAsyncComponent(() => import('@/views/Account/MyCancellations.vue'))
   },
   data() {
     return {
@@ -113,7 +109,7 @@ export default defineComponent({
       this.selectedTab = index;
     }
   },
-});
+};
 </script>
 
 <style scoped>

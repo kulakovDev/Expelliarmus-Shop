@@ -6,6 +6,7 @@ import Wishlist from "@/views/Wishlist.vue";
 import AboutUs from "@/views/AboutUs.vue"
 import Contact from "@/views/Contact.vue"
 import AccountSettings from "@/views/Account/AccountSettings.vue";
+import Cart from "@/views/Cart.vue";
 
 export default [
     {
@@ -23,6 +24,10 @@ export default [
     {
         path: '/wishlist',
         component: Wishlist
+    },
+    {
+        path: '/cart',
+        component: Cart
     },
     {
         path: '/about-us',

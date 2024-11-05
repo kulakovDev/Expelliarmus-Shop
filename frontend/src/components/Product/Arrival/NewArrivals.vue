@@ -27,9 +27,9 @@
 import {defineComponent} from "vue";
 import Description from "@/components/Product/Arrival/Description.vue";
 
-export default defineComponent({
+export default {
   components: {Description}
-})
+}
 
 
 </script>
