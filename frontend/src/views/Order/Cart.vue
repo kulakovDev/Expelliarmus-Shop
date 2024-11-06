@@ -56,27 +56,10 @@
         </div>
       </section>
       <section class="container mx-auto">
-        <div class="flex justify-between items-start gap-8">
-          <div>
-            <form class="flex items-center gap-4">
-              <base-text-input
-                  id="coupon"
-                  name="coupon"
-                  placeholder="Coupon Code"
-                  v-model="coupon"
-                  class="flex-1"
-              ></base-text-input>
-              <button
-                  type="button"
-                  class="px-12 py-4 bg-[#db4444] text-white text-center hover:bg-red-900 rounded-md"
-                  aria-label="Apply Coupon">
-                Apply
-              </button>
-            </form>
-          </div>
-          <div class="w-1/2 border-2 border-black rounded-lg p-6 space-y-6">
+        <div class="flex justify-end items-start gap-8">
+          <div class="w-1/3 border-2 border-black rounded-lg p-6 space-y-6">
             <span class="font-medium text-xl text-start">Cart Total</span>
-            <div class="flex flex-col items-center">
+            <div class="flex flex-col items-center space-y-6">
               <div class="w-full space-y-4">
                 <div class="flex justify-between text-gray-700">
                   <span>Subtotal:</span>

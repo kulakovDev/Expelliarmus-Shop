@@ -7,7 +7,7 @@
 
 <script setup>
 import {RouterView} from 'vue-router'
-import MainHeader from "@/components/Default/MainHeader.vue";
+import MainHeader from "@/components/Default/Header/MainHeader.vue";
 import MainFooter from "@/components/Default/MainFooter.vue";
 import BackToTop from "@/components/Default/BackToTop.vue";
 </script>

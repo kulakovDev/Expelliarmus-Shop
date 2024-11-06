@@ -10,8 +10,11 @@
 <!--      <div class="absolute top-3 left-3 w-14 h-6 bg-[#db4444] text-center rounded-md">
         <span class="text-xs text-white">-40%</span>
       </div>-->
-      <button class="absolute bottom-0 left-0 w-full bg-black text-white text-center py-2 opacity-0 translate-y-full transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-        Add to Cart
+      <button
+          @click="addToCart"
+          :class="{ 'bg-[#db4444]' : isInCart, 'bg-black' : !isInCart }"
+          class="absolute bottom-0 left-0 w-full text-white text-center py-2 opacity-0 translate-y-full transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+        {{ isInCart ? 'Remove From Cart' : 'Add To Cart' }}
       </button>
     </div>
     <div class="flex flex-col space-y-2">
@@ -34,9 +37,21 @@ import StarRating from "@/components/Card/StarRating.vue";
 
 export default {
   components: {StarRating},
+  data() {
+    return {
+      isInCart: false
+    }
+  },
   methods: {
     removeFromWishlist() {
       this.$mitt.emit('remove-from-wishlist');
+    },
+    addToCart() {
+      this.isInCart = !this.isInCart;
+
+      this.isInCart
+          ? this.$mitt.emit('add-to-cart')
+          : this.$mitt.emit('remove-from-cart');
     }
   }
 }

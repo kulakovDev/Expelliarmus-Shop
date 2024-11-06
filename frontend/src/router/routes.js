@@ -1,12 +1,13 @@
-import HomePage from "@/views/HomePage.vue";
+import HomePage from "@/views/Main/HomePage.vue";
 import NotFound from "@/components/Default/NotFound.vue";
-import SignUp from "@/views/SignUp.vue";
-import LogIn from "@/views/LogIn.vue";
-import Wishlist from "@/views/Wishlist.vue";
-import AboutUs from "@/views/AboutUs.vue"
-import Contact from "@/views/Contact.vue"
+import SignUp from "@/views/Auth/SignUp.vue";
+import LogIn from "@/views/Auth/LogIn.vue";
+import Wishlist from "@/views/Order/Wishlist.vue";
+import AboutUs from "@/views/Main/AboutUs.vue"
+import Contact from "@/views/Main/Contact.vue"
 import AccountSettings from "@/views/Account/AccountSettings.vue";
-import Cart from "@/views/Cart.vue";
+import Cart from "@/views/Order/Cart.vue";
+import CheckOut from "@/views/Order/CheckOut.vue";
 
 export default [
     {
@@ -28,6 +29,10 @@ export default [
     {
         path: '/cart',
         component: Cart
+    },
+    {
+        path: '/checkout',
+        component: CheckOut
     },
     {
         path: '/about-us',
