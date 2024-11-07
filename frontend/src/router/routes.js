@@ -7,7 +7,8 @@ import AboutUs from "@/views/Main/AboutUs.vue"
 import Contact from "@/views/Main/Contact.vue"
 import AccountSettings from "@/views/Account/AccountSettings.vue";
 import Cart from "@/views/Order/Cart.vue";
-import CheckOut from "@/views/Order/CheckOut.vue";
+import CheckOut from "@/views/Order/Checkout.vue";
+import Product from "@/views/Product/Product.vue";
 
 export default [
     {
@@ -21,6 +22,11 @@ export default [
     {
         path: '/log-in',
         component: LogIn
+    },
+    {
+        path: '/shop/:productSlug',
+        name: 'product',
+        component: Product
     },
     {
         path: '/wishlist',

@@ -19,6 +19,9 @@ export default {
             },
             width: {
                 '68': '16.875rem'
+            },
+            maxHeight: {
+                '712' : '44.5rem'
             }
         },
     },

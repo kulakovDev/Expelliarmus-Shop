@@ -14,10 +14,6 @@
 <script>
 export default {
   props: {
-    value: {
-      type: String,
-      default: ''
-    },
     modelValue: String
   },
   computed: {

@@ -20,8 +20,8 @@
               Save this for future orders
             </button>
           </div>
-          <div class="flex flex-col w-1/3 gap-y-12">
-            <div class="flex flex-col gap-y-12">
+          <div class="flex flex-col w-2/5 gap-y-12">
+            <div class="flex flex-col gap-y-12 overflow-y-auto max-h-96">
               <product-checkout-card image="https://dummyimage.com/54x54/000/fff" price="$100"
                                      product-name="LCD Monitor"/>
               <product-checkout-card image="https://dummyimage.com/54x54/000/fff" price="$100"
@@ -112,6 +112,19 @@
                     <label class="ml-2 text-slate-600 cursor-pointer text-sm" for="cash">Cash ob delivery</label>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-y-6">
+              <div class="flex gap-x-4">
+                <base-text-input id="coupon" name="coupon" placeholder="Coupon Code"></base-text-input>
+                <button class="px-12 py-4 bg-[#db4444] text-white text-center hover:bg-red-900 rounded-md">
+                  Apply Coupon
+                </button>
+              </div>
+              <div class="block">
+                <button class="px-12 py-4 bg-[#db4444] text-white text-center hover:bg-red-900 rounded-md">
+                  Place Order
+                </button>
               </div>
             </div>
           </div>
