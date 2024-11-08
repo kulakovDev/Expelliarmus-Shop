@@ -6,3 +6,6 @@ start:
 
 front-dev:
 	docker exec -it npm npm run dev
+
+
+## CHANGE ALL :KEY IN ALL LOOPS TO OBJECT ID, WHERE THAT KEY IS JUST ARRAY INDEX
