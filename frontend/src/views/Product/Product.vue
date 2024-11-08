@@ -18,7 +18,8 @@
             <div class="flex items-center gap-x-8">
               <quantity-adjuster v-model="quantity"></quantity-adjuster>
               <div>
-                <purchase-button></purchase-button>
+                <purchase-button @open-cart-modal="toggleCartModal"></purchase-button>
+                <product-cart-modal :is-open="isCartModalOpen" @close-cart-modal="toggleCartModal"></product-cart-modal>
               </div>
               <div>
                 <button
@@ -93,9 +94,11 @@ import ProductCardSet from "@/components/Card/ProductCardSet.vue";
 import ProductCard from "@/components/Card/ProductCard.vue";
 import QuantityAdjuster from "@/components/Product/Main/QuantityAdjuster.vue";
 import PurchaseButton from "@/components/Product/Main/PurchaseButton.vue";
+import ProductCartModal from '@/components/Product/Cart/ProductCartModal.vue';
 
 export default {
   components: {
+    ProductCartModal,
     QuantityAdjuster,
     ProductCard,
     PurchaseButton,
@@ -121,7 +124,8 @@ export default {
       ],
       quantity: 1,
       price: 198,
-      isInWishlist: false
+      isInWishlist: false,
+      isCartModalOpen: false,
     }
   },
   methods: {
@@ -131,6 +135,9 @@ export default {
       this.isInWishlist
           ? this.$mitt.emit('add-to-wishlist')
           : this.$mitt.emit('remove-from-wishlist')
+    },
+    toggleCartModal() {
+      this.isCartModalOpen = !this.isCartModalOpen;
     }
   },
   computed: {
