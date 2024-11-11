@@ -21,7 +21,7 @@
 <script>
 
 import {TabPanel} from "@headlessui/vue";
-import AccountCreditCard from "@/views/Account/AccountCreditCard.vue";
+import AccountCreditCard from "@/shop/views/Account/AccountCreditCard.vue";
 
 export default {
   components: {AccountCreditCard, TabPanel},

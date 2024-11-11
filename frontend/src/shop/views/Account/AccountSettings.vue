@@ -90,10 +90,10 @@ export default {
     TabList,
     TabGroup,
     BreadCrumbs,
-    ProfileInfo: defineAsyncComponent(() => import('@/views/Account/ProfileInfo.vue')),
-    PaymentOptions: defineAsyncComponent(() => import('@/views/Account/PaymentOptions.vue')),
-    MyOrders: defineAsyncComponent(() => import('@/views/Account/MyOrders.vue')),
-    MyCancellations: defineAsyncComponent(() => import('@/views/Account/MyCancellations.vue'))
+    ProfileInfo: defineAsyncComponent(() => import('@/shop/views/Account/ProfileInfo.vue')),
+    PaymentOptions: defineAsyncComponent(() => import('@/shop/views/Account/PaymentOptions.vue')),
+    MyOrders: defineAsyncComponent(() => import('@/shop/views/Account/MyOrders.vue')),
+    MyCancellations: defineAsyncComponent(() => import('@/shop/views/Account/MyCancellations.vue'))
   },
   data() {
     return {

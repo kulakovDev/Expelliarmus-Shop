@@ -2,7 +2,7 @@
   <div class="w-272 h-352 flex flex-col gap-4 group">
     <div class="relative overflow-hidden">
       <img src="https://dummyimage.com/272x262/f5f5f5/000" class="rounded" alt="Product Image">
-      <button @click="addToWishlist" :class="{ active: isInWishlist }"
+      <button @click="addToWishlist" :class="{ active: this.isInWishlist }"
               class="wishlist w-9 h-9 rounded-full flex items-center justify-center absolute top-3 right-3 bg-white">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
              class="size-6">

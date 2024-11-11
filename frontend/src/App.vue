@@ -1,15 +1,9 @@
 <template>
-  <main-header/>
-  <router-view/>
-  <back-to-top/>
-  <main-footer/>
+  <router-view></router-view>
 </template>
 
 <script setup>
 import {RouterView} from 'vue-router'
-import MainHeader from "@/components/Default/Header/MainHeader.vue";
-import MainFooter from "@/components/Default/MainFooter.vue";
-import BackToTop from "@/components/Default/BackToTop.vue";
 </script>
 
 <style scoped>

@@ -1,14 +1,14 @@
-import HomePage from "@/views/Main/HomePage.vue";
+import HomePage from "@/shop/views/Main/HomePage.vue";
 import NotFound from "@/components/Default/NotFound.vue";
-import SignUp from "@/views/Auth/SignUp.vue";
-import LogIn from "@/views/Auth/LogIn.vue";
-import Wishlist from "@/views/Order/Wishlist.vue";
-import AboutUs from "@/views/Main/AboutUs.vue"
-import Contact from "@/views/Main/Contact.vue"
-import AccountSettings from "@/views/Account/AccountSettings.vue";
-import Cart from "@/views/Order/Cart.vue";
-import CheckOut from "@/views/Order/Checkout.vue";
-import Product from "@/views/Product/Product.vue";
+import SignUp from "@/shop/views/Auth/SignUp.vue";
+import LogIn from "@/shop/views/Auth/LogIn.vue";
+import Wishlist from "@/shop/views/Order/Wishlist.vue";
+import AboutUs from "@/shop/views/Main/AboutUs.vue"
+import Contact from "@/shop/views/Main/Contact.vue"
+import AccountSettings from "@/shop/views/Account/AccountSettings.vue";
+import Cart from "@/shop/views/Order/Cart.vue";
+import CheckOut from "@/shop/views/Order/Checkout.vue";
+import Product from "@/shop/views/Product/Product.vue";
 
 export default [
     {

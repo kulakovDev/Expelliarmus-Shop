@@ -33,7 +33,7 @@
               </td>
               <td class="py-6 px-12 font-normal">${{ product.subTotal }}</td>
               <td>
-                <button @click="removeProduct(product.id, index)" class="absolute -top-3 -right-3 text-white">
+                <button @click="removeProduct(product.id)" class="absolute -top-3 -right-3 text-white">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="#db4444" viewBox="0 0 24 24" stroke-width="1.5"
                        stroke="currentColor" class="size-7">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -135,8 +135,8 @@ export default {
     }
   },
   methods: {
-    removeProduct(id, index) {
-      this.products.splice(index, 1);
+    removeProduct(id) {
+      this.products.filter(item => item.id !== id);
     }
   },
   computed: {

@@ -69,6 +69,12 @@
         </div>
       </section>
     </div>
+    <section class="container mx-auto space-y-8">
+      <section-title title="Specs"></section-title>
+      <article class="w-1/2">
+        <specs></specs>
+      </article>
+    </section>
     <section class="container mx-auto mt-32">
       <section-title title="Related Item"></section-title>
       <div class="grid grid-cols-5 gap-11">
@@ -84,7 +90,7 @@
 
 <script>
 import BreadCrumbs from "@/components/Default/BreadCrumbs.vue";
-import ProductPhotoTabs from "@/views/Product/ProductPhotoTabs.vue";
+import ProductPhotoTabs from "@/shop/views/Product/ProductPhotoTabs.vue";
 import StarRating from "@/components/Card/StarRating.vue";
 import Colors from "@/components/Product/Main/Colors.vue";
 import Sizes from "@/components/Product/Main/Sizes.vue";
@@ -95,6 +101,7 @@ import ProductCard from "@/components/Card/ProductCard.vue";
 import QuantityAdjuster from "@/components/Product/Main/QuantityAdjuster.vue";
 import PurchaseButton from "@/components/Product/Main/PurchaseButton.vue";
 import ProductCartModal from '@/components/Product/Cart/ProductCartModal.vue';
+import Specs from "@/components/Product/Main/Specs.vue";
 
 export default {
   components: {
@@ -102,6 +109,7 @@ export default {
     QuantityAdjuster,
     ProductCard,
     PurchaseButton,
+    Specs,
     ProductCardSet, SectionTitle, Description, Colors, StarRating, ProductPhotoTabs, BreadCrumbs, Sizes
   },
   data() {
@@ -160,4 +168,6 @@ export default {
   fill: #db4444;
   stroke: #db4444;
 }
+
+
 </style>

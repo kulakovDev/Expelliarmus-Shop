@@ -139,13 +139,13 @@
 import BreadCrumbs from "@/components/Default/BreadCrumbs.vue";
 import BaseTextInput from "@/components/Default/BaseTextInput.vue";
 import PhoneInput from "@/components/Default/PhoneInput.vue";
-import ProductCheckoutCard from "@/views/Order/ProductCheckoutCard.vue";
+import ProductCheckoutCard from "@/shop/views/Order/ProductCheckoutCard.vue";
 import {DialogPanel, Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import CardHolder from "@/components/CreditCard/CardHolder.vue";
 import CardNumber from "@/components/CreditCard/CardNumber.vue";
 import CardSecret from "@/components/CreditCard/CartSecret.vue";
 import CardExpiration from "@/components/CreditCard/CardExpiration.vue";
-import CheckoutCreditCard from "@/views/Order/CheckoutCreditCard.vue";
+import CheckoutCreditCard from "@/shop/views/Order/CheckoutCreditCard.vue";
 
 export default {
   components: {

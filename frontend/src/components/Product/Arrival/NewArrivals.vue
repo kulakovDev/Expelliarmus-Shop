@@ -24,7 +24,6 @@
 
 <script>
 
-import {defineComponent} from "vue";
 import Description from "@/components/Product/Arrival/Description.vue";
 
 export default {

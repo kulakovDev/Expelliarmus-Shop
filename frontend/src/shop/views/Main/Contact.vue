@@ -71,7 +71,6 @@
 
 <script>
 
-import {defineComponent} from "vue";
 import BreadCrumbs from "@/components/Default/BreadCrumbs.vue";
 import BaseTextInput from "@/components/Default/BaseTextInput.vue";
 
