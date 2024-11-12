@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <main class="container mx-auto my-20">
+  <main class="container mx-auto my-20 max-w-screen-2xl">
     <div class="flex items-center justify-center">
       <img src="/default/auth-image.png" alt="Login image">
       <div class="mx-auto max-w-md">

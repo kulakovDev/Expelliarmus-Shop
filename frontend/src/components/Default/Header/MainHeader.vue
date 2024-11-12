@@ -6,7 +6,7 @@
       </span>
   </div>
   <header class="sticky top-0 bg-white z-10">
-    <nav class="container mx-auto flex justify-between items-center max-h-24 pt-9 pb-4">
+    <nav class="container mx-auto flex justify-between items-center max-h-24 pt-9 pb-4 max-w-screen-2xl">
       <div>
         <router-link @click.prevent="scrollToTop" class="text-2xl font-bold logo" to="/">Expelliarmus Shop</router-link>
       </div>
@@ -30,7 +30,33 @@
         <search-header></search-header>
         <wishlist-header></wishlist-header>
         <cart-header></cart-header>
-        <account-menu></account-menu>
+        <custom-menu :links="accountMenuLinks">
+          <template v-slot:menu-button="{ isOpen }">
+            <div :class="{ 'bg-[#db4444] text-white' : isOpen }"
+                 class="w-full justify-center rounded-full px-1 py-1">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                   stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+              </svg>
+            </div>
+          </template>
+          <template v-slot:logout="{ active }">
+            <button
+                :class="[
+            active ? 'bg-[#db4444] text-white' : 'text-gray-900',
+            'group justify-between flex w-full items-center rounded-md px-2 py-2 text-sm',
+          ]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                   stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"/>
+              </svg>
+              Log Out
+            </button>
+          </template>
+        </custom-menu>
       </div>
     </nav>
     <hr class="h-[2px] bg-gray-300 border-0">
@@ -38,19 +64,28 @@
 </template>
 
 <script>
-import {MenuButton, MenuItem, MenuItems, Menu} from "@headlessui/vue";
-import AccountMenu from "@/components/Default/Header/AccountMenu.vue";
+import { MenuItem } from "@headlessui/vue";
+import CustomMenu from "@/components/Default/Menu.vue";
 import CartHeader from "@/components/Default/Header/CartHeader.vue";
 import WishlistHeader from "@/components/Default/Header/WishlistHeader.vue";
 import SearchHeader from "@/components/Default/Header/SearchHeader.vue";
 
 export default {
-  components: {WishlistHeader, AccountMenu, MenuItem, MenuItems, MenuButton, Menu, CartHeader, SearchHeader},
+  components: {WishlistHeader,CustomMenu, MenuItem, CartHeader, SearchHeader},
   methods: {
     scrollToTop() {
       window.scrollTo({top: 0, behavior: 'smooth'})
     },
   },
+  data() {
+    return {
+      accountMenuLinks: [
+        { url: '/account', name: 'Manage My Account', svg: '/default/user.svg' },
+        { url: '', name: 'My Orders', svg: '/default/order.svg' },
+        { url: '', name: 'My Reviews', svg: '/default/reviews.svg' }
+      ]
+    }
+  }
 }
 </script>
 

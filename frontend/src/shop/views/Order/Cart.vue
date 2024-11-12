@@ -1,10 +1,10 @@
 <template>
   <main>
-    <section class="container mx-auto mt-20">
+    <section class="container mx-auto mt-20 max-w-screen-2xl">
       <bread-crumbs :links="links"></bread-crumbs>
     </section>
     <div v-if="products.length > 0" class="space-y-20 first-of-type:mt-20 last-of-type:mb-20">
-      <section class="container mx-auto">
+      <section class="container mx-auto max-w-screen-2xl">
         <article class="flex flex-col gap-y-10">
           <table class="w-full border-separate border-spacing-y-10">
             <thead>
@@ -55,7 +55,7 @@
           </router-link>
         </div>
       </section>
-      <section class="container mx-auto">
+      <section class="container mx-auto max-w-screen-2xl">
         <div class="flex justify-end items-start gap-8">
           <div class="w-1/3 border-2 border-black rounded-lg p-6 space-y-6">
             <span class="font-medium text-xl text-start">Cart Total</span>

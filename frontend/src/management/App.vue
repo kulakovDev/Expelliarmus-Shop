@@ -1,7 +1,6 @@
 <template>
   <dark-mode></dark-mode>
   <router-view></router-view>
-  <back-to-top></back-to-top>
   <main-footer></main-footer>
 </template>
 

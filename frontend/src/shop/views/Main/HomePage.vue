@@ -2,12 +2,12 @@
   <main class="space-y-20">
 
     <!-- SECTION WITH SLIDER AND CATEGORIES -->
-    <section class="container mx-auto">
+    <section class="container mx-auto max-w-screen-2xl">
       <category-carousel-section/>
     </section>
 
     <!-- PRODUCT ON SALES SLIDER -->
-    <section class="container mx-auto">
+    <section class="container mx-auto  max-w-screen-2xl">
       <section-title :title="'Today`s'"/>
       <div class="space-y-14">
         <card-slider :title="'Flash Sales'" :items-to-show="5" :width-between-items="316" additional-classes="gap-11">
@@ -27,7 +27,7 @@
     </section>
 
     <!-- CATEGORIES SLIDER -->
-    <section class="container mx-auto">
+    <section class="container mx-auto max-w-screen-2xl">
       <section-title :title="'Categories'"/>
       <div class="space-y-16">
         <card-slider :title="'Browse By Category'" :items-to-show="7" :width-between-items="224" additional-classes="gap-8">
@@ -45,7 +45,7 @@
     </section>
 
     <!-- TOP SELLERS -->
-    <section class="container mx-auto">
+    <section class="container mx-auto max-w-screen-2xl">
       <section-title :title="'This month'"/>
       <product-card-set :title="'Best Selling Products'" :button-name="'View All'">
         <product-card/>
@@ -57,7 +57,7 @@
     </section>
 
     <!-- EXPLORE PRODUCTS -->
-    <section class="container mx-auto">
+    <section class="container mx-auto max-w-screen-2xl">
       <section-title :title="'Our Products'"/>
       <div class="flex justify-between mb-10">
         <p class="text-4xl font-semibold">Explore Our Products</p>
@@ -84,7 +84,7 @@
     </section>
 
     <!-- NEW ARRIVAL SECTION -->
-    <section class="container mx-auto">
+    <section class="container mx-auto max-w-screen-2xl">
       <section-title :title="'Featured'"/>
       <div class="flex justify-between mb-10">
         <p class="text-4xl font-semibold">New Arrival</p>
@@ -95,7 +95,7 @@
     </section>
 
     <!-- LAST SECTION -->
-    <section class="container mx-auto !my-36">
+    <section class="container mx-auto !my-36 max-w-screen-2xl">
       <div class="flex justify-around">
         <guarantee :title="'FREE AND FAST DELIVERY'" :text="'Free delivery for all orders over $140'">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" color="white">

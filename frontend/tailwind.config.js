@@ -23,7 +23,25 @@ export default {
             },
             maxHeight: {
                 '712' : '44.5rem'
+            },
+            boxShadow: {
+                'dark-mode': 'rgba(255, 255, 255, 0.24) 0px 3px 8px',
+                'light-mode': 'rgba(0, 0, 0, 0.24) 0px 3px 8px'
+            },
+            screens: {
+                '3xl': '1728px'
             }
+        },
+        container: {
+            center: true,
+            screens: {
+                sm: "640px",
+                md: "728px",
+                lg: "1024px",
+                xl: "1280px",
+                '2xl': "1536px",
+                '3xl': "1728px",
+            },
         },
     },
     plugins: [],

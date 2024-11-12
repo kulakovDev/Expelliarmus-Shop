@@ -1,6 +1,6 @@
 <template>
   <footer class="mt-auto bg-black text-[#FAFAFA]">
-    <div class="container mx-auto">
+    <div class="container mx-auto max-w-screen-2xl">
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 my-20">
         <div class="flex flex-col flex-shrink-0">
           <div>

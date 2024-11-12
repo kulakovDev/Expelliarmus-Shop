@@ -1,10 +1,10 @@
 <template>
   <main class="space-y-32 last-of-type:mb-20">
     <div class="space-y-20 mt-20">
-      <section class="container mx-auto">
+      <section class="container mx-auto max-w-screen-2xl">
         <bread-crumbs :links=" links"></bread-crumbs>
       </section>
-      <section class="container mx-auto">
+      <section class="container mx-auto max-w-screen-2xl">
         <div class="flex justify-between">
           <product-photo-tabs></product-photo-tabs>
           <div class="flex flex-col justify-between items-start">
@@ -69,13 +69,13 @@
         </div>
       </section>
     </div>
-    <section class="container mx-auto space-y-8">
+    <section class="container mx-auto space-y-8 max-w-screen-2xl">
       <section-title title="Specs"></section-title>
       <article class="w-1/2">
         <specs></specs>
       </article>
     </section>
-    <section class="container mx-auto mt-32">
+    <section class="container mx-auto mt-32 max-w-screen-2xl">
       <section-title title="Related Item"></section-title>
       <div class="grid grid-cols-5 gap-11">
         <product-card/>

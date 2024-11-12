@@ -1,9 +1,9 @@
 <template>
   <main class="space-y-20 first-of-type:mt-20 last-of-type:mb-20">
-    <section class="container mx-auto">
+    <section class="container mx-auto max-w-screen-2xl">
       <bread-crumbs :links="links"></bread-crumbs>
     </section>
-    <section class="container mx-auto space-y-12">
+    <section class="container mx-auto space-y-12 max-w-screen-2xl">
       <h2 class="text-4xl font-medium">Billing Details</h2>
       <form>
         <div class="flex justify-between">
