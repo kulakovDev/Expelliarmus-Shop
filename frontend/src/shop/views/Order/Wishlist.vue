@@ -1,7 +1,7 @@
 <template>
   <main class="space-y-20 first-of-type:mt-20 last-of-type:mb-20">
     <!-- WISHLIST -->
-    <section class="container mx-auto space-y-16 max-w-screen-2xl">
+    <section class="container mx-auto space-y-16">
       <div class="flex justify-between items-center">
         <span class="text-xl">Wishlist (4)</span>
         <button class="px-12 py-4 border border-black flex items-center rounded-md justify-center hover:bg-[#db4444] hover:text-white hover:border-0">
@@ -18,7 +18,7 @@
     </section>
 
     <!-- SUGGESTIONS -->
-    <section class="container mx-auto space-y-16 max-w-screen-2xl">
+    <section class="container mx-auto space-y-16">
       <div class="flex justify-between items-center">
         <section-title :title="'Just For You'"/>
         <router-link to="#" class="px-12 py-4 border border-black flex items-center rounded-md justify-center hover:bg-[#db4444] hover:text-white hover:border-0">

@@ -1,12 +1,12 @@
 <template>
   <main class="space-y-20 first-of-type:mt-20 last-of-type:mb-20">
-    <section class="container mx-auto max-w-screen-2xl">
+    <section class="container mx-auto">
       <div class="flex justify-between">
         <bread-crumbs :links="links"></bread-crumbs>
         <span class="text-sm">Welcome! <span class="text-[#db4444]">User</span></span>
       </div>
     </section>
-    <section class="container mx-auto grid grid-cols-7 grid-rows-5 gap-8 max-w-screen-2xl">
+    <section class="container mx-auto grid grid-cols-7 grid-rows-5 gap-8">
       <tab-group :selectedIndex="selectedTab" @change="changeTab">
         <aside class="col-span-2 row-span-5 space-y-6">
           <div class="flex flex-col gap-3">

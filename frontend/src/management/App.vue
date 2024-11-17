@@ -1,5 +1,4 @@
 <template>
-  <dark-mode></dark-mode>
   <router-view></router-view>
   <main-footer></main-footer>
 </template>

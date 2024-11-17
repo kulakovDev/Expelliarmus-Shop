@@ -4,7 +4,7 @@
       <section class="container mx-auto max-w-screen-2xl">
         <bread-crumbs :links=" links"></bread-crumbs>
       </section>
-      <section class="container mx-auto max-w-screen-2xl">
+      <section class="container mx-auto">
         <div class="flex justify-between">
           <product-photo-tabs></product-photo-tabs>
           <div class="flex flex-col justify-between items-start">
@@ -18,7 +18,7 @@
             <div class="flex items-center gap-x-8">
               <quantity-adjuster v-model="quantity"></quantity-adjuster>
               <div>
-                <purchase-button @open-cart-modal="toggleCartModal"></purchase-button>
+                <purchase-button @open-cart-modal.once="toggleCartModal"></purchase-button>
                 <product-cart-modal :is-open="isCartModalOpen" @close-cart-modal="toggleCartModal"></product-cart-modal>
               </div>
               <div>
@@ -155,7 +155,7 @@ export default {
     pricePerUnit() {
       return this.price.toFixed(2);
     }
-  }
+  },
 }
 </script>
 

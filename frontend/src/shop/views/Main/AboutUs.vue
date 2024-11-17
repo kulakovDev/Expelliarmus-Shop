@@ -1,10 +1,10 @@
 <template>
   <main class="space-y-20 first-of-type:mt-20 last-of-type:mb-20">
-    <section class="container mx-auto max-w-screen-2xl">
+    <section class="container mx-auto">
       <bread-crumbs :links="links"></bread-crumbs>
     </section>
 
-    <section class="container mx-auto max-w-screen-2xl">
+    <section class="container mx-auto">
       <div class="flex justify-between items-center">
         <div class="flex flex-col gap-y-10 max-w-lg">
           <div>
@@ -19,7 +19,7 @@
       </div>
     </section>
 
-    <section class="container mx-auto max-w-screen-2xl">
+    <section class="container mx-auto">
       <div class="flex justify-between">
         <info-card title="10.5k" desc="Sellers active our site">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-9">
@@ -44,7 +44,7 @@
       </div>
     </section>
 
-    <section class="container mx-auto max-w-screen-2xl">
+    <section class="container mx-auto">
       <div class="flex justify-around">
         <guarantee :title="'FREE AND FAST DELIVERY'" :text="'Free delivery for all orders over $140'">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" color="white">

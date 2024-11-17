@@ -1,5 +1,5 @@
 <template>
-  <main class="container mx-auto my-20 max-w-screen-2xl">
+  <main class="container mx-auto my-20">
     <div class="flex items-center justify-center">
       <img src="/default/auth-image.png" alt="Login image">
       <div class="mx-auto max-w-md">

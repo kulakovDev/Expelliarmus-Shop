@@ -1,10 +1,10 @@
 <template>
   <main class="space-y-20 first-of-type:mt-20 last-of-type:mb-20">
-    <section class="container mx-auto max-w-screen-2xl">
+    <section class="container mx-auto">
       <bread-crumbs :links="links"></bread-crumbs>
     </section>
 
-    <section class="container mx-auto my-20 max-w-screen-2xl">
+    <section class="container mx-auto my-20">
       <div class="grid grid-cols-1 md:grid-cols-[auto,1fr] gap-8 mt-20">
         <div class="py-10 px-9 rounded-md bg-white drop-shadow-lg max-w-md mx-auto">
           <div class="flex flex-col gap-y-8">

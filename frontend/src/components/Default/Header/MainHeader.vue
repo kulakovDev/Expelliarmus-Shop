@@ -6,7 +6,7 @@
       </span>
   </div>
   <header class="sticky top-0 bg-white z-10">
-    <nav class="container mx-auto flex justify-between items-center max-h-24 pt-9 pb-4 max-w-screen-2xl">
+    <nav class="container mx-auto flex justify-between items-center max-h-24 pt-9 pb-4">
       <div>
         <router-link @click.prevent="scrollToTop" class="text-2xl font-bold logo" to="/">Expelliarmus Shop</router-link>
       </div>
