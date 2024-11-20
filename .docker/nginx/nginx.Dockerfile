@@ -14,7 +14,8 @@ RUN sed -i "s/user  nginx/user laravel/g" /etc/nginx/nginx.conf
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY expelliarmus.conf /etc/nginx/conf.d/
+COPY backend.expelliarmus.conf /etc/nginx/conf.d/
+COPY frontend.expelliarmus.conf /etc/nginx/conf.d/
 
 RUN mkdir -p /var/www/expelliarmus
 

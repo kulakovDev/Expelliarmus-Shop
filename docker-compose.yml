@@ -40,6 +40,7 @@ services:
       - .:/var/www/expelliarmus
     ports:
       - "8000:8000"
+      - "8080:8080"
     depends_on:
       - php
       - npm
