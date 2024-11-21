@@ -42,43 +42,41 @@
   </div>
 </template>
 
+<script setup>
 
-<script>
-export default {
-  data() {
-    return {
-      currentIndex: 0,
-      slides: [
-        "https://dummyimage.com/1080x400/000/fff",
-        "https://dummyimage.com/1080x400/000/fff",
-        "https://dummyimage.com/1080x400/000/fff",
-      ],
-      categories: [
-        'Category 1adadadada',
-        'Category 2',
-        'Category 3',
-        'Category 4',
-        'Category 5',
-        'Category 6',
-        'Category 7',
-        'Category 8',
-      ]
-    };
-  },
-  methods: {
-    goToSlide(index) {
-      this.currentIndex = index;
-    },
-    autoSlide() {
-      setInterval(() => {
-        this.currentIndex = (this.currentIndex + 1) % this.slides.length;
-      }, 3000);
-    }
-  },
-  mounted() {
-    this.autoSlide();
-  }
-};
+import {onMounted, ref} from "vue";
+
+const currentIndex = ref(0);
+
+const slides = ref([
+  "https://dummyimage.com/1080x400/000/fff",
+  "https://dummyimage.com/1080x400/000/fff",
+  "https://dummyimage.com/1080x400/000/fff",
+]);
+
+const categories = ref([
+  'Category 1adadadada',
+  'Category 2',
+  'Category 3',
+  'Category 4',
+  'Category 5',
+  'Category 6',
+  'Category 7',
+  'Category 8',
+]);
+
+function goToSlide(index) {
+  currentIndex.value = index;
+}
+
+function autoSlide() {
+  setInterval(() => {
+    currentIndex.value = (currentIndex.value + 1) % slides.value.length;
+  }, 3000);
+}
+
+onMounted(() => autoSlide())
+
 </script>
 
 <style scoped>

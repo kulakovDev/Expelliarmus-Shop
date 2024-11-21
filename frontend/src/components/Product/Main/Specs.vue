@@ -5,7 +5,10 @@
         <span class="font-semibold text-2xl">{{ spec.title }}</span>
       </div>
 
-      <div class="flex justify-between p-4 w-full" v-for="specForTitle in spec.specs">
+      <div
+        class="flex justify-between p-4 w-full"
+        v-for="specForTitle in spec.specs"
+      >
         <div class="spec">
           <span>{{ specForTitle.spec }}</span>
         </div>
@@ -28,44 +31,40 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      specs: [
-        {
-          spec: 'Company',
-          description: 'Microsoft'
-        },
-        {
-          spec: 'Country',
-          description: 'USA'
-        },
-        {
-          spec: 'Color',
-          description: 'Green'
-        },
-        {
-          title: 'Display',
-          specs: [
-            {
-              spec: 'Size',
-              description: '6d',
-            },
-            {
-              spec: 'Resolution',
-              description: 'Full HD'
-            },
-            {
-              spec: 'Another',
-              description: 'Another bla bla bla bla'
-            }
-          ]
-        }
-      ]
-    }
-  }
-};
+<script setup>
+import { ref } from "vue";
+
+const specs = ref([
+  {
+    spec: "Company",
+    description: "Microsoft",
+  },
+  {
+    spec: "Country",
+    description: "USA",
+  },
+  {
+    spec: "Color",
+    description: "Green",
+  },
+  {
+    title: "Display",
+    specs: [
+      {
+        spec: "Size",
+        description: "6d",
+      },
+      {
+        spec: "Resolution",
+        description: "Full HD",
+      },
+      {
+        spec: "Another",
+        description: "Another bla bla bla bla",
+      },
+    ],
+  },
+]);
 </script>
 
 <style scoped>
@@ -83,11 +82,17 @@ export default {
 }
 
 .company::before {
-  content: '';
-  background: repeating-linear-gradient(to right, currentColor, currentColor 1px, transparent 2px, transparent 4px);
+  content: "";
+  background: repeating-linear-gradient(
+    to right,
+    currentColor,
+    currentColor 1px,
+    transparent 2px,
+    transparent 4px
+  );
   height: 1px;
   flex-grow: 1;
   display: inline-block;
-  margin-right: 8px; /* Отступ перед текстом */
+  margin-right: 8px;
 }
 </style>

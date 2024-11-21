@@ -2,8 +2,9 @@
   <div class="space-x-4 text-sm">
     <template v-for="link in linksMapped" :key="link.url">
       <router-link
-          :to="link.url"
-          :class="link.isLast ? 'text-black' : 'text-gray-400'">
+        :to="link.url"
+        :class="link.isLast ? 'text-black' : 'text-gray-400'"
+      >
         {{ link.name }}
       </router-link>
 
@@ -12,25 +13,22 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    links: {
-      type: Array,
-      required: true
-    }
+<script setup>
+import { computed, defineProps } from "vue";
+
+const props = defineProps({
+  links: {
+    type: Array,
+    required: true,
   },
-  computed: {
-    linksMapped() {
-      return this.links.map((link, index) => ({
-        ...link,
-        isLast: index === this.links.length - 1
-      }));
-    }
-  }
-}
+});
+
+const linksMapped = computed(() => {
+  return props.links.map((link, index) => ({
+    ...link,
+    isLast: index === props.links.length - 1,
+  }));
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

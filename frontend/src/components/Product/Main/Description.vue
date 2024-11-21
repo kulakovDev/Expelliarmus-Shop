@@ -8,44 +8,38 @@
   <div class="space-y-8">
     <div class="flex items-center gap-x-4">
       <span class="text-2xl font-normal">${{ price }}</span>
-      <span v-show="quantityChanged" class="text-sm">Per unit: ${{ pricePerUnit }}</span>
+      <span v-show="quantityChanged" class="text-sm"
+        >Per unit: ${{ pricePerUnit }}</span
+      >
     </div>
-    <p class="text-sm max-w-lg">PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for
-      easy bubble free install & mess free removal Pressure sensitive.</p>
-    <hr class="h-[2px] bg-gray-300 border-0">
+    <p class="text-sm max-w-lg">
+      PlayStation 5 Controller Skin High quality vinyl with air channel adhesive
+      for easy bubble free install & mess free removal Pressure sensitive.
+    </p>
+    <hr class="h-[2px] bg-gray-300 border-0" />
   </div>
 </template>
 
-<script>
-
+<script setup>
+import { defineProps, ref, watch } from "vue";
 import StarRating from "@/components/Card/StarRating.vue";
 
-export default {
-  components: {StarRating},
-  props: {
-    pricePerUnit: {
-      type: String,
-      required: true
-    },
-    price: {
-      type: String,
-      required: true
-    },
+const props = defineProps({
+  pricePerUnit: {
+    type: String,
+    required: true,
   },
-  data() {
-    return {
-      quantityChanged: false,
-    }
+  price: {
+    type: String,
+    required: true,
   },
-  watch: {
-    price() {
-      this.quantityChanged = !this.quantityChanged;
-    }
-  }
-}
+});
+
+const quantityChanged = ref(false);
+
+watch([() => props.price, () => props.pricePerUnit], () => {
+  quantityChanged.value = props.price !== props.pricePerUnit;
+});
 </script>
 
-
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,7 +1,11 @@
 <template>
   <div class="flex flex-col items-center gap-6">
-    <div class="w-20 h-20 rounded-full bg-[#c1c1c1] flex justify-center items-center">
-      <div class="w-14 h-14 rounded-full bg-black flex justify-center items-center">
+    <div
+      class="w-20 h-20 rounded-full bg-[#c1c1c1] flex justify-center items-center"
+    >
+      <div
+        class="w-14 h-14 rounded-full bg-black flex justify-center items-center"
+      >
         <slot></slot>
       </div>
     </div>
@@ -12,19 +16,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    title: {
-      type: String
-    },
-    text: {
-      type: String
-    }
-  }
-}
+<script setup>
+import { defineProps } from "vue";
+
+const props = defineProps({
+  title: String,
+  text: String,
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
