@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Clockwork\Support\Laravel\ClockworkServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +12,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        
+        if ($this->app->hasDebugModeEnabled() && ! $this->app->isProduction()) {
+            $this->app->register(ClockworkServiceProvider::class);
+        }
     }
 
     /**
