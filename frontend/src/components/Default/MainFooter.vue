@@ -177,12 +177,9 @@
 </template>
 
 <script setup>
-function scrollToTop() {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-}
+import { useScrolling } from "@/composables/useScrolling.js";
+
+const { scrollToTop } = useScrolling();
 </script>
 
 <style scoped></style>

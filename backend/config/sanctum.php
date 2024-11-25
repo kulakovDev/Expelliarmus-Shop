@@ -21,7 +21,7 @@ return [
             'SANCTUM_STATEFUL_DOMAINS',
             sprintf(
                 '%s%s',
-                '127.0.0.1,127.0.0.1:8000,::1,localhost:8000,localhost:3000,expelliarmus.com:3000',
+                'expelliarmus.com:8000',
                 Sanctum::currentApplicationUrlWithPort()
             )
         )

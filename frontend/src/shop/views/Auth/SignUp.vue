@@ -2,16 +2,15 @@
 import * as yup from "yup";
 import { ErrorMessage, Field, Form } from "vee-validate";
 import { ref } from "vue";
+import { useScrolling } from "@/composables/useScrolling.js";
+
+const { scrollToTop } = useScrolling();
 
 const user = ref({
   email: null,
   first_name: null,
   password: null,
 });
-
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),

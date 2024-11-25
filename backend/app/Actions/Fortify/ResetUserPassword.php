@@ -2,10 +2,10 @@
 
 namespace App\Actions\Fortify;
 
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
+use Modules\User\Models\User;
 
 class ResetUserPassword implements ResetsUserPasswords
 {

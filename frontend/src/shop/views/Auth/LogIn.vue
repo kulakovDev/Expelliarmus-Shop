@@ -9,7 +9,7 @@
         </div>
         <Form
           class="max-w-md mx-auto space-y-10"
-          @submit.prevent="login"
+          @submit="login"
           method="post"
           :validation-schema="schema"
         >
@@ -64,17 +64,22 @@
               >Forgot password?
             </router-link>
           </div>
-          <p class="text-gray-600 text-center text-sm">
-            Don't have an account yet?
-            <span
-              ><router-link
-                @click.prevent="scrollToTop"
-                class="text-black hover:underline underline-offset-8"
-                to="/sign-up"
-                >Register now!</router-link
-              ></span
-            >
-          </p>
+          <div class="flex flex-col justify-center items-center gap-y-4">
+            <p class="text-gray-600 text-center text-sm">
+              Don't have an account yet?
+              <span
+                ><router-link
+                  @click.prevent="scrollToTop"
+                  class="text-black hover:underline underline-offset-8"
+                  to="/sign-up"
+                  >Register now!</router-link
+                ></span
+              >
+            </p>
+            <span class="text-sm text-red-600 font-bold" v-if="auth.error">{{
+              auth.error.toString()
+            }}</span>
+          </div>
         </Form>
       </div>
     </div>
@@ -82,10 +87,13 @@
 </template>
 
 <script setup>
-import api from "@/utils/api.js";
 import { ErrorMessage, Field, Form } from "vee-validate";
 import * as yup from "yup";
 import { reactive } from "vue";
+import { useScrolling } from "@/composables/useScrolling.js";
+import { useAuthStore } from "@/stores/useAuthStore.js";
+
+const { scrollToTop } = useScrolling();
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -97,15 +105,10 @@ const user = reactive({
   password: null,
 });
 
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
+const auth = useAuthStore();
 
-async function login() {
-  await api().post("/login", {
-    email: user.email.toString(),
-    password: user.password.toString(),
-  });
+function login() {
+  auth.login(user);
 }
 </script>
 

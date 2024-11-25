@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <router-link to="/cart" @click.prevent="scrollToTop">
+    <router-link to="/cart" @click.prevent="scrollToTop()">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -27,9 +27,12 @@
 
 <script setup>
 import { inject, ref } from "vue";
+import { useScrolling } from "@/composables/useScrolling.js";
 
 const emitter = inject("emitter");
 const cartCount = ref(0);
+
+const { scrollToTop } = useScrolling();
 
 emitter.on("add-to-cart", increaseCartCount);
 emitter.on("remove-from-cart", decreaseCartCount);
@@ -40,10 +43,6 @@ function increaseCartCount() {
 
 function decreaseCartCount() {
   --cartCount.value;
-}
-
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 </script>
 

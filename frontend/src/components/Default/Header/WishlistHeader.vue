@@ -27,9 +27,12 @@
 
 <script setup>
 import { inject, ref } from "vue";
+import { useScrolling } from "@/composables/useScrolling.js";
 
 const emitter = inject("emitter");
 const wishListCount = ref(0);
+
+const { scrollToTop } = useScrolling();
 
 emitter.on("add-to-wishlist", increaseWishlistCount);
 emitter.on("remove-from-wishlist", decreaseWishlistCount);
@@ -42,10 +45,6 @@ function decreaseWishlistCount() {
   if (wishListCount.value > 0) {
     --wishListCount.value;
   }
-}
-
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 </script>
 

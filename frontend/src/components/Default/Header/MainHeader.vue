@@ -14,8 +14,8 @@
           @click.prevent="scrollToTop"
           class="text-2xl font-bold logo"
           to="/"
-          >Expelliarmus Shop</router-link
-        >
+          >Expelliarmus Shop
+        </router-link>
       </div>
       <div>
         <ul class="flex space-x-16 text-base">
@@ -24,18 +24,18 @@
           </li>
           <li class="hover:underline underline-offset-4 decoration-2">
             <router-link @click.prevent="scrollToTop" to="/contact"
-              >Contact</router-link
-            >
+              >Contact
+            </router-link>
           </li>
           <li class="hover:underline underline-offset-4 decoration-2">
             <router-link @click.prevent="scrollToTop" to="/about-us"
-              >About</router-link
-            >
+              >About
+            </router-link>
           </li>
           <li class="hover:underline underline-offset-4 decoration-2">
             <router-link @click.prevent="scrollToTop" to="/sign-up"
-              >Sign up</router-link
-            >
+              >Sign up
+            </router-link>
           </li>
         </ul>
       </div>
@@ -102,16 +102,15 @@ import CartHeader from "@/components/Default/Header/CartHeader.vue";
 import WishlistHeader from "@/components/Default/Header/WishlistHeader.vue";
 import SearchHeader from "@/components/Default/Header/SearchHeader.vue";
 import { ref } from "vue";
+import { useScrolling } from "@/composables/useScrolling.js";
+
+const { scrollToTop } = useScrolling();
 
 const accountMenuLinks = ref([
   { url: "/account", name: "Manage My Account", svg: "/default/user.svg" },
   { url: "", name: "My Orders", svg: "/default/order.svg" },
   { url: "", name: "My Reviews", svg: "/default/reviews.svg" },
 ]);
-
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
 </script>
 
 <style scoped></style>

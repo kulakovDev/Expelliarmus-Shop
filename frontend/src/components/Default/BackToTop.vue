@@ -24,12 +24,11 @@
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from "vue";
+import { useScrolling } from "@/composables/useScrolling.js";
 
 const isVisible = ref(false);
 
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
+const { scrollToTop } = useScrolling();
 
 function showScrollButton() {
   isVisible.value = window.scrollY > 100;
