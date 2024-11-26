@@ -1,4 +1,6 @@
 import axios from "axios";
+import router from "@/router.js";
+import { useAuthStore } from "@/stores/useAuthStore.js";
 
 export default function api() {
   const api = axios.create({
@@ -18,8 +20,27 @@ export default function api() {
         withCredentials: true,
       });
     }
+
     return config;
   });
+
+  api.interceptors.response.use(
+    function (response) {
+      return response;
+    },
+    function (error) {
+      if (error.request.status === 403) {
+      }
+
+      if ([419].includes(error.request.status)) {
+        router.push({ name: "login" });
+      }
+
+      const auth = useAuthStore();
+
+      return Promise.reject(error);
+    },
+  );
 
   return api;
 }

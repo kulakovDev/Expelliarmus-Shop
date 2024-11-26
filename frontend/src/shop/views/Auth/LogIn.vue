@@ -76,8 +76,8 @@
                 ></span
               >
             </p>
-            <span class="text-sm text-red-600 font-bold" v-if="auth.error">{{
-              auth.error.toString()
+            <span class="text-sm text-red-600 font-bold" v-if="loginError">{{
+              loginError.toString()
             }}</span>
           </div>
         </Form>
@@ -89,11 +89,13 @@
 <script setup>
 import { ErrorMessage, Field, Form } from "vee-validate";
 import * as yup from "yup";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useScrolling } from "@/composables/useScrolling.js";
 import { useAuthStore } from "@/stores/useAuthStore.js";
+import { useRouter } from "vue-router";
 
 const { scrollToTop } = useScrolling();
+const router = useRouter();
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -105,10 +107,22 @@ const user = reactive({
   password: null,
 });
 
+const loginError = ref(null);
+
 const auth = useAuthStore();
 
 function login() {
-  auth.login(user);
+  auth
+    .login(user)
+    .then((response) => {
+      auth.fetchCurrentUser();
+      router.push({ name: "home" });
+    })
+    .catch((e) => {
+      if (e.response?.data?.errors?.email) {
+        loginError.value = e.response.data.errors.email[0];
+      }
+    });
 }
 </script>
 

@@ -5,33 +5,27 @@ import { login } from "@/utils/auth.js";
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: null,
-    error: null,
+    isSessionVerificationInitialize: false,
   }),
   getters: {
     isAuthenticated: (state) => !!state?.user,
   },
   actions: {
     async login(user) {
-      await login(user)
-        .then((response) => {
-          this.fetchCurrentUser();
-        })
-        .catch((e) => {
-          if (e.response?.data?.errors.email) {
-            this.error = e.response?.data?.errors.email[0];
-          }
-        });
+      return await login(user);
     },
+
     async fetchCurrentUser() {
       try {
         const response = await api().get("/api/v1/current-user");
         this.user = response?.data?.data.attributes;
       } catch (e) {
-        this.forgetUser();
+        if (e.response.status === 401) {
+          this.user = null;
+        }
+      } finally {
+        this.isSessionVerificationInitialize = true;
       }
-    },
-    forgetUser() {
-      this.user = null;
     },
   },
 });

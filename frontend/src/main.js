@@ -5,6 +5,7 @@ import router from "@/router.js";
 import vClickOutside from "click-outside-vue3";
 import mitt from "mitt";
 import { createPinia } from "pinia";
+import { useAuthStore } from "@/stores/useAuthStore.js";
 
 const pinia = createPinia();
 
@@ -20,4 +21,8 @@ app.use(vClickOutside);
 
 app.provide("emitter", emitter);
 
-app.mount("#app");
+const authStore = useAuthStore();
+
+authStore.fetchCurrentUser().finally(() => {
+  app.mount("#app");
+});

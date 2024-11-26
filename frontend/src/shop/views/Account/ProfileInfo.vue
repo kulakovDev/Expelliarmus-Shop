@@ -90,10 +90,17 @@
 <script setup>
 import BaseTextInput from "@/components/Default/BaseTextInput.vue";
 import { ref } from "vue";
+import api from "@/utils/api.js";
 
 const firstName = ref("John");
 const lastName = ref("Doe");
 const email = ref("example@gmail.com");
+
+function get() {
+  console.log(api().get("/api/v1/hello"));
+}
+
+get();
 </script>
 
 <style scoped></style>

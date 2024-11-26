@@ -43,7 +43,7 @@
         <search-header></search-header>
         <wishlist-header></wishlist-header>
         <cart-header></cart-header>
-        <custom-menu :links="accountMenuLinks">
+        <custom-menu v-if="auth.isAuthenticated" :links="accountMenuLinks">
           <template v-slot:menu-button="{ isOpen }">
             <div
               :class="{ 'bg-[#db4444] text-white': isOpen }"
@@ -103,6 +103,9 @@ import WishlistHeader from "@/components/Default/Header/WishlistHeader.vue";
 import SearchHeader from "@/components/Default/Header/SearchHeader.vue";
 import { ref } from "vue";
 import { useScrolling } from "@/composables/useScrolling.js";
+import { useAuthStore } from "@/stores/useAuthStore.js";
+
+const auth = useAuthStore();
 
 const { scrollToTop } = useScrolling();
 
