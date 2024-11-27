@@ -19,6 +19,7 @@
               name="email"
               id="email"
               v-model="user.email"
+              @input="clearError"
               class="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-400 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
               placeholder=" "
               required
@@ -38,6 +39,7 @@
               type="password"
               name="password"
               v-model="user.password"
+              @input="clearError"
               id="password"
               class="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-400 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
               placeholder=" "
@@ -89,13 +91,18 @@
 <script setup>
 import { ErrorMessage, Field, Form } from "vee-validate";
 import * as yup from "yup";
-import { reactive, ref } from "vue";
+import { inject, reactive, ref } from "vue";
 import { useScrolling } from "@/composables/useScrolling.js";
 import { useAuthStore } from "@/stores/useAuthStore.js";
 import { useRouter } from "vue-router";
+import { useToastStore } from "@/stores/useToastStore.js";
+import ToastLogin from "@/components/Default/Toasts/Auth/ToastLogin.vue";
+import loginToastSettings from "@/components/Default/Toasts/Auth/loginToastSettings.js";
 
 const { scrollToTop } = useScrolling();
 const router = useRouter();
+const emitter = inject("emitter");
+const auth = useAuthStore();
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -109,20 +116,24 @@ const user = reactive({
 
 const loginError = ref(null);
 
-const auth = useAuthStore();
-
 function login() {
   auth
     .login(user)
     .then((response) => {
-      auth.fetchCurrentUser();
-      router.push({ name: "home" });
+      auth.fetchCurrentUser(true).then(() => {
+        useToastStore().showToast(ToastLogin, loginToastSettings);
+        router.push({ name: "home" });
+      });
     })
     .catch((e) => {
       if (e.response?.data?.errors?.email) {
         loginError.value = e.response.data.errors.email[0];
       }
     });
+}
+
+function clearError() {
+  loginError.value = null;
 }
 </script>
 

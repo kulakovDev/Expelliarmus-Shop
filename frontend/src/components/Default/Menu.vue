@@ -30,7 +30,7 @@
           >
             <router-link
               :to="link.url"
-              @click.capture="close"
+              @click.capture="menuItemClick(close)"
               :class="[
                 active ? 'bg-[#db4444] text-white' : 'text-gray-900',
                 'group flex justify-between w-full items-center rounded-md px-2 py-2 text-sm',
@@ -61,6 +61,7 @@
 <script setup>
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { defineProps, ref } from "vue";
+import { useScrolling } from "@/composables/useScrolling.js";
 
 const isOpen = ref(false);
 
@@ -74,6 +75,11 @@ const props = defineProps({
     default: false,
   },
 });
+
+function menuItemClick(close) {
+  useScrolling().scrollToTop();
+  close();
+}
 
 function dropDownClose(event) {
   isOpen.value = false;

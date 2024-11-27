@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
-use Laravel\Fortify\RoutePath;
+use Modules\User\Http\Controllers\UserController;
 
 // Authentication
 $limiter = config('fortify.limiters.login');
@@ -15,25 +15,15 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
         ])
     )->name('login.store');
 
-Route::post(RoutePath::for('logout', '/logout'), [AuthenticatedSessionController::class, 'destroy'])
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware([config('fortify.auth_middleware', 'auth').':'.config('fortify.guard')])
     ->name('logout');
 
+Route::post('/register', [UserController::class, 'store'])
+    ->middleware(['guest'])
+    ->name('register.store');
+
 Route::middleware('auth:sanctum')->group(function () {
-    /*// Registration
-    if (Features::enabled(Features::registration())) {
-        Route::get(RoutePath::for('register', '/register'), [RegisteredUserController::class, 'create'])
-            ->middleware(['guest:'.config('fortify.guard')])
-            ->name('register');
-
-        Route::post(RoutePath::for('register', '/register'), [RegisteredUserController::class, 'store'])
-            ->middleware(['guest:'.config('fortify.guard')])
-            ->name('register.store');
-    }*/
-
-    /*$twoFactorLimiter = config('fortify.limiters.two-factor');
-    $verificationLimiter = config('fortify.limiters.verification', '6,1');*/
-
     /*// Password Reset...
     if (Features::enabled(Features::resetPasswords())) {
         if ($enableViews) {

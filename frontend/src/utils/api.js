@@ -1,5 +1,4 @@
 import axios from "axios";
-import router from "@/router.js";
 import { useAuthStore } from "@/stores/useAuthStore.js";
 
 export default function api() {
@@ -32,11 +31,10 @@ export default function api() {
       if (error.request.status === 403) {
       }
 
-      if ([419].includes(error.request.status)) {
-        router.push({ name: "login" });
+      if ([401, 419].includes(error.request.status)) {
+        const auth = useAuthStore();
+        auth.forgetUser();
       }
-
-      const auth = useAuthStore();
 
       return Promise.reject(error);
     },

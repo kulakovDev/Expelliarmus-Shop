@@ -44,21 +44,14 @@
 
 <script setup>
 import StarRating from "@/components/Card/StarRating.vue";
-import { inject, ref } from "vue";
-
-const isInWishlist = ref(false);
+import { inject, onUnmounted, ref } from "vue";
+import { useAddToWishlist } from "@/composables/useAddToWishlist.js";
 
 const isInCart = ref(false);
 
 const emitter = inject("emitter");
 
-function addToWishlist() {
-  isInWishlist.value = !isInWishlist.value;
-
-  isInWishlist.value
-    ? emitter.emit("add-to-wishlist")
-    : emitter.emit("remove-from-wishlist");
-}
+const { isInWishlist, addToWishlist } = useAddToWishlist(emitter);
 
 function addToCart() {
   isInCart.value = !isInCart.value;
@@ -67,6 +60,11 @@ function addToCart() {
     ? emitter.emit("add-to-cart")
     : emitter.emit("remove-from-cart");
 }
+
+onUnmounted(() => {
+  emitter.off("add-to-cart");
+  emitter.off("remove-from-cart");
+});
 </script>
 
 <style scoped>

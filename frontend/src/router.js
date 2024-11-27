@@ -33,16 +33,13 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (to.meta.requiresAuth) {
-    if (auth.isSessionVerificationInitialize) {
-      return await auth.fetchCurrentUser().then(() => {
-        if (!auth.isAuthenticated) {
-          return next({ name: "login" });
-        }
-        return next();
-      });
-    }
+    return auth.fetchCurrentUser().then(() => {
+      if (!auth.isAuthenticated) {
+        return next({ name: "login" });
+      }
+      return next();
+    });
   }
-
   next();
 });
 

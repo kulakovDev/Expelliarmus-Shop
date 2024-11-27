@@ -33,9 +33,20 @@
             </router-link>
           </li>
           <li class="hover:underline underline-offset-4 decoration-2">
-            <router-link @click.prevent="scrollToTop" to="/sign-up"
+            <router-link
+              v-if="!auth.isAuthenticated"
+              @click.prevent="scrollToTop"
+              to="/sign-up"
               >Sign up
             </router-link>
+            <button
+              @click="logout"
+              type="button"
+              class="hover:underline underline-offset-4 decoration-2"
+              v-else
+            >
+              Log out
+            </button>
           </li>
         </ul>
       </div>
@@ -71,6 +82,7 @@
                 active ? 'bg-[#db4444] text-white' : 'text-gray-900',
                 'group justify-between flex w-full items-center rounded-md px-2 py-2 text-sm',
               ]"
+              @click="logout"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -104,16 +116,25 @@ import SearchHeader from "@/components/Default/Header/SearchHeader.vue";
 import { ref } from "vue";
 import { useScrolling } from "@/composables/useScrolling.js";
 import { useAuthStore } from "@/stores/useAuthStore.js";
+import { useRouter } from "vue-router";
 
 const auth = useAuthStore();
 
 const { scrollToTop } = useScrolling();
+
+const router = useRouter();
 
 const accountMenuLinks = ref([
   { url: "/account", name: "Manage My Account", svg: "/default/user.svg" },
   { url: "", name: "My Orders", svg: "/default/order.svg" },
   { url: "", name: "My Reviews", svg: "/default/reviews.svg" },
 ]);
+
+async function logout() {
+  await auth.logout();
+  await router.push({ name: "home" });
+  router.go(0);
+}
 </script>
 
 <style scoped></style>

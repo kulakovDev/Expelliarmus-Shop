@@ -1,16 +1,27 @@
 <script setup>
 import * as yup from "yup";
 import { ErrorMessage, Field, Form } from "vee-validate";
-import { ref } from "vue";
+import { inject, reactive, ref } from "vue";
 import { useScrolling } from "@/composables/useScrolling.js";
+import { register } from "@/utils/auth.js";
+import { HttpStatusCode } from "axios";
+import { useRouter } from "vue-router";
+import { useToastStore } from "@/stores/useToastStore.js";
+import ToastRegistered from "@/components/Default/Toasts/Auth/ToastRegistered.vue";
+import registerToastSettings from "@/components/Default/Toasts/Auth/registerToastSettings.js";
 
 const { scrollToTop } = useScrolling();
+const emitter = inject("emitter");
+const router = useRouter();
 
-const user = ref({
+const formData = reactive({
   email: null,
   first_name: null,
   password: null,
+  passwordConfirmation: null,
 });
+
+const registerErrors = ref([]);
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -21,6 +32,26 @@ const schema = yup.object().shape({
     .required()
     .oneOf([yup.ref("password")], "Passwords do not match"),
 });
+
+function signUp() {
+  register({
+    first_name: formData.first_name,
+    email: formData.email,
+    password: formData.password,
+    password_confirmation: formData.passwordConfirmation,
+  })
+    .then((response) => {
+      if (response.status === HttpStatusCode.Created) {
+        useToastStore().showToast(ToastRegistered, registerToastSettings);
+        router.push({ name: "login" });
+      }
+    })
+    .catch((e) => {
+      if (e.response.data?.errors) {
+        registerErrors.value = Object.values(e.response.data.errors).flat();
+      }
+    });
+}
 </script>
 
 <template>
@@ -36,12 +67,13 @@ const schema = yup.object().shape({
           class="max-w-md mx-auto space-y-10"
           method="post"
           :validation-schema="schema"
+          @submit="signUp"
         >
           <div class="relative z-0 w-full mb-5 group">
             <Field
               name="first_name"
               id="name"
-              v-model="user.first_name"
+              v-model="formData.first_name"
               class="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-400 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
               placeholder=" "
               required
@@ -49,7 +81,7 @@ const schema = yup.object().shape({
             <label
               for="name"
               class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >Name</label
+              >First Name</label
             >
             <ErrorMessage
               class="text-red-600 text-sm"
@@ -60,7 +92,7 @@ const schema = yup.object().shape({
             <Field
               name="email"
               id="email"
-              v-model="user.email"
+              v-model="formData.email"
               type="email"
               class="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-400 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
               placeholder=" "
@@ -80,7 +112,7 @@ const schema = yup.object().shape({
             <Field
               name="password"
               type="password"
-              v-model="user.password"
+              v-model="formData.password"
               id="password"
               class="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-400 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
               placeholder=" "
@@ -100,6 +132,7 @@ const schema = yup.object().shape({
             <Field
               type="password"
               name="passwordConfirmation"
+              v-model="formData.passwordConfirmation"
               id="password_confirm"
               class="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-400 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
               placeholder=" "
@@ -117,7 +150,7 @@ const schema = yup.object().shape({
           </div>
           <div class="space-y-6">
             <button
-              type="button"
+              type="submit"
               class="w-full px-12 py-4 bg-[#DB4444] text-center cursor-pointer text-white hover:bg-red-900 rounded-md"
             >
               Create an Account
@@ -133,6 +166,17 @@ const schema = yup.object().shape({
                 ></span
               >
             </p>
+            <div
+              class="flex flex-col justify-center items-center gap-y-2"
+              v-if="registerErrors.length > 0"
+            >
+              <span
+                class="text-sm text-red-600 font-bold"
+                v-for="error in registerErrors"
+              >
+                {{ error }}
+              </span>
+            </div>
           </div>
         </Form>
       </div>
