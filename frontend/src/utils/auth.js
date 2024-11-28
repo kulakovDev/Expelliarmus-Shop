@@ -19,3 +19,18 @@ export const register = async (user) => {
     password_confirmation: user.password_confirmation,
   });
 };
+
+export const forgotPassword = async (email) => {
+  return api().post("/forgot-password", {
+    email: email,
+  });
+};
+
+export const resetPassword = async (reset, token) => {
+  return api().post("/reset-password", {
+    email: reset.email,
+    password: reset.password,
+    password_confirmation: reset.password_confirmation,
+    token: token,
+  });
+};

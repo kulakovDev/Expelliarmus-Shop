@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Http\Controllers\NewPasswordController;
+use Laravel\Fortify\Http\Controllers\PasswordController;
+use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
+use Laravel\Fortify\Http\Controllers\ProfileInformationController;
 use Modules\User\Http\Controllers\UserController;
 
 // Authentication
@@ -22,6 +26,27 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 Route::post('/register', [UserController::class, 'store'])
     ->middleware(['guest'])
     ->name('register.store');
+
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+    ->middleware(['guest'])
+    ->name('password.email');
+
+Route::post('/reset-password', [NewPasswordController::class, 'store'])
+    ->middleware(['guest'])
+    ->name('password.update');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::put(
+        '/user/profile-information',
+        [ProfileInformationController::class, 'update']
+    )
+        ->middleware([config('fortify.auth_middleware', 'auth').':'.config('fortify.guard')])
+        ->name('user-profile-information.update');
+
+    Route::put('/user/password', [PasswordController::class, 'update'])
+        ->middleware([config('fortify.auth_middleware', 'auth').':'.config('fortify.guard')])
+        ->name('user-password.update');
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     /*// Password Reset...

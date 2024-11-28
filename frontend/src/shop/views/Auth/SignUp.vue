@@ -18,7 +18,7 @@ const formData = reactive({
   email: null,
   first_name: null,
   password: null,
-  passwordConfirmation: null,
+  password_confirmation: null,
 });
 
 const registerErrors = ref([]);
@@ -27,19 +27,14 @@ const schema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().min(6).required(),
   first_name: yup.string().max(50).required("your name is required"),
-  passwordConfirmation: yup
+  password_confirmation: yup
     .string()
     .required()
-    .oneOf([yup.ref("password")], "Passwords do not match"),
+    .oneOf([yup.ref("password")], "passwords must be same"),
 });
 
 function signUp() {
-  register({
-    first_name: formData.first_name,
-    email: formData.email,
-    password: formData.password,
-    password_confirmation: formData.passwordConfirmation,
-  })
+  register(formData)
     .then((response) => {
       if (response.status === HttpStatusCode.Created) {
         useToastStore().showToast(ToastRegistered, registerToastSettings);
@@ -131,8 +126,8 @@ function signUp() {
           <div class="relative z-0 w-full mb-5 group">
             <Field
               type="password"
-              name="passwordConfirmation"
-              v-model="formData.passwordConfirmation"
+              name="password_confirmation"
+              v-model="formData.password_confirmation"
               id="password_confirm"
               class="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-400 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
               placeholder=" "
@@ -145,7 +140,7 @@ function signUp() {
             >
             <ErrorMessage
               class="text-red-600 text-sm"
-              name="passwordConfirmation"
+              name="password_confirmation"
             ></ErrorMessage>
           </div>
           <div class="space-y-6">

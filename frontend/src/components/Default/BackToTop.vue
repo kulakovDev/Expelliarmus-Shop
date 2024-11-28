@@ -35,9 +35,7 @@ function showScrollButton() {
 }
 
 onMounted(() => window.addEventListener("scroll", showScrollButton));
-onBeforeUnmount(() =>
-  window.removeEventListener("scroll", this.showScrollButton),
-);
+onBeforeUnmount(() => window.removeEventListener("scroll", showScrollButton));
 </script>
 
 <style lang="scss" scoped></style>

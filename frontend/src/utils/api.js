@@ -28,10 +28,10 @@ export default function api() {
       return response;
     },
     function (error) {
-      if (error.request.status === 403) {
+      if (error.request?.status === 403) {
       }
 
-      if ([401, 419].includes(error.request.status)) {
+      if ([401, 419].includes(error.request?.status)) {
         const auth = useAuthStore();
         auth.forgetUser();
       }

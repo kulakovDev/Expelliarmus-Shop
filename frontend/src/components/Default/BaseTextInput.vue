@@ -17,6 +17,7 @@
         :required="required"
       />
     </div>
+    <span v-if="error" class="text-sm text-red-600 ml-px">{{ error }}</span>
   </div>
 </template>
 
@@ -46,6 +47,10 @@ const props = defineProps({
   required: {
     type: Boolean,
     default: false,
+  },
+  error: {
+    type: String,
+    default: null,
   },
   modelValue: String,
 });

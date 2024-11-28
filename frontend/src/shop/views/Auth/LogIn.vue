@@ -21,8 +21,8 @@
               v-model="user.email"
               @input="clearError"
               class="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-400 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
-              placeholder=" "
               required
+              placeholder=" "
             />
             <label
               for="email"
@@ -62,7 +62,9 @@
             >
               Log In
             </button>
-            <router-link class="text-[#DB4444]" to="#"
+            <router-link
+              class="text-[#DB4444]"
+              :to="{ name: 'forgot-password' }"
               >Forgot password?
             </router-link>
           </div>
