@@ -8,6 +8,11 @@ import { useToastStore } from "@/stores/useToastStore.js";
 import defaultErrorSetting from "@/components/Default/Toasts/Default/defaultErrorSetting.js";
 import defaultSuccessSettings from "@/components/Default/Toasts/Default/defaultSuccessSettings.js";
 import { HttpStatusCode } from "axios";
+import {
+  emailRule,
+  passwordConfirmationRule,
+  passwordRule,
+} from "@/utils/validationRules.js";
 
 const route = useRoute();
 const router = useRouter();
@@ -20,12 +25,9 @@ const resetForm = reactive({
 });
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
-  password: yup.string().min(6).required(),
-  password_confirmation: yup
-    .string()
-    .required()
-    .oneOf([yup.ref("password")], "passwords must be same"),
+  email: emailRule(yup),
+  password: passwordRule(yup),
+  password_confirmation: passwordConfirmationRule(yup),
 });
 
 function resetPasswordRequest() {

@@ -7,13 +7,14 @@ import { HttpStatusCode } from "axios";
 import { useToast } from "vue-toastification";
 import resetEmailSentSettings from "@/components/Default/Toasts/ResetPassword/resetEmailSentSettings.js";
 import defaultErrorSetting from "@/components/Default/Toasts/Default/defaultErrorSetting.js";
+import { emailRule } from "@/utils/validationRules.js";
 
 const toast = useToast();
 
 const email = ref(null);
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
+  email: emailRule(yup),
 });
 
 function sendRequest() {

@@ -93,13 +93,14 @@
 <script setup>
 import { ErrorMessage, Field, Form } from "vee-validate";
 import * as yup from "yup";
-import { inject, reactive, ref } from "vue";
+import { inject, onMounted, reactive, ref } from "vue";
 import { useScrolling } from "@/composables/useScrolling.js";
 import { useAuthStore } from "@/stores/useAuthStore.js";
 import { useRouter } from "vue-router";
 import { useToastStore } from "@/stores/useToastStore.js";
 import ToastLogin from "@/components/Default/Toasts/Auth/ToastLogin.vue";
 import loginToastSettings from "@/components/Default/Toasts/Auth/loginToastSettings.js";
+import { emailRule } from "@/utils/validationRules.js";
 
 const { scrollToTop } = useScrolling();
 const router = useRouter();
@@ -107,8 +108,8 @@ const emitter = inject("emitter");
 const auth = useAuthStore();
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
-  password: yup.string().required(),
+  email: emailRule(yup),
+  password: yup.string().required().label("Password"),
 });
 
 const user = reactive({
@@ -137,6 +138,10 @@ function login() {
 function clearError() {
   loginError.value = null;
 }
+
+onMounted(() => {
+  scrollToTop();
+});
 </script>
 
 <style scoped></style>

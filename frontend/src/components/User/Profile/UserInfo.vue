@@ -3,19 +3,27 @@ import { useAuthStore } from "@/stores/useAuthStore.js";
 import BaseTextInput from "@/components/Default/BaseTextInput.vue";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
+import api from "@/utils/api.js";
+import { HttpStatusCode } from "axios";
+import { useToast } from "vue-toastification";
+import {
+  emailRule,
+  firstNameRule,
+  lastNameRule,
+} from "@/utils/validationRules.js";
 
 const authStore = useAuthStore();
 
 const { errors, handleSubmit, defineField } = useForm({
   validationSchema: yup.object({
-    email: yup.string().email().required().label("Email"),
-    first_name: yup.string().max(50).required().label("First name"),
-    last_name: yup.string().max(255).notRequired().label("Last name"),
+    email: emailRule(yup),
+    first_name: firstNameRule(yup),
+    last_name: lastNameRule(yup).notRequired(),
   }),
   initialValues: {
-    email: authStore.user?.email,
-    first_name: authStore.user?.first_name,
-    last_name: authStore.user?.last_name,
+    email: authStore.email,
+    first_name: authStore.firstName,
+    last_name: authStore.lastName,
   },
 });
 
@@ -23,8 +31,31 @@ const [email, emailAttrs] = defineField("email");
 const [first_name, firstNameAttrs] = defineField("first_name");
 const [last_name, lastNameAttrs] = defineField("last_name");
 
-const onSubmit = handleSubmit((values) => {
-  console.log(values);
+const toast = useToast();
+
+const onSubmit = handleSubmit(async (values) => {
+  await api()
+    .put("/user/profile-information", values)
+    .then((response) => {
+      if (response.status === HttpStatusCode.Ok) {
+        authStore.$patch({
+          user: {
+            ...authStore.user,
+            email: values.email,
+            first_name: values.first_name,
+            last_name: values.last_name,
+          },
+        });
+        toast.success(
+          "Success! If you update your email, please, check inbox.",
+        );
+      }
+    })
+    .catch((e) => {
+      if (e.response?.data?.message) {
+        toast.error(e.response.data.message);
+      }
+    });
 });
 </script>
 
@@ -38,7 +69,6 @@ const onSubmit = handleSubmit((values) => {
         v-bind="firstNameAttrs"
         label="First Name"
         :error="errors.first_name"
-        data-vv-as="First name"
       >
       </base-text-input>
       <base-text-input

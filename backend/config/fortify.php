@@ -60,7 +60,7 @@ return [
     |
     */
 
-    'lowercase_usernames' => true,
+    'lowercase_usernames' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -147,9 +147,8 @@ return [
         //Features::registration(),
         Features::resetPasswords(),
         Features::updateProfileInformation(),
+        Features::updatePasswords(),
 //        Features::emailVerification(),
-//        Features::updateProfileInformation(),
-//        Features::updatePasswords(),
 //        Features::twoFactorAuthentication([
 //            'confirm' => true,
 //            'confirmPassword' => true,

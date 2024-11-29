@@ -9,6 +9,12 @@ import { useRouter } from "vue-router";
 import { useToastStore } from "@/stores/useToastStore.js";
 import ToastRegistered from "@/components/Default/Toasts/Auth/ToastRegistered.vue";
 import registerToastSettings from "@/components/Default/Toasts/Auth/registerToastSettings.js";
+import {
+  emailRule,
+  firstNameRule,
+  passwordConfirmationRule,
+  passwordRule,
+} from "@/utils/validationRules.js";
 
 const { scrollToTop } = useScrolling();
 const emitter = inject("emitter");
@@ -24,13 +30,10 @@ const formData = reactive({
 const registerErrors = ref([]);
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
-  password: yup.string().min(6).required(),
-  first_name: yup.string().max(50).required("your name is required"),
-  password_confirmation: yup
-    .string()
-    .required()
-    .oneOf([yup.ref("password")], "passwords must be same"),
+  email: emailRule(yup),
+  password: passwordRule(yup),
+  first_name: firstNameRule(yup),
+  password_confirmation: passwordConfirmationRule(yup),
 });
 
 function signUp() {

@@ -4,7 +4,8 @@
       <div class="flex justify-between">
         <bread-crumbs :links="links"></bread-crumbs>
         <span class="text-sm"
-          >Welcome! <span class="text-[#db4444]">User</span></span
+          >Welcome!
+          <span class="text-[#db4444]">{{ auth.fullName }}</span></span
         >
       </div>
     </section>
@@ -104,6 +105,7 @@
 import { defineAsyncComponent, ref } from "vue";
 import BreadCrumbs from "@/components/Default/BreadCrumbs.vue";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
+import { useAuthStore } from "@/stores/useAuthStore.js";
 
 const ProfileInfo = defineAsyncComponent(
   () => import("@/shop/views/Account/ProfileInfo.vue"),
@@ -117,6 +119,8 @@ const MyOrders = defineAsyncComponent(
 const MyCancellations = defineAsyncComponent(
   () => import("@/shop/views/Account/MyCancellations.vue"),
 );
+
+const auth = useAuthStore();
 
 const links = ref([
   { url: "/", name: "Home" },

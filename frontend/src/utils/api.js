@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useAuthStore } from "@/stores/useAuthStore.js";
 
-export default function api() {
+export default function api(isApiCall = true) {
   const api = axios.create({
-    baseURL: "http://api.expelliarmus.com:8080",
+    baseURL: `http://api.expelliarmus.com:8080${isApiCall ? "/api/v1" : ""}`,
     withCredentials: true,
     withXSRFToken: true,
     xsrfCookieName: "XSRF-TOKEN",

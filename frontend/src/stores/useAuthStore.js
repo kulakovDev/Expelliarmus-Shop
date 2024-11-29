@@ -9,6 +9,10 @@ export const useAuthStore = defineStore("auth", {
   }),
   getters: {
     isAuthenticated: (state) => !!state?.user,
+    firstName: (state) => state?.user?.first_name,
+    lastName: (state) => state?.user?.last_name,
+    email: (state) => state?.user?.email,
+    fullName: (state) => state?.user?.full_name,
   },
   actions: {
     async login(user) {
@@ -22,7 +26,7 @@ export const useAuthStore = defineStore("auth", {
       }
 
       try {
-        const response = await api().get("/api/v1/current-user");
+        const response = await api().get("/current-user");
         this.user = response?.data?.data.attributes;
       } catch (e) {
         if (e.response.status === 401 || e.response.status === 419) {
@@ -33,7 +37,7 @@ export const useAuthStore = defineStore("auth", {
 
     async attempt() {
       try {
-        const response = await api().get("/api/v1/current-user");
+        const response = await api().get("/current-user");
         this.user = response?.data?.data.attributes;
       } catch (e) {
         if (e.response.status === 401 || e.response.status === 419) {
