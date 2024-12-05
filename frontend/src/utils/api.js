@@ -3,7 +3,7 @@ import { useAuthStore } from "@/stores/useAuthStore.js";
 
 export default function api(isApiCall = true) {
   const api = axios.create({
-    baseURL: `http://api.expelliarmus.com:8080${isApiCall ? "/api/v1" : ""}`,
+    baseURL: `http://api.expelliarmus.com:8080${isApiCall ? "/api" : ""}`,
     withCredentials: true,
     withXSRFToken: true,
     xsrfCookieName: "XSRF-TOKEN",
@@ -32,8 +32,7 @@ export default function api(isApiCall = true) {
       }
 
       if ([401, 419].includes(error.request?.status)) {
-        const auth = useAuthStore();
-        auth.forgetUser();
+        useAuthStore().forgetUser();
       }
 
       return Promise.reject(error);

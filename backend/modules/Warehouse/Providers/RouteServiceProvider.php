@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Modules\User\Providers;
+namespace Modules\Warehouse\Providers;
 
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as BaseRouteServiceProvider;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as LaravelRouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-class RouteServiceProvider extends BaseRouteServiceProvider
+class RouteServiceProvider extends LaravelRouteServiceProvider
 {
     public function boot(): void
     {

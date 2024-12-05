@@ -45,3 +45,27 @@ export const firstNameRule = (yup, label = "First name", max = 50) => {
 export const lastNameRule = (yup, label = "Last name", max = 255) => {
   return yup.string().max(max).label(label);
 };
+
+export const phoneCountryCode = (yup) => {
+  return yup
+    .string()
+    .matches(/^[+]?[(]?[0-9]{3}[)]?/, "Phone country code must be valid")
+    .notRequired();
+};
+
+export const phoneNumberWithoutCountryCode = (
+  yup,
+  initialPhone = null,
+  label = "Number without country code",
+) => {
+  return yup
+    .string()
+    .notRequired()
+    .test("is-valid-or-same", `${label} must be valid`, (value) => {
+      if (value === initialPhone) {
+        return true;
+      }
+
+      return /^[0-9]{3}[-\s.]?[0-9]{4,6}$/.test(value);
+    });
+};

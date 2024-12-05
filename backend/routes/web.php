@@ -6,32 +6,33 @@ use Laravel\Fortify\Http\Controllers\NewPasswordController;
 use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
 use Modules\User\Http\Controllers\UserController;
 
-// Authentication
-$limiter = config('fortify.limiters.login');
+Route::prefix('api')->group(function () {
+    $limiter = config('fortify.limiters.login');
 
-Route::post('/login', [AuthenticatedSessionController::class, 'store'])
-    ->middleware(
-        array_filter([
-            'guest',
-            $limiter ? 'throttle:'.$limiter : null,
-        ])
-    )->name('login.store');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+        ->middleware(
+            array_filter([
+                'guest',
+                $limiter ? 'throttle:'.$limiter : null,
+            ])
+        )->name('login.store');
 
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-    ->middleware([config('fortify.auth_middleware', 'auth').':'.config('fortify.guard')])
-    ->name('logout');
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->middleware([config('fortify.auth_middleware', 'auth').':'.config('fortify.guard')])
+        ->name('logout');
 
-Route::post('/register', [UserController::class, 'store'])
-    ->middleware(['guest'])
-    ->name('register.store');
+    Route::post('/register', [UserController::class, 'store'])
+        ->middleware(['guest'])
+        ->name('register.store');
 
-Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
-    ->middleware(['guest'])
-    ->name('password.email');
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+        ->middleware(['guest'])
+        ->name('password.email');
 
-Route::post('/reset-password', [NewPasswordController::class, 'store'])
-    ->middleware(['guest'])
-    ->name('password.update');
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])
+        ->middleware(['guest'])
+        ->name('password.update');
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     /*// Password Reset...

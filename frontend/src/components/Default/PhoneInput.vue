@@ -25,11 +25,12 @@
         :required="required"
       />
     </div>
+    <span v-if="error" class="text-sm text-red-600 ml-px">{{ error }}</span>
   </div>
 </template>
 
 <script setup>
-import { computed, defineProps, ref } from "vue";
+import { computed, defineProps, ref, watch } from "vue";
 
 const props = defineProps({
   id: String,
@@ -37,17 +38,28 @@ const props = defineProps({
   placeholder: String,
   label: String,
   required: Boolean,
+  modelValue: Object,
+  error: String,
 });
 
-const countryCode = ref("+380");
-const phoneNumber = ref("");
+const emit = defineEmits(["update:modelValue"]);
+
+const countryCode = ref(props.modelValue?.country_code || "+380");
+const phoneNumber = ref(props.modelValue?.phone_number || "");
 
 const value = computed({
-  get: () => `${this.countryCode} ${this.phoneNumber}`,
+  get: () => `${countryCode.value}${phoneNumber.value}`,
   set: (newValue) => {
-    const parts = newValue.split(" ");
-    this.countryCode = parts[0] || this.countryCode;
-    this.phoneNumber = parts[1] || "";
+    const parts = newValue.split("");
+    countryCode.value = parts[0] || countryCode.value;
+    phoneNumber.value = parts[1] || "";
   },
+});
+
+watch([countryCode, phoneNumber], ([newCountryCode, newPhoneNumber]) => {
+  emit("update:modelValue", {
+    country_code: newCountryCode,
+    phone_number: newPhoneNumber,
+  });
 });
 </script>

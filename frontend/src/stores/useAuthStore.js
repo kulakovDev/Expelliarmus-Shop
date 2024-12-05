@@ -49,7 +49,7 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async logout() {
-      return await logout().then(() => {
+      return await logout().finally(() => {
         this.forgetUser();
       });
     },

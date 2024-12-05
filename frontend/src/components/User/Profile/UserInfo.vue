@@ -10,7 +10,10 @@ import {
   emailRule,
   firstNameRule,
   lastNameRule,
+  phoneCountryCode,
+  phoneNumberWithoutCountryCode,
 } from "@/utils/validationRules.js";
+import PhoneInput from "@/components/Default/PhoneInput.vue";
 
 const authStore = useAuthStore();
 
@@ -19,17 +22,28 @@ const { errors, handleSubmit, defineField } = useForm({
     email: emailRule(yup),
     first_name: firstNameRule(yup),
     last_name: lastNameRule(yup).notRequired(),
+    country_code: phoneCountryCode(yup),
+    phone_number: phoneNumberWithoutCountryCode(yup, "*****56"),
   }),
   initialValues: {
     email: authStore.email,
     first_name: authStore.firstName,
     last_name: authStore.lastName,
+    country_code: "+380",
+    phone_number: "*****56",
   },
 });
 
 const [email, emailAttrs] = defineField("email");
 const [first_name, firstNameAttrs] = defineField("first_name");
 const [last_name, lastNameAttrs] = defineField("last_name");
+const [phone_number, phoneAttrs] = defineField("phone_number");
+const [country_code, countryCodeAttrs] = defineField("country_code");
+
+const phone = {
+  country_code: country_code,
+  phone_number: phone_number,
+};
 
 const toast = useToast();
 
@@ -89,6 +103,13 @@ const onSubmit = handleSubmit(async (values) => {
         :error="errors.email"
       >
       </base-text-input>
+      <phone-input
+        id="phone"
+        name="phone"
+        label="Phone Number"
+        :model-value="phone"
+        :error="errors.phone_number || errors.country_code"
+      ></phone-input>
     </section>
     <section class="flex justify-end gap-x-8">
       <button

@@ -2,6 +2,7 @@
 
 namespace Modules\User\Models;
 
+use App\Services\CacheService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,6 +17,7 @@ use Ramsey\Uuid\Uuid;
  * @property string $user_id
  * @property Carbon $email_verified_at
  * @property string $password
+ * @property Carbon $created_at
  * @property int $id
  */
 class User extends Authenticatable
@@ -53,7 +55,19 @@ class User extends Authenticatable
             if ($user->user_id === null) {
                 $user->user_id = Uuid::uuid7()->toString();
             }
+            if ($user->created_at === null) {
+                $user->created_at = Carbon::now();
+            }
         });
+
+        static::saved(fn(User $user) => CacheService::forgetKey('user', $user->userUuid()));
+
+        static::deleted(fn(User $user) => CacheService::forgetKey('user', $user->userUuid()));
+    }
+
+    public function userUuid(): string
+    {
+        return $this->user_id;
     }
 
     protected static function newFactory(): UserFactory
