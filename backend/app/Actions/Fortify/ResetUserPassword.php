@@ -10,7 +10,7 @@ use Modules\User\Models\User;
 class ResetUserPassword implements ResetsUserPasswords
 {
     use PasswordValidationRules;
-    
+
     public function reset(User $user, array $input): void
     {
         Validator::make($input, [
