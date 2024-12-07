@@ -6,6 +6,10 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Modules\Order\Models\Cart;
+use Modules\Order\Models\Order;
 use Modules\User\Database\Factories\GuestFactory;
 use Modules\User\Observers\GuestObserver;
 
@@ -36,6 +40,16 @@ class Guest extends Model
         'phone_country_code',
         'phone_number'
     ];
+
+    public function orders(): MorphMany
+    {
+        return $this->morphMany(Order::class, 'userable');
+    }
+
+    public function cart(): MorphOne
+    {
+        return $this->morphOne(Cart::class, 'userable');
+    }
 
     protected function casts(): array
     {
