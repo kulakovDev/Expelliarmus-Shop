@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
+use Modules\Product\Models\Product;
 
 /**
  * @property int $id
@@ -15,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property float $price_per_unit_in_cents
  * @property Carbon $arrived_at
  * @property Carbon $published_at
+ * @property string $product_article
  */
 class Warehouse extends Model
 {
@@ -35,11 +38,20 @@ class Warehouse extends Model
 
     public function productAttributesCombo(): HasMany
     {
-        return $this->hasMany(ProductAttributesCombo::class);
+        return $this->hasMany(VariationAttributeValues::class);
     }
 
     public function pricePerUnit(): float
     {
         return $this->price_per_unit_in_cents;
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function (Warehouse $warehouse) {
+            $warehouse->product_article .= '-'.Str::random(6);
+        });
     }
 }

@@ -13,8 +13,8 @@ class UserDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create(5);
+        User::factory(5)->create();
 
-        Guest::factory()->create(5);
+        Guest::factory(5)->create();
     }
 }

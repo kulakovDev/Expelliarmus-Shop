@@ -5,12 +5,17 @@ namespace Modules\Warehouse\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductAttribute extends Model
+class VariationAttributeValues extends Model
 {
     use HasFactory;
 
+    protected $table = 'variation_attribute_values';
+
+    public $timestamps = false;
+
     protected $fillable = [
-        'name',
-        'type'
+        'variation_id',
+        'attribute_id',
+        'value'
     ];
 }

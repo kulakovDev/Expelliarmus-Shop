@@ -13,7 +13,8 @@ return new class extends Migration {
         Schema::create('categories', function (Blueprint $table) {
             $table->integer('id')->generatedAs()->always()->primary();
             $table->string('name');
-            $table->integer('parent_id');
+            $table->string('slug')->unique()->nullable();
+            $table->nestedSet();
             $table->timestamps();
         });
     }

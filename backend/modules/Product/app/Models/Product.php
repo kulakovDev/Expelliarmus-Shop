@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Order\Models\OrderLine;
+use Modules\Product\Traits\Slugger;
 use Modules\Warehouse\Models\Warehouse;
 
 /**
@@ -24,6 +25,7 @@ use Modules\Warehouse\Models\Warehouse;
 class Product extends Model
 {
     use HasFactory;
+    use Slugger;
 
     protected $fillable = [
         'name',
@@ -37,6 +39,11 @@ class Product extends Model
     public function orderLines(): HasMany
     {
         return $this->hasMany(OrderLine::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function warehouse(): BelongsTo
@@ -56,6 +63,11 @@ class Product extends Model
         ];
     }
 
+    protected function slugColumn(): string
+    {
+        return 'slug';
+    }
+
     protected static function boot(): void
     {
         parent::boot();
@@ -64,7 +76,8 @@ class Product extends Model
             if ($product->created_at === null) {
                 $product->created_at = Carbon::now();
             }
-            //slug
+
+            $product->slug = $product->createSlug($product->name);
         });
     }
 }

@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('warehouses', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->generatedAs()->always();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->string('product_article')->unique();
             $table->integer('total_quantity');
             $table->decimal('price_per_unit_in_cents');
             $table->timestamp('arrived_at')->nullable();

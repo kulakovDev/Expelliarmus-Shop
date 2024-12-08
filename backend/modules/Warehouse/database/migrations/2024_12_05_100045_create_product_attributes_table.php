@@ -10,9 +10,25 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('product_attributes', function (Blueprint $table) {
+        /*Schema::create('product_attributes', function (Blueprint $table) {
             $table->integer('id')->generatedAs()->always()->primary();
             $table->string('name');
+            $table->string('value');
+            $table->timestamps();
+        });*/
+
+        Schema::create('product_attributes', function (Blueprint $table) {
+            $table->unsignedBigInteger('id')->generatedAs()->always()->primary();
+            $table->string('name');
+            $table->string('type');
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('product_attribute_values', function (Blueprint $table) {
+            $table->unsignedBigInteger('id')->generatedAs()->always()->primary();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('attribute_id')->constrained('product_attributes')->cascadeOnDelete();
             $table->string('value');
             $table->timestamps();
         });
