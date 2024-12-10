@@ -4,7 +4,7 @@ namespace Modules\User\Http\Controllers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Http\Controllers\Controller;
-use App\Services\CacheService;
+use App\Services\Cache\CacheService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

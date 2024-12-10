@@ -2,7 +2,7 @@
 
 namespace Modules\User\Observers;
 
-use App\Services\CacheService;
+use App\Services\Cache\CacheService;
 use Carbon\Carbon;
 use Modules\User\Models\User;
 use Ramsey\Uuid\Uuid;

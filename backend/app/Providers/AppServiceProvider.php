@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\CacheService;
+use App\Services\Cache\CacheService;
 use Clockwork\Support\Laravel\ClockworkServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;

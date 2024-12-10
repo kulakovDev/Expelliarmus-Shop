@@ -13,8 +13,16 @@ class UserDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(5)->create();
+        User::factory(4)->create();
+
+        User::factory()->create([
+            'email' => 'user@gmail.com',
+        ]);
 
         Guest::factory(5)->create();
+
+        Guest::factory()->create([
+            'email' => 'guest@gmail.com'
+        ]);
     }
 }

@@ -13,14 +13,12 @@ class ProductAttributeSeeder extends Seeder
     public function run(): void
     {
         ProductAttribute::query()->create([
-            [
-                'name' => 'Size',
-                'type' => ProductAttributeTypeEnum::STRING,
-            ],
-            [
-                'name' => 'Color',
-                'type' => ProductAttributeTypeEnum::COLOR
-            ]
+            'name' => 'Size',
+            'type' => ProductAttributeTypeEnum::STRING,
+        ]);
+        ProductAttribute::query()->create([
+            'name' => 'Color',
+            'type' => ProductAttributeTypeEnum::COLOR
         ]);
     }
 }

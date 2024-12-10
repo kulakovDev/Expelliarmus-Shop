@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Services\Cache;
 
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\Cache;
