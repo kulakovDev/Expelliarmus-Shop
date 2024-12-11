@@ -70,13 +70,20 @@ abstract class JsonApiRelationsValidation extends BaseJsonApiValidation
                     ->mapWithKeys(fn($item, $key) => $item);
             }
 
-            return collect($this->data(self::RELATION_KEY.$parameters[0])['data']);
+            $relationKey = self::RELATION_KEY.$parameters[0];
+
+            if (isset($this->data($relationKey)['data'])) {
+                return collect($this->data($relationKey)['data']);
+            }
+
+            return collect([]);
         }
 
         throw new \RuntimeException('Undefined method in json api validation');
     }
 
     /**
+     * Applies only to the `data->relationships` field in the JSON API.
      * return [
      *       'relation' => [
      *           'key.rule' => 'message';
@@ -89,6 +96,7 @@ abstract class JsonApiRelationsValidation extends BaseJsonApiValidation
     }
 
     /**
+     * Applies only to the `data->relationships` field in the JSON API.
      * return [
      *      'relation' => [
      *          'field' => 'rule';
@@ -98,6 +106,7 @@ abstract class JsonApiRelationsValidation extends BaseJsonApiValidation
     abstract public function jsonApiRelationshipsRules(): array;
 
     /**
+     * Applies only to the `data->relationships` field in the JSON API.
      * return [
      *      'relation' => [
      *          'key' => 'new attribute';

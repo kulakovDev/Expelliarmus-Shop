@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('product_specs_attributes', function (Blueprint $table) {
             $table->unsignedInteger('id')->generatedAs()->always()->primary();
             $table->string('spec_name');
-            $table->string('group_name');
+            $table->string('group_name')->nullable();
         });
     }
 

@@ -16,29 +16,23 @@ class CreateProductDto extends Data
         public readonly string $mainDesc,
         public readonly int $categoryId,
         public readonly int $brandId,
-        /**@var Collection<int, ProductAttributeVariationsDto> */
-        public readonly Collection $attributesVariations,
+        /**@var Collection<int, ProductSpecsDto> */
+        public readonly Collection $productSpecs,
         public readonly ?array $images = null,
     ) {
     }
 
     public static function fromRequest(ProductCreateRequest $request): CreateProductDto
     {
-        $attributeVariations = $request->relation('product_variations')->map(function (array $variation) {
-            return ProductAttributeVariationsDto::from([
-                'skuName' => $variation['sku'],
-                'quantity' => $variation['quantity'],
-                'attributes' => AttributeValueDto::collect($variation['attributes'])
-            ]);
-        });
-
         return new self(
             title: $request->title,
             titleDesc: $request->title_description,
             mainDesc: $request->main_description,
             categoryId: $request->relation('category')['id'],
             brandId: $request->relation('brand')['id'],
-            attributesVariations: $attributeVariations
+            productSpecs: ProductSpecsDto::collect(
+                $request->relation('product_specs')
+            )
         );
     }
 }

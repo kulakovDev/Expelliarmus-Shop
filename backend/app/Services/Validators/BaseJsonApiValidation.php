@@ -51,14 +51,24 @@ abstract class BaseJsonApiValidation extends FormRequest
     }
 
     /**
-     * return [
-     *      'field' => 'rule';
-     * ];
+     * Applies only to the `data->attributes` field in the JSON API.
+     * Use `'field' => 'rule'` to add validation rule,
+     * where `field` represents the property name only.
      */
     abstract public function jsonApiAttributeRules(): array;
 
+    /**
+     * Applies only to the `data->attributes` field in the JSON API.
+     * Use `'field' => 'new attribute'` to rename an attribute,
+     * where `field` represents the property name only.
+     */
     abstract public function jsonApiCustomAttributes(): array;
 
+    /**
+     * Applies only to the `data->attributes` field in the JSON API.
+     * Use `'field.rule' => 'message'` to change error message for rule,
+     * where `field` represents the property name only.
+     */
     public function jsonApiCustomErrorMessages(): array
     {
         return [];

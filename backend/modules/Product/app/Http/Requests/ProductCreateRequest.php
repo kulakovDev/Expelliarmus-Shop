@@ -39,6 +39,10 @@ class ProductCreateRequest extends JsonApiRelationsValidation
             'brands' => [
                 'id' => ['string', Rule::exists('brands', 'id')]
             ],
+            'product_specs.*' => [
+                'id' => ['required', 'integer', Rule::exists('product_specs_attributes', 'id')],
+                'value' => ['required', 'array']
+            ]
         ];
     }
 
@@ -54,6 +58,10 @@ class ProductCreateRequest extends JsonApiRelationsValidation
             ],
             'brands' => [
                 'slug' => 'brand name'
+            ],
+            'product_specs.*' => [
+                'id' => 'id',
+                'value' => 'value'
             ]
         ];
     }
@@ -71,7 +79,7 @@ class ProductCreateRequest extends JsonApiRelationsValidation
     {
         return [
             'title_description' => 'short description',
-            'main_description' => 'main_description',
+            'main_description' => 'main description',
             'total_quantity' => 'total quantity',
             'price' => 'price',
             'title' => 'title'

@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('id')->generatedAs()->always();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->foreignId('attribute_id')->constrained('product_specs_attributes')->cascadeOnDelete();
-            $table->string('value');
+            $table->json('value');
             $table->primary('id');
         });
     }
