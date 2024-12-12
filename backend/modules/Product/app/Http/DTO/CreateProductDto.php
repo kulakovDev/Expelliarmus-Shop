@@ -28,8 +28,8 @@ class CreateProductDto extends Data
             title: $request->title,
             titleDesc: $request->title_description,
             mainDesc: $request->main_description,
-            categoryId: $request->relation('category')['id'],
-            brandId: $request->relation('brand')['id'],
+            categoryId: (int)$request->relation('category')['id'],
+            brandId: (int)$request->relation('brand')['id'],
             productSpecs: ProductSpecsDto::collect(
                 $request->relation('product_specs')
             )

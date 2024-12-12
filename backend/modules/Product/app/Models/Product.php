@@ -13,7 +13,7 @@ use Modules\Warehouse\Models\Warehouse;
 
 /**
  * @property int $id
- * @property string $name
+ * @property string $title
  * @property string $slug
  * @property int $category_id
  * @property int $brand_id
@@ -28,7 +28,7 @@ class Product extends Model
     use Slugger;
 
     protected $fillable = [
-        'name',
+        'title',
         'category_id',
         'brand_id',
         'title_description',
@@ -77,7 +77,7 @@ class Product extends Model
                 $product->created_at = Carbon::now();
             }
 
-            $product->slug = $product->createSlug($product->name);
+            $product->slug = $product->createSlug($product->title);
         });
     }
 }

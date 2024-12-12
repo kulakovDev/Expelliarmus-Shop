@@ -20,12 +20,14 @@ class ProductCreateRequest extends JsonApiRelationsValidation
             'main_description' => ['required', 'string'],
             'price' => ['required', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
             'total_quantity' => ['required', 'integer'],
+            'product_article' => ['required', 'string', Rule::unique('warehouses', 'product_article')]
         ];
     }
 
     public function jsonApiRelationshipsRules(): array
     {
         return [
+            'product_variations' => ['nullable', 'array'],
             'product_variations.*' => [
                 'sku' => ['required', 'string', Rule::unique('product_variations', 'sku')],
                 'quantity' => ['required', 'integer'],
@@ -39,6 +41,7 @@ class ProductCreateRequest extends JsonApiRelationsValidation
             'brands' => [
                 'id' => ['string', Rule::exists('brands', 'id')]
             ],
+            'product_specs' => ['required', 'array'],
             'product_specs.*' => [
                 'id' => ['required', 'integer', Rule::exists('product_specs_attributes', 'id')],
                 'value' => ['required', 'array']
@@ -82,7 +85,8 @@ class ProductCreateRequest extends JsonApiRelationsValidation
             'main_description' => 'main description',
             'total_quantity' => 'total quantity',
             'price' => 'price',
-            'title' => 'title'
+            'title' => 'title',
+            'product_article' => 'product article'
         ];
     }
 }

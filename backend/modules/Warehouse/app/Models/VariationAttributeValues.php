@@ -5,6 +5,11 @@ namespace Modules\Warehouse\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $variation_id
+ * @property int $attribute_id
+ * @property string $value
+ */
 class VariationAttributeValues extends Model
 {
     use HasFactory;

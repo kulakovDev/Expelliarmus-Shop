@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->text('title_description');
             $table->text('main_description');
             $table->json('images')->nullable();
-            $table->timestamp('created_at')->nullable();
+            $table->timestamps();
             $table->primary('id');
         });
     }

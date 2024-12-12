@@ -16,6 +16,8 @@ class ProductSpec extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+    
     protected $fillable = [
         'product_id',
         'attribute_id',
@@ -30,5 +32,12 @@ class ProductSpec extends Model
     public function attributes(): BelongsTo
     {
         return $this->belongsTo(ProductSpecAttributes::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'value' => 'array'
+        ];
     }
 }

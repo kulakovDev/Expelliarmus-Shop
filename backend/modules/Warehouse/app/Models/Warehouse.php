@@ -28,6 +28,7 @@ class Warehouse extends Model
     protected $fillable = [
         'product_id',
         'total_quantity',
+        'product_article',
         'price_per_unit_in_cents'
     ];
 
@@ -51,7 +52,11 @@ class Warehouse extends Model
         parent::boot();
 
         static::creating(function (Warehouse $warehouse) {
-            $warehouse->product_article .= '-'.Str::random(6);
+            $warehouse->product_article .= '-'.Str::random(4);
+
+            if (! $warehouse->arrived_at) {
+                $warehouse->arrived_at = Carbon::now();
+            }
         });
     }
 }
