@@ -33,10 +33,14 @@
             >
               Orders
             </li>
-            <li
-              class="hover:underline underline-offset-4 decoration-2 mb-2 md:mb-0"
-            >
-              Warehouse
+            <li>
+              <custom-menu :links="productLinks" drop-to-up>
+                <template v-slot:menu-button="{ isOpen }">
+                  <span class="hover:underline underline-offset-4 decoration-2"
+                    >Products</span
+                  >
+                </template>
+              </custom-menu>
             </li>
             <li>
               <custom-menu :links="contentLinks" drop-to-up>
@@ -124,6 +128,12 @@ const isContentVisible = ref(false);
 const contentLinks = ref([
   { url: "", name: "Slider" },
   { url: "", name: "New Arrivals Card" },
+]);
+
+const productLinks = ref([
+  { url: "/management/products/create", name: "Add Product" },
+  { url: "/management/categories", name: "Categories" },
+  { url: "/management/products/attributes", name: "Attributes and other" },
 ]);
 
 function toggleContent() {
