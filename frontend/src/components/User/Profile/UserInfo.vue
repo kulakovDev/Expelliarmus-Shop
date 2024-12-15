@@ -1,6 +1,6 @@
 <script setup>
 import { useAuthStore } from "@/stores/useAuthStore.js";
-import BaseTextInput from "@/components/Default/BaseTextInput.vue";
+import BaseTextInput from "@/components/Default/Inputs/BaseTextInput.vue";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 import api from "@/utils/api.js";
@@ -13,7 +13,7 @@ import {
   phoneCountryCode,
   phoneNumberWithoutCountryCode,
 } from "@/utils/validationRules.js";
-import PhoneInput from "@/components/Default/PhoneInput.vue";
+import PhoneInput from "@/components/Default/Inputs/PhoneInput.vue";
 
 const authStore = useAuthStore();
 

@@ -221,8 +221,8 @@
 
 <script setup>
 import BreadCrumbs from "@/components/Default/BreadCrumbs.vue";
-import BaseTextInput from "@/components/Default/BaseTextInput.vue";
-import PhoneInput from "@/components/Default/PhoneInput.vue";
+import BaseTextInput from "@/components/Default/Inputs/BaseTextInput.vue";
+import PhoneInput from "@/components/Default/Inputs/PhoneInput.vue";
 import ProductCheckoutCard from "@/shop/views/Order/ProductCheckoutCard.vue";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import CheckoutCreditCard from "@/shop/views/Order/CheckoutCreditCard.vue";

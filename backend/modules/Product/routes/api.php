@@ -3,17 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Product\Http\Controllers\ProductController;
 
-/*
- *--------------------------------------------------------------------------
- * API Routes
- *--------------------------------------------------------------------------
- *
- * Here is where you can register API routes for your application. These
- * routes are loaded by the RouteServiceProvider within a group which
- * is assigned the "api" middleware group. Enjoy building your API!
- *
-*/
+//TODO: guards
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/management/product/create', [ProductController::class, 'store']);
-});
+Route::post('/management/product/create', [ProductController::class, 'store']);
+
+//показать сначало 25 брендов если нужного бренда в списке нет, проверить остались ли еще бренды,
+// если остались сделать новый запрос на выбор всех брендов, которых не было
+Route::get('/management/brands');

@@ -33,7 +33,7 @@
           class="rounded-md bg-gray-200 flex justify-center items-center flex-col w-full h-full"
         >
           <img src="/default/add.png" alt="Add" class="w-12 h-12" />
-          <span>Add new photo</span>
+          <span class="dark:text-black">Add new photo</span>
         </div>
       </Tab>
     </tab-list>
@@ -82,10 +82,6 @@ function handleFileChange(event) {
     const fileUrl = URL.createObjectURL(file);
 
     images.push({ file, url: fileUrl, order: images.length + 1 });
-
-    if (images.length === 1) {
-      mainImage.value = fileUrl;
-    }
 
     selectedTab.value = images.length - 1;
 

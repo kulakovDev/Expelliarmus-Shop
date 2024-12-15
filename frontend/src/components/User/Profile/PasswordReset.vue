@@ -2,7 +2,7 @@
 import * as yup from "yup";
 import { useForm } from "vee-validate";
 import { ref } from "vue";
-import BaseTextInput from "@/components/Default/BaseTextInput.vue";
+import BaseTextInput from "@/components/Default/Inputs/BaseTextInput.vue";
 import ConfirmPasswordChangeModal from "@/components/User/Profile/ConfirmPasswordChangeModal.vue";
 import api from "@/utils/api.js";
 import { useToastStore } from "@/stores/useToastStore.js";

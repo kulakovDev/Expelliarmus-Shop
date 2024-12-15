@@ -4,7 +4,7 @@
       >{{ label }}<span v-if="required" class="text-red-800">*</span></label
     >
     <div
-      class="flex items-center bg-gray-100 rounded-md px-4 py-4 focus-within:ring-2 focus-within:ring-gray-500"
+      class="relative w-full overflow-hidden cursor-default rounded-lg bg-gray-100 text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm"
     >
       <input
         :id="id"
@@ -12,8 +12,7 @@
         :type="type"
         :placeholder="placeholder"
         v-model="value"
-        v-bind="$attrs"
-        class="w-full bg-gray-100 outline-none text-gray-700 placeholder-gray-500 text-base"
+        class="w-full bg-gray-100 outline-none text-gray-700 placeholder-gray-500 text-base p-4"
         :required="required"
       />
     </div>
@@ -53,6 +52,14 @@ const props = defineProps({
     default: null,
   },
   modelValue: String,
+  bodyClass: {
+    type: String,
+    default: null,
+  },
+  inputClass: {
+    type: String,
+    default: null,
+  },
 });
 
 const emit = defineEmits(["update:modelValue"]);

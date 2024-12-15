@@ -121,7 +121,7 @@
 
 <script setup>
 import BreadCrumbs from "@/components/Default/BreadCrumbs.vue";
-import BaseTextInput from "@/components/Default/BaseTextInput.vue";
+import BaseTextInput from "@/components/Default/Inputs/BaseTextInput.vue";
 import { ref } from "vue";
 
 const links = ref([
