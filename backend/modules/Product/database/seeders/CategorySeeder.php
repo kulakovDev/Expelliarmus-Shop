@@ -39,10 +39,14 @@ class CategorySeeder extends Seeder
                             'name' => 'Shoes',
                             'children' => [
                                 ['name' => 'Sneakers'],
-                                ['name' => 'Boots']
+                                ['name' => 'Boots', 'children' => [['name' => 'aboba']]]
                             ]
                         ],
                     ]
+                ],
+                [
+                    'name' => 'Kid\'s clothes',
+                    'slug' => 'kids-clothes'
                 ]
             ],
         ];

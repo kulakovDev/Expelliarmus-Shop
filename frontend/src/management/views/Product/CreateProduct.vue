@@ -4,6 +4,7 @@ import ProductPhotoTabsForm from "@/management/components/Product/ProductPhotoTa
 import BrandsCombobox from "@/management/components/Product/BrandsCombobox.vue";
 import FocusedTextArea from "@/components/Default/Inputs/FocusedTextArea.vue";
 import FocusedTextInput from "@/components/Default/Inputs/FocusedTextInput.vue";
+import CategoryChooser from "@/management/components/Product/CategoryChooser.vue";
 </script>
 
 <template>
@@ -36,6 +37,7 @@ import FocusedTextInput from "@/components/Default/Inputs/FocusedTextInput.vue";
             >
             </focused-text-area>
             <brands-combobox></brands-combobox>
+            <category-chooser></category-chooser>
           </div>
         </div>
       </div>

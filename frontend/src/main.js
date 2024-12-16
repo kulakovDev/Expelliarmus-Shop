@@ -7,6 +7,7 @@ import mitt from "mitt";
 import { createPinia } from "pinia";
 import { useAuthStore } from "@/stores/useAuthStore.js";
 import Toast from "vue-toastification";
+import PrimeVue from "primevue/config";
 
 const pinia = createPinia();
 
@@ -30,5 +31,6 @@ const authStore = useAuthStore();
 
 authStore.attempt().finally(() => {
   app.use(router);
+  app.use(PrimeVue);
   app.mount("#app");
 });

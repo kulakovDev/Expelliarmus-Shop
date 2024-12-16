@@ -1,7 +1,7 @@
 <template>
   <Combobox v-model="selected">
     <div class="relative mt-1">
-      Brand
+      <span>Brand<span class="text-red-800">*</span></span>
       <div
         class="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm"
       >
@@ -36,13 +36,10 @@
         @after-leave="query = ''"
       >
         <ComboboxOptions
-          class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
+          class="absolute mt-1 z-50 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
         >
           <div
-            v-if="
-              (filteredBrands.length === 0 && query !== '') ||
-              (!isLoading && !nextBrandsStack && filteredBrands.length === 0)
-            "
+            v-if="filteredBrands.length === 0 && query !== ''"
             class="flex items-center justify-between relative cursor-default select-none px-4 py-2 text-gray-700"
           >
             <div>Nothing found. Continue writing...</div>

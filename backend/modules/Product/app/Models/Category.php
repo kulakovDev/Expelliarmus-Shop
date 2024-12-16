@@ -6,7 +6,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Kalnoy\Nestedset\Collection;
 use Kalnoy\Nestedset\NodeTrait;
+use Kalnoy\Nestedset\QueryBuilder;
 
 /**
  * @property int $id
@@ -14,6 +16,7 @@ use Kalnoy\Nestedset\NodeTrait;
  * @property string $slug
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @method static QueryBuilder defaultOrder
  */
 class Category extends Model
 {
@@ -28,7 +31,12 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
-    
+
+    public static function getAllCategoriesInTree(): Collection
+    {
+        return self::defaultOrder()->withDepth()->get()->toTree();
+    }
+
     protected function casts(): array
     {
         return [
