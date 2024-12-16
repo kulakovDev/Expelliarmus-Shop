@@ -60,7 +60,6 @@ class ProductServiceProvider extends ServiceProvider
                             ['.', ''],
                             $relativePath);
                     $key = ($relativePath === 'config.php') ? $this->nameLower : $configKey;
-
                     $this->publishes([$file->getPathname() => config_path($relativePath)], 'config');
                     $this->mergeConfigFrom($file->getPathname(), $key);
                 }

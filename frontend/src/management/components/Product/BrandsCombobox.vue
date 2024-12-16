@@ -7,8 +7,8 @@
       >
         <ComboboxInput
           class="w-full bg-gray-100 outline-none text-gray-700 placeholder-gray-500 text-base p-4"
-          :displayValue="(brand) => brand.name"
-          @change="query = $event.target.value"
+          :displayValue="(brand) => brand.brand_name"
+          @change="searchBrand"
         />
         <ComboboxButton
           class="absolute inset-y-0 right-0 flex items-center pr-2"
@@ -39,15 +39,38 @@
           class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
         >
           <div
-            v-if="filteredBrands.length === 0 && query !== ''"
-            class="relative cursor-default select-none px-4 py-2 text-gray-700"
+            v-if="
+              (filteredBrands.length === 0 && query !== '') ||
+              (!isLoading && !nextBrandsStack && filteredBrands.length === 0)
+            "
+            class="flex items-center justify-between relative cursor-default select-none px-4 py-2 text-gray-700"
           >
-            Nothing found.
+            <div>Nothing found. Continue writing...</div>
+            <div v-if="isLoading" class="text-center">
+              <div role="status">
+                <svg
+                  aria-hidden="true"
+                  class="inline w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-yellow-600"
+                  viewBox="0 0 100 101"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                    fill="currentFill"
+                  />
+                </svg>
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
           </div>
 
           <ComboboxOption
             v-for="brand in filteredBrands"
-            as="template"
             :key="brand.id"
             :value="brand"
             v-slot="{ selected, active }"
@@ -63,7 +86,7 @@
                 class="block truncate"
                 :class="{ 'font-medium': selected, 'font-normal': !selected }"
               >
-                {{ brand.name }}
+                {{ brand.brand_name }}
               </span>
               <span
                 v-if="selected"
@@ -89,18 +112,19 @@
           </ComboboxOption>
         </ComboboxOptions>
       </TransitionRoot>
-      <span class="text-xs"
-        >Did not find the brand in the list?
+      <span class="text-xs">
+        Did not find the brand in the list?
         <router-link to="" class="text-blue-500 underline underline-offset-2"
           >Create new one.</router-link
-        ></span
-      >
+        >
+      </span>
     </div>
   </Combobox>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
+import api from "@/utils/api.js";
 import {
   Combobox,
   ComboboxButton,
@@ -110,28 +134,64 @@ import {
   TransitionRoot,
 } from "@headlessui/vue";
 
-const brands = [
-  { id: 1, name: "Wade Cooper" },
-  { id: 2, name: "Arlene Mccoy" },
-  { id: 3, name: "Devon Webb" },
-  { id: 4, name: "Tom Cook" },
-  { id: 5, name: "Tanya Fox" },
-  { id: 6, name: "Hellen Schmidt" },
-];
-
+let brands = reactive([]);
 let selected = ref(brands[0]);
 let query = ref("");
+let isLoading = ref(false);
+
+let nextBrandsStack = null;
+let totalBrands = 0;
 
 let filteredBrands = computed(() =>
   query.value === ""
     ? brands
     : brands.filter((brand) =>
-        brand.name
+        (brand.brand_name ?? "")
           .toLowerCase()
           .replace(/\s+/g, "")
-          .includes(query.value.toLowerCase().replace(/\s+/g, "")),
+          .includes((query.value ?? "").toLowerCase().replace(/\s+/g, "")),
       ),
 );
 
-onMounted(() => {});
+async function fetchBrands(link = "/management/brands") {
+  if (brands.length !== 0 && totalBrands === brands.length) {
+    return brands;
+  }
+
+  const response = await api().get(link);
+
+  nextBrandsStack = response.data.links.next;
+
+  totalBrands = response.data.meta.total;
+
+  return response.data;
+}
+
+onMounted(async () => {
+  isLoading.value = true;
+  const responseData = await fetchBrands();
+  brands.push(...responseData.data.map((item) => item.attributes || {}));
+  isLoading.value = false;
+});
+
+function searchBrand(event) {
+  query.value = event.target.value;
+
+  if (
+    filteredBrands.value.length === 0 &&
+    query.value !== "" &&
+    nextBrandsStack
+  ) {
+    isLoading.value = true;
+    fetchBrands(nextBrandsStack)
+      .then((responseData) => {
+        brands.push(...responseData.data.map((item) => item.attributes || {}));
+        isLoading.value = false;
+      })
+      .catch((error) => {
+        console.error("Ошибка при загрузке брендов:", error);
+        isLoading.value = false;
+      });
+  }
+}
 </script>

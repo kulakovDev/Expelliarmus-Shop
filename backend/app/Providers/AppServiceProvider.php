@@ -24,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CacheService::class, function (Application $app) {
             return new CacheService($app->get('cache.store'));
         });
+
+        if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            $this->app->register(TelescopeServiceProvider::class);
+        }
     }
 
     /**
