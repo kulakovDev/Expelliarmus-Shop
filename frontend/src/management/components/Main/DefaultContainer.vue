@@ -1,13 +1,12 @@
 <template>
-  <main class="container-custom bg-[#f5f5f5] shadow-light-mode dark:shadow-[0_8px_30px_rgb(255,255,255,0.12)] rounded-2xl h-screen dark:bg-[#1c1c1c]">
+  <main
+    class="container-custom bg-[#f5f5f5] shadow-light-mode dark:shadow-[0_8px_30px_rgb(255,255,255,0.12)] rounded-2xl min-h-screen dark:bg-[#1c1c1c]"
+  >
     <slot></slot>
   </main>
 </template>
 
-<script>
-
-</script>
-
+<script></script>
 
 <style scoped>
 .container-custom {
@@ -18,9 +17,20 @@
   padding-right: 1rem;
 }
 
+@media (min-width: 481px) and (max-width: 768px) {
+  max-width: 768px;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 480px) {
+  max-width: 480px;
+  margin-top: 1.5rem;
+}
+
 @media (min-width: 640px) {
   .container-custom {
     max-width: 640px;
+    margin-top: 2.5rem;
   }
 }
 
@@ -61,5 +71,4 @@
     max-width: 1728px;
   }
 }
-
 </style>

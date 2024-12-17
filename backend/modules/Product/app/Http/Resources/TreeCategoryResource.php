@@ -5,11 +5,21 @@ declare(strict_types=1);
 namespace Modules\Product\Http\Resources;
 
 use Illuminate\Http\Request;
-use TiMacDonald\JsonApi\JsonApiResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class TreeCategoryResource extends JsonApiResource
+class TreeCategoryResource extends JsonResource
 {
-    public function toAttributes(Request $request): array
+    public function toArray(Request $request): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'slug' => $this->slug,
+            'last' => $this->children->isEmpty(),
+            'children' => self::collection($this->children)
+        ];
+    }
+    /*public function toAttributes(Request $request): array
     {
         return [
             'id' => $this->id,
@@ -25,5 +35,5 @@ class TreeCategoryResource extends JsonApiResource
         return [
             'children' => fn() => TreeCategoryResource::collection($this->children)
         ];
-    }
+    }*/
 }

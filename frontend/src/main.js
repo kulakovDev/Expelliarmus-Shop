@@ -31,6 +31,6 @@ const authStore = useAuthStore();
 
 authStore.attempt().finally(() => {
   app.use(router);
-  app.use(PrimeVue);
+  app.use(PrimeVue, { theme: "none" });
   app.mount("#app");
 });

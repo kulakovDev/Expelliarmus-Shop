@@ -50,7 +50,7 @@ const value = computed({
       >{{ label }}<span v-if="required" class="text-red-800">*</span></label
     >
     <div
-      class="relative w-full cursor-default overflow-hidden rounded-lg bg-gray-100 text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm"
+      class="relative w-full cursor-default overflow-hidden rounded-lg bg-white dark:bg-gray-200 text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm"
     >
       <textarea
         :name="name"
@@ -60,7 +60,7 @@ const value = computed({
         :placeholder="placeholder"
         v-model="value"
         :required="required"
-        class="w-full bg-gray-100 outline-none text-gray-700 placeholder-gray-500 text-base p-4"
+        class="w-full bg-white outline-none text-gray-700 placeholder-gray-500 text-base p-4 dark:bg-gray-200"
       >
       </textarea>
     </div>

@@ -122,6 +122,7 @@
 import CustomMenu from "@/components/Default/Menu.vue";
 import DarkMode from "@/management/components/Main/DarkMode.vue";
 import { ref } from "vue";
+import { onBeforeRouteUpdate } from "vue-router";
 
 const isContentVisible = ref(false);
 
@@ -139,6 +140,10 @@ const productLinks = ref([
 function toggleContent() {
   isContentVisible.value = !isContentVisible.value;
 }
+
+onBeforeRouteUpdate(() => {
+  isContentVisible.value = false;
+});
 </script>
 
 <style scoped>

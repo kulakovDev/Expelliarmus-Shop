@@ -3,12 +3,13 @@
     <div class="relative mt-1">
       <span>Brand<span class="text-red-800">*</span></span>
       <div
-        class="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm"
+        class="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left dark:bg-gray-200 shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm"
       >
         <ComboboxInput
-          class="w-full bg-gray-100 outline-none text-gray-700 placeholder-gray-500 text-base p-4"
+          class="w-full bg-white outline-none text-gray-700 placeholder-gray-500 text-base p-4 dark:bg-gray-200"
           :displayValue="(brand) => brand.brand_name"
           @change="searchBrand"
+          placeholder="Start writing..."
         />
         <ComboboxButton
           class="absolute inset-y-0 right-0 flex items-center pr-2"
@@ -36,7 +37,7 @@
         @after-leave="query = ''"
       >
         <ComboboxOptions
-          class="absolute mt-1 z-50 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
+          class="absolute mt-1 z-50 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-gray-200 py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
         >
           <div
             v-if="filteredBrands.length === 0 && query !== ''"

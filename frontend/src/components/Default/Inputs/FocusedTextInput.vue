@@ -12,7 +12,7 @@
         :type="type"
         :placeholder="placeholder"
         v-model="value"
-        class="w-full bg-gray-100 outline-none text-gray-700 placeholder-gray-500 text-base p-4"
+        class="w-full bg-white outline-none text-gray-700 placeholder-gray-500 text-base p-4 dark:bg-gray-200"
         :required="required"
       />
     </div>
