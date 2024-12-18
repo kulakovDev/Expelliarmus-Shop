@@ -48,7 +48,7 @@ class CreateProductAction
         return Product::query()->create([
             'title' => $dto->title,
             'title_description' => $dto->titleDesc,
-            'main_description' => $dto->mainDesc,
+            'main_description_markdown' => $dto->mainDesc,
             'category_id' => $dto->categoryId,
             'brand_id' => $dto->brandId,
             'images' => $dto->images

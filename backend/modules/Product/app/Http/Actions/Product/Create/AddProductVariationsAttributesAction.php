@@ -33,7 +33,7 @@ class AddProductVariationsAttributesAction
             'product_id' => $productId,
             'sku' => $dto->skuName,
             'quantity' => $dto->quantity,
-            'price_in_cents' => $dto->priceInCents,
+            'price_in_cents' => number_format($dto->priceInCents, 2),
         ]);
     }
 

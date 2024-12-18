@@ -15,7 +15,7 @@ class CreateProductInWarehouse
             'product_id' => $productId,
             'product_article' => $dto->productArticle,
             'total_quantity' => $dto->totalQuantity,
-            'price_per_unit_in_cents' => $dto->price
+            'price_per_unit_in_cents' => number_format($dto->price, 2)
         ]);
     }
 }

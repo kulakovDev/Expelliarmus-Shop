@@ -18,7 +18,8 @@ use Modules\Warehouse\Models\Warehouse;
  * @property int $category_id
  * @property int $brand_id
  * @property string $title_description
- * @property string $main_description
+ * @property string $main_description_markdown
+ * @property string $main_description_html
  * @property array $images
  * @property Carbon $created_at
  */
@@ -32,7 +33,8 @@ class Product extends Model
         'category_id',
         'brand_id',
         'title_description',
-        'main_description',
+        'main_description_markdown',
+        'main_description_html',
         'images',
     ];
 
@@ -54,6 +56,16 @@ class Product extends Model
     public function productSpecs(): HasMany
     {
         return $this->hasMany(ProductSpec::class);
+    }
+
+    public function getDescriptionMarkdown(): string
+    {
+        return $this->main_description_markdown;
+    }
+
+    public function getDescriptionHtml(): string
+    {
+        return $this->main_description_html;
     }
 
     protected function casts(): array
@@ -78,6 +90,16 @@ class Product extends Model
             }
 
             $product->slug = $product->createSlug($product->title);
+        });
+
+        static::saving(function (Product $product) {
+            $product->fill([
+                'main_description_html' => str($product->main_description_markdown)->markdown([
+                    'html_input' => 'strip',
+                    'allow_unsafe_links' => false,
+                    'max_nesting_level' => 5
+                ])
+            ]);
         });
     }
 }

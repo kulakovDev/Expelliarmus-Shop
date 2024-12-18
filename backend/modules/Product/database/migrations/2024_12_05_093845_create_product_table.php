@@ -17,7 +17,8 @@ return new class extends Migration {
             $table->foreignId('category_id')->constrained()->nullOnDelete();
             $table->foreignId('brand_id')->constrained()->nullOnDelete();
             $table->text('title_description');
-            $table->text('main_description');
+            $table->longText('main_description_markdown');
+            $table->longText('main_description_html');
             $table->json('images')->nullable();
             $table->timestamps();
             $table->primary('id');

@@ -13,8 +13,8 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'Food',
-                'slug' => 'food',
+                'name' => 'Food & Drinks',
+                'slug' => 'food-and-drinks',
                 'children' => [
                     [
                         'name' => 'Drinks',

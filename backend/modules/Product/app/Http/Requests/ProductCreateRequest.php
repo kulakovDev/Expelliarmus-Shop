@@ -18,7 +18,7 @@ class ProductCreateRequest extends JsonApiRelationsValidation
             'title' => ['required', 'string', 'max:150'],
             'title_description' => ['required', 'string', 'max:350'],
             'main_description' => ['required', 'string'],
-            'price' => ['required', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
+            'price' => ['regex:/^\d{1,6}(\.\d{1,2})?$/', 'max:10000000', 'min:1'],
             'total_quantity' => ['required', 'integer'],
             'product_article' => ['required', 'string', Rule::unique('warehouses', 'product_article')]
         ];
@@ -29,9 +29,14 @@ class ProductCreateRequest extends JsonApiRelationsValidation
         return [
             'product_variations' => ['nullable', 'array'],
             'product_variations.*' => [
-                'sku' => ['required', 'string', Rule::unique('product_variations', 'sku')],
+                'sku' => ['required', 'string', 'distinct', Rule::unique('product_variations', 'sku')],
                 'quantity' => ['required', 'integer'],
-                'price_in_cents' => ['regex:/^\d{1,6}(\.\d{1,2})?$/'],
+                'price_in_cents' => [
+                    'required_without:data.attributes.price',
+                    'regex:/^\d{1,6}(\.\d{1,2})?$/',
+                    'min:1',
+                    'max:10000000'
+                ],
                 'attributes.*.id' => ['required', 'integer', Rule::exists('product_attributes', 'id')],
                 'attributes.*.value' => ['required', 'string']
             ],
@@ -84,7 +89,7 @@ class ProductCreateRequest extends JsonApiRelationsValidation
             'title_description' => 'short description',
             'main_description' => 'main description',
             'total_quantity' => 'total quantity',
-            'price' => 'price',
+            'price' => 'default price',
             'title' => 'title',
             'product_article' => 'product article'
         ];
