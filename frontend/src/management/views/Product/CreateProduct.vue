@@ -7,6 +7,8 @@ import FocusedTextInput from "@/components/Default/Inputs/FocusedTextInput.vue";
 import CategoryChooser from "@/management/components/Product/CategoryChooser.vue";
 import DescriptionEditor from "@/management/components/Product/DescriptionEditor.vue";
 import { ref } from "vue";
+import WarehouseInputs from "@/management/components/Warehouse/WarehouseInputs.vue";
+import ProductAttributesModal from "@/management/components/Warehouse/ProductAttributesModal.vue";
 
 const description = ref(null);
 </script>
@@ -55,7 +57,7 @@ const description = ref(null);
         <span class="text-2xl font-semibold">Main Description</span>
         <description-editor v-model="description"></description-editor>
         <textarea
-          d="main_description"
+          id="main_description"
           name="main_description"
           v-model="description"
           rows="20"
@@ -64,6 +66,16 @@ const description = ref(null);
       </div>
       <div class="flex flex-col space-y-6">
         <span class="text-2xl font-semibold">Warehouse Information</span>
+        <div class="ml-5 space-y-4">
+          <div class="space-y-4">
+            <span class="text-xl font-semibold">General</span>
+            <warehouse-inputs></warehouse-inputs>
+          </div>
+          <div class="flex flex-col space-y-4">
+            <span class="text-xl font-semibold">Product Attributes</span>
+            <product-attributes-modal></product-attributes-modal>
+          </div>
+        </div>
       </div>
     </section>
   </default-container>

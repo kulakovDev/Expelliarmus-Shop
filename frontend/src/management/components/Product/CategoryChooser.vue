@@ -12,9 +12,13 @@ onMounted(async () => {
 });
 
 async function getCategories() {
-  const response = await api().get("/management/categories?include=children");
+  try {
+    const response = await api().get("/management/categories?include=children");
 
-  return transformCategories(response.data.data);
+    return transformCategories(response.data.data);
+  } catch (e) {
+    return [];
+  }
 }
 
 function transformCategories(data, parentKey = "") {

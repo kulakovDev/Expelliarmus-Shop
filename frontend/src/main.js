@@ -8,6 +8,7 @@ import { createPinia } from "pinia";
 import { useAuthStore } from "@/stores/useAuthStore.js";
 import Toast from "vue-toastification";
 import PrimeVue from "primevue/config";
+import Tooltip from "primevue/tooltip";
 
 const pinia = createPinia();
 
@@ -24,6 +25,8 @@ app.use(Toast, {
   maxToasts: 3,
   newestOnTop: true,
 });
+
+app.directive("tooltip", Tooltip);
 
 app.provide("emitter", emitter);
 

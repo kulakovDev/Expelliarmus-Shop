@@ -5,6 +5,7 @@
 @import "./primevue/tailwind.css";
 @import "tailwindcss/utilities";
 
+
 html.dark {
     background-color: #121212;
     color: #fafafa;

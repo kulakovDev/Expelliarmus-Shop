@@ -67,6 +67,13 @@
             </div>
           </div>
 
+          <div
+            v-else-if="filteredBrands.length === 0 && query === ''"
+            class="relative cursor-default select-none px-4 py-2 text-gray-700"
+          >
+            Categories not found
+          </div>
+
           <ComboboxOption
             v-for="brand in filteredBrands"
             :key="brand.id"
@@ -140,35 +147,44 @@ let isLoading = ref(false);
 let nextBrandsStack = null;
 let totalBrands = 0;
 
-let filteredBrands = computed(() =>
-  query.value === ""
+let filteredBrands = computed(() => {
+  return query.value === ""
     ? brands
     : brands.filter((brand) =>
         (brand.brand_name ?? "")
           .toLowerCase()
           .replace(/\s+/g, "")
           .includes((query.value ?? "").toLowerCase().replace(/\s+/g, "")),
-      ),
-);
+      );
+});
 
 async function fetchBrands(link = "/management/brands") {
   if (brands.length !== 0 && totalBrands === brands.length) {
     return brands;
   }
 
-  const response = await api().get(link);
+  try {
+    const response = await api().get(link);
 
-  nextBrandsStack = response.data.links.next;
+    nextBrandsStack = response.data.links.next;
 
-  totalBrands = response.data.meta.total;
+    totalBrands = response.data.meta.total;
 
-  return response.data;
+    return response.data;
+  } catch (e) {
+    return [];
+  }
 }
 
 onMounted(async () => {
   isLoading.value = true;
+
   const responseData = await fetchBrands();
-  brands.push(...responseData.data.map((item) => item.attributes || {}));
+
+  if (responseData.data?.length) {
+    brands.push(...responseData.data.map((item) => item.attributes || {}));
+  }
+
   isLoading.value = false;
 });
 
@@ -187,7 +203,6 @@ function searchBrand(event) {
         isLoading.value = false;
       })
       .catch((error) => {
-        console.error("Ошибка при загрузке брендов:", error);
         isLoading.value = false;
       });
   }

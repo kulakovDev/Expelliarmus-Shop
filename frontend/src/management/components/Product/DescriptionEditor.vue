@@ -54,7 +54,7 @@ watch(
     v-if="editor"
     class="rounded-lg bg-white dark:bg-gray-200 text-left shadow-md border-0"
   >
-    <menu class="flex divide-x-2 border-b-2">
+    <menu class="flex divide-x-2 border-b-2 flex-wrap">
       <li>
         <button
           @click="() => editor.chain().focus().toggleBold().run()"

@@ -7,9 +7,11 @@
       class="relative w-full overflow-hidden cursor-default rounded-lg bg-gray-100 text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm"
     >
       <input
+        v-tooltip.focus.bottom="tooltip"
         :id="id"
         :name="name"
         :type="type"
+        v-bind="$attrs"
         :placeholder="placeholder"
         v-model="value"
         class="w-full bg-white outline-none text-gray-700 placeholder-gray-500 text-base p-4 dark:bg-gray-200"
@@ -43,6 +45,7 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  tooltip: String,
   required: {
     type: Boolean,
     default: false,
@@ -52,14 +55,6 @@ const props = defineProps({
     default: null,
   },
   modelValue: String,
-  bodyClass: {
-    type: String,
-    default: null,
-  },
-  inputClass: {
-    type: String,
-    default: null,
-  },
 });
 
 const emit = defineEmits(["update:modelValue"]);
