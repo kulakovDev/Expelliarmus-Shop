@@ -30,7 +30,7 @@
               leave="duration-200 ease-in transform"
               leave-from="opacity-100 scale-100"
               leave-to="opacity-0 scale-95"
-              class="bg-white rounded-xl shadow-xl p-6 w-full max-w-full max-h-none"
+              class="bg-white rounded-xl shadow-xl p-6 w-full max-h-none"
               :class="computedWidth"
             >
               <DialogPanel>

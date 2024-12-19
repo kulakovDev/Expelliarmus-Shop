@@ -6,9 +6,37 @@ import Step from "primevue/step";
 import StepPanel from "primevue/steppanel";
 import Button from "primevue/button";
 import { Switch } from "@headlessui/vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const withCombinedAttr = ref(false);
+const numberOfAttributes = ref(1);
+const numberOfCombinations = ref(null);
+const oneToManyAttributesQuantity = ref(null);
+
+watch(withCombinedAttr, (value) => {
+  numberOfAttributes.value = 1;
+  if (value) {
+    numberOfCombinations.value = 1;
+    oneToManyAttributesQuantity.value = 0;
+  } else {
+    numberOfCombinations.value = null;
+    oneToManyAttributesQuantity.value = null;
+  }
+});
+
+const emit = defineEmits(["last-step"]);
+
+function lastStep(activateCallback, step) {
+  activateCallback(step);
+  emit("last-step");
+}
+
+defineExpose({
+  withCombinedAttr,
+  numberOfAttributes,
+  numberOfCombinations,
+  oneToManyAttributesQuantity,
+});
 </script>
 
 <template>
@@ -16,7 +44,7 @@ const withCombinedAttr = ref(false);
     <StepList>
       <Step value="1">Step I</Step>
       <Step value="2">Step II</Step>
-      <Step value="3">Step III</Step>
+      <Step value="3">Summarize</Step>
     </StepList>
     <StepPanels>
       <StepPanel v-slot="{ activateCallback }" value="1">
@@ -94,24 +122,30 @@ const withCombinedAttr = ref(false);
               </p>
               <div class="text-start flex justify-around gap-x-6">
                 <div class="flex flex-col">
-                  <label for="input1" class="text-xs text-gray-700 mb-1"
+                  <label
+                    for="numberOfAttributes"
+                    class="text-xs text-gray-700 mb-1"
                     >Number of attributes</label
                   >
                   <input
-                    id="input1"
+                    id="numberOfAttributes"
                     type="number"
+                    v-model="numberOfAttributes"
                     min="1"
                     class="px-1 py-0.5 text-xs border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none w-20"
                   />
                 </div>
                 <div class="flex flex-col">
-                  <label for="input2" class="text-xs text-gray-700 mb-1"
+                  <label
+                    for="numberOfCombinations"
+                    class="text-xs text-gray-700 mb-1"
                     >Number of combinations</label
                   >
                   <input
-                    id="input2"
+                    id="numberOfCombinations"
                     type="number"
                     min="1"
+                    v-model="numberOfCombinations"
                     class="px-1 py-0.5 text-xs border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none w-20"
                   />
                 </div>
@@ -128,12 +162,15 @@ const withCombinedAttr = ref(false);
               </p>
               <div class="flex justify-center !mb-4">
                 <div class="flex flex-col">
-                  <label for="input2" class="text-xs text-gray-700 mb-1"
+                  <label
+                    for="oneToManyAttributesQuantity"
+                    class="text-xs text-gray-700 mb-1"
                     >Quantity</label
                   >
                   <input
-                    id="input2"
+                    id="oneToManyAttributesQuantity"
                     type="number"
+                    v-model="oneToManyAttributesQuantity"
                     min="1"
                     class="px-1 py-0.5 text-xs border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none w-20"
                   />
@@ -142,7 +179,7 @@ const withCombinedAttr = ref(false);
             </div>
             <div class="w-full overflow-y-auto h-full space-y-4" v-else>
               <span class="text-lg font-semibold block text-center">
-                Combined attributes</span
+                Non-Combined attributes</span
               >
               <p class="text-start text-sm font-light">
                 This option is suitable for products that have
@@ -157,12 +194,15 @@ const withCombinedAttr = ref(false);
               </p>
               <div class="flex justify-center !mb-4">
                 <div class="flex flex-col">
-                  <label for="input2" class="text-xs text-gray-700 mb-1"
+                  <label
+                    for="oneToManyAttributesQuantity"
+                    class="text-xs text-gray-700 mb-1"
                     >Quantity</label
                   >
                   <input
-                    id="input2"
+                    id="oneToManyAttributesQuantity"
                     type="number"
+                    v-model="numberOfAttributes"
                     min="1"
                     class="px-1 py-0.5 text-xs border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none w-20"
                   />
@@ -182,7 +222,7 @@ const withCombinedAttr = ref(false);
             label="Next"
             icon="pi pi-arrow-right"
             iconPos="right"
-            @click="activateCallback('3')"
+            @click="lastStep(activateCallback, '3')"
           />
         </div>
       </StepPanel>
@@ -191,7 +231,33 @@ const withCombinedAttr = ref(false);
           <div
             class="rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
           >
-            <div class="w-full"></div>
+            <div class="w-full space-y-4">
+              <span class="font-bold text-xl">Let's sum it up</span>
+
+              <div v-if="withCombinedAttr" class="space-y-4">
+                <span>You chose combined option with:</span>
+                <ul class="font-light">
+                  <li>Number of combinations: {{ numberOfCombinations }}</li>
+                  <li>
+                    Number of attributes in combination:
+                    {{ numberOfAttributes }}
+                  </li>
+                  <li v-if="oneToManyAttributesQuantity > 0">
+                    Number of attributes, where unique attributes is related to
+                    one: {{ oneToManyAttributesQuantity }}
+                  </li>
+                </ul>
+                <span class="text-sm">If not, go back.</span>
+              </div>
+              <div v-else class="space-y-4">
+                <span>You chose non-combined option with:</span>
+                <p class="font-light">
+                  Number of attributes:
+                  {{ numberOfAttributes }}
+                </p>
+                <span class="text-sm">If not, go back.</span>
+              </div>
+            </div>
           </div>
         </div>
         <div class="pt-6">
@@ -199,7 +265,7 @@ const withCombinedAttr = ref(false);
             label="Back"
             severity="secondary"
             icon="pi pi-arrow-left"
-            @click="activateCallback('2')"
+            @click="lastStep(activateCallback, '2')"
           />
         </div>
       </StepPanel>
