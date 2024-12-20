@@ -29,6 +29,8 @@ return new class extends Migration {
             $table->unsignedBigInteger('id')->generatedAs()->always()->primary();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->foreignId('attribute_id')->constrained('product_attributes')->cascadeOnDelete();
+            $table->integer('quantity')->default(0);
+            $table->decimal('price_in_cents')->nullable();
             $table->string('value');
             $table->timestamps();
         });

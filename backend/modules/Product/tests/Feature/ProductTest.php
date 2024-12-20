@@ -5,12 +5,12 @@ namespace Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 use Modules\Product\Database\Seeders\ProductDatabaseSeeder;
-use Modules\Product\Http\Actions\Product\Create\AddProductVariationsAttributesAction;
+use Modules\Product\Http\Actions\Product\Create\AddCombinedProductAttributesAction;
 use Modules\Product\Http\Actions\Product\Create\CreateProductAction;
 use Modules\Product\Http\Actions\Product\Create\CreateProductInWarehouse;
-use Modules\Product\Http\DTO\AttributeValueDto;
+use Modules\Product\Http\DTO\AttributesForCombinedValueDto;
 use Modules\Product\Http\DTO\CreateProductDto;
-use Modules\Product\Http\DTO\ProductAttributeVariationsDto;
+use Modules\Product\Http\DTO\ProductAttributeCombinedVariationsDto;
 use Modules\Product\Http\DTO\ProductSpecsDto;
 use Modules\Product\Models\Product;
 use Modules\Warehouse\Database\Seeders\WarehouseDatabaseSeeder;
@@ -44,11 +44,11 @@ class ProductTest extends TestCase
             ]))
         ]);
 
-        $variations = collect(ProductAttributeVariationsDto::collect([
+        $variations = collect(ProductAttributeCombinedVariationsDto::collect([
             [
                 'skuName' => 'SKU-a-a',
                 'quantity' => 100,
-                'attributes' => collect(AttributeValueDto::collect([
+                'attributes' => collect(AttributesForCombinedValueDto::collect([
                     [
                         'id' => 1,
                         'value' => 'test'
@@ -64,7 +64,7 @@ class ProductTest extends TestCase
         ]);
 
         (new CreateProductAction(
-            new AddProductVariationsAttributesAction(),
+            new AddCombinedProductAttributesAction(),
             new CreateProductInWarehouse()
         ))->handle($productDto, $variations, $warehouse);
 

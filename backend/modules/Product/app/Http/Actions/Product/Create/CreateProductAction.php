@@ -7,7 +7,7 @@ namespace Modules\Product\Http\Actions\Product\Create;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Product\Http\DTO\CreateProductDto;
-use Modules\Product\Http\DTO\ProductAttributeVariationsDto;
+use Modules\Product\Http\DTO\ProductAttributeCombinedVariationsDto;
 use Modules\Product\Http\DTO\ProductSpecsDto;
 use Modules\Product\Http\Exceptions\FailedToCreateProductException;
 use Modules\Product\Models\Product;
@@ -17,17 +17,20 @@ use Throwable;
 class CreateProductAction
 {
     public function __construct(
-        private readonly AddProductVariationsAttributesAction $addVariations,
+        private readonly AddCombinedProductAttributesAction $addVariations,
         private readonly CreateProductInWarehouse $createProductInWarehouse
     ) {
     }
 
     /**
-     * @param  Collection<int, ProductAttributeVariationsDto>  $variationsDto
+     * @param  Collection<int, ProductAttributeCombinedVariationsDto>  $variationsDto
      * @throws FailedToCreateProductException
      */
-    public function handle(CreateProductDto $dto, Collection $variationsDto, CreateWarehouseDto $warehouseDto): void
-    {
+    public function handle(
+        CreateProductDto $dto,
+        CreateWarehouseDto $warehouseDto,
+        ?Collection $variationsDto = null
+    ): void {
         try {
             DB::transaction(function () use ($dto, $variationsDto, $warehouseDto) {
                 $product = $this->createProduct($dto);

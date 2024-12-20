@@ -5,29 +5,29 @@ declare(strict_types=1);
 namespace Modules\Product\Http\Actions\Product\Create;
 
 use Illuminate\Support\Collection;
-use Modules\Product\Http\DTO\AttributeValueDto;
-use Modules\Product\Http\DTO\ProductAttributeVariationsDto;
+use Modules\Product\Http\DTO\AttributesForCombinedValueDto;
+use Modules\Product\Http\DTO\ProductAttributeCombinedVariationsDto;
 use Modules\Warehouse\Models\ProductVariation;
 
-class AddProductVariationsAttributesAction
+class AddCombinedProductAttributesAction
 {
     /**
-     * @param  Collection<int, ProductAttributeVariationsDto>  $variationsDto
+     * @param  Collection<int, ProductAttributeCombinedVariationsDto>  $variationsDto
      */
-    public function handle(Collection $variationsDto, int $productId): void
+    public function handle(int $productId, Collection $variationsDto): void
     {
         if (! $variationsDto->isEmpty()) {
             return;
         }
 
-        $variationsDto->each(function (ProductAttributeVariationsDto $dto) use ($productId) {
+        $variationsDto->each(function (ProductAttributeCombinedVariationsDto $dto) use ($productId) {
             $productVariation = $this->createVariation($productId, $dto);
 
             $this->linkValuesToVariationAttributes($productVariation, $dto->attributes);
         });
     }
 
-    private function createVariation(int $productId, ProductAttributeVariationsDto $dto)
+    private function createVariation(int $productId, ProductAttributeCombinedVariationsDto $dto)
     {
         return ProductVariation::query()->create([
             'product_id' => $productId,
@@ -40,7 +40,7 @@ class AddProductVariationsAttributesAction
     private function linkValuesToVariationAttributes(ProductVariation $productVariation, Collection $attributes): void
     {
         $productVariation->variationAttributeValue()->createMany(
-            $attributes->map(function (AttributeValueDto $dto) use ($productVariation) {
+            $attributes->map(function (AttributesForCombinedValueDto $dto) use ($productVariation) {
                 return [
                     'variation_id' => $productVariation->id,
                     'attribute_id' => $dto->id,

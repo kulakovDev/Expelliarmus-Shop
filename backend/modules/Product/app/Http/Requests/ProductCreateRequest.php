@@ -4,6 +4,7 @@ namespace Modules\Product\Http\Requests;
 
 use App\Services\Validators\JsonApiRelationsValidation;
 use Illuminate\Validation\Rule;
+use Modules\Warehouse\Enums\ProductAttributeTypeEnum;
 
 class ProductCreateRequest extends JsonApiRelationsValidation
 {
@@ -20,29 +21,90 @@ class ProductCreateRequest extends JsonApiRelationsValidation
             'main_description' => ['required', 'string'],
             'price' => ['regex:/^\d{1,6}(\.\d{1,2})?$/', 'max:10000000', 'min:1'],
             'total_quantity' => ['required', 'integer'],
-            'product_article' => ['required', 'string', Rule::unique('warehouses', 'product_article')]
+            'product_article' => ['required', 'string', Rule::unique('warehouses', 'product_article')],
+            'is_combined_attributes' => ['nullable', 'boolean']
         ];
     }
 
     public function jsonApiRelationshipsRules(): array
     {
         return [
-            'product_variations' => ['nullable', 'array'],
-            'product_variations.*' => [
-                'sku' => ['required', 'string', 'distinct', Rule::unique('product_variations', 'sku')],
-                'quantity' => ['required', 'integer'],
-                'price_in_cents' => [
-                    'required_without:data.attributes.price',
-                    'regex:/^\d{1,6}(\.\d{1,2})?$/',
-                    'min:1',
-                    'max:10000000'
+            'product_variations_combinations' => [
+                'nullable',
+                'present_if:data.attributes.is_combined_attributes,true',
+                'array'
+            ],
+            'product_variations_combinations.*' => [
+                'sku' => [
+                    'required',
+                    'string',
+                    'distinct',
+                    Rule::unique('product_variations', 'sku')
                 ],
-                'attributes.*.id' => ['required', 'integer', Rule::exists('product_attributes', 'id')],
-                'attributes.*.value' => ['required', 'string']
+                'price_in_cents' => ['regex:/^\d{1,6}(\.\d{1,2})?$/', 'max:10000000', 'min:1'],
+                'quantity' => [
+                    'required',
+                    'integer'
+                ],
+                'attributes' => [
+                    'required',
+                    'array'
+                ],
+                'attributes.*' => [
+                    'id' => [
+                        'integer',
+                        Rule::exists('product_attributes', 'id')
+                    ],
+                    'value' => [
+                        'required',
+                        'string'
+                    ],
+                    'attribute_name' => [
+                        'required_without:data.relationships.product_variations_combinations.attributes.*.id',
+                        'string'
+                    ],
+                    'type' => [
+                        'required_with:data.relationships.product_variations_combinations.attributes.*.name',
+                        Rule::enum(ProductAttributeTypeEnum::class)
+                    ],
+                ],
             ],
-            'category' => [
-                'id' => ['required', 'integer', Rule::exists('categories', 'id')]
+
+            'product_variation' => [
+                'nullable',
+                'present_if:data.attributes.is_combined_attributes,false',
+                'array'
             ],
+            'product_variation.*' => [
+                'attribute_id' => [
+                    'integer',
+                    Rule::exists('product_attributes', 'id')
+                ],
+                'attribute_name' => [
+                    'required_without:product_variation.*.attribute_id',
+                    'string'
+                ],
+                'attribute_type' => [
+                    'required_with:data.relationships.product_variation.*.attribute_name',
+                    Rule::enum(ProductAttributeTypeEnum::class)
+                ],
+                'attributes' => [
+                    'required',
+                    'array'
+                ],
+                'attributes.*' => [
+                    'quantity' => [
+                        'required',
+                        'integer'
+                    ],
+                    'value' => [
+                        'required',
+                        'string'
+                    ],
+                    'price_in_cents' => ['regex:/^\d{1,6}(\.\d{1,2})?$/', 'max:10000000', 'min:1'],
+                ],
+            ],
+
             'brands' => [
                 'id' => ['string', Rule::exists('brands', 'id')]
             ],
@@ -57,7 +119,7 @@ class ProductCreateRequest extends JsonApiRelationsValidation
     public function jsonApiRelationshipsCustomAttributes(): array
     {
         return [
-            'product_variations.*' => [
+            'product_variations_combinations.*' => [
                 'price_in_cents' => 'price',
                 'sku' => 'SKU',
                 'quantity' => 'quantity',
@@ -77,7 +139,7 @@ class ProductCreateRequest extends JsonApiRelationsValidation
     public function jsonApiRelationshipsCustomErrorsMessages(): array
     {
         return [
-            'product_variations.*' => [
+            'product_variations_combinations.*' => [
                 'sku.unique' => 'The SKU must be unique.',
             ]
         ];
