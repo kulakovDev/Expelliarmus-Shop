@@ -11,7 +11,7 @@ class AttributesForSingleValueDto extends Data
     public function __construct(
         public readonly string $value,
         public readonly int $quantity,
-        public readonly ?float $priceInCents = null
+        public readonly ?float $price = null
     ) {
     }
 }

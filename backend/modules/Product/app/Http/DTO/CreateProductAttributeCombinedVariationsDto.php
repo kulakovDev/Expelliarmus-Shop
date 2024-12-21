@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use Modules\Product\Http\Requests\ProductCreateRequest;
 use Spatie\LaravelData\Data;
 
-class ProductAttributeCombinedVariationsDto extends Data
+class CreateProductAttributeCombinedVariationsDto extends Data
 {
     public function __construct(
         public readonly string $skuName,
@@ -29,7 +29,7 @@ class ProductAttributeCombinedVariationsDto extends Data
             return self::from([
                 'skuName' => $variation['sku'],
                 'quantity' => $variation['quantity'],
-                'priceInCents' => $variation['price_in_cents'] ?? null,
+                'priceInCents' => $variation['price'] ?? null,
                 'attributes' => AttributesForCombinedValueDto::collect($variation['attributes'])
             ]);
         });

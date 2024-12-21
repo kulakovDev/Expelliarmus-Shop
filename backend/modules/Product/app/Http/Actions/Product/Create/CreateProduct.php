@@ -5,42 +5,25 @@ declare(strict_types=1);
 namespace Modules\Product\Http\Actions\Product\Create;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Modules\Product\Http\DTO\CreateProductDto;
-use Modules\Product\Http\DTO\ProductAttributeCombinedVariationsDto;
 use Modules\Product\Http\DTO\ProductSpecsDto;
 use Modules\Product\Http\Exceptions\FailedToCreateProductException;
 use Modules\Product\Models\Product;
-use Modules\Warehouse\DTO\CreateWarehouseDto;
 use Throwable;
 
-class CreateProductAction
+class CreateProduct
 {
-    public function __construct(
-        private readonly AddCombinedProductAttributesAction $addVariations,
-        private readonly CreateProductInWarehouse $createProductInWarehouse
-    ) {
-    }
-
     /**
-     * @param  Collection<int, ProductAttributeCombinedVariationsDto>  $variationsDto
      * @throws FailedToCreateProductException
      */
-    public function handle(
-        CreateProductDto $dto,
-        CreateWarehouseDto $warehouseDto,
-        ?Collection $variationsDto = null
-    ): void {
+    public function handle(CreateProductDto $dto): Product
+    {
         try {
-            DB::transaction(function () use ($dto, $variationsDto, $warehouseDto) {
-                $product = $this->createProduct($dto);
+            $product = $this->createProduct($dto);
 
-                $this->createProductInWarehouse->handle($product->id, $warehouseDto);
+            $this->linkAttributesToProduct($product, $dto->productSpecs);
 
-                $this->linkAttributesToProduct($product, $dto->productSpecs);
-
-                $this->addVariations->handle($variationsDto, $product->id);
-            });
+            return $product;
         } catch (Throwable $e) {
             throw new FailedToCreateProductException($e->getMessage(), $e);
         }

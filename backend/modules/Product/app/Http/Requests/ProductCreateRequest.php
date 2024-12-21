@@ -19,7 +19,13 @@ class ProductCreateRequest extends JsonApiRelationsValidation
             'title' => ['required', 'string', 'max:150'],
             'title_description' => ['required', 'string', 'max:350'],
             'main_description' => ['required', 'string'],
-            'price' => ['regex:/^\d{1,6}(\.\d{1,2})?$/', 'max:10000000', 'min:1'],
+            'price' => [
+                'nullable',
+                'required_if:data.attributes.is_combined_attributes,null',
+                'regex:/^\d{1,6}(\.\d{1,2})?$/',
+                'max:10000000',
+                'min:1'
+            ],
             'total_quantity' => ['required', 'integer'],
             'product_article' => ['required', 'string', Rule::unique('warehouses', 'product_article')],
             'is_combined_attributes' => ['nullable', 'boolean']
@@ -41,7 +47,12 @@ class ProductCreateRequest extends JsonApiRelationsValidation
                     'distinct',
                     Rule::unique('product_variations', 'sku')
                 ],
-                'price_in_cents' => ['regex:/^\d{1,6}(\.\d{1,2})?$/', 'max:10000000', 'min:1'],
+                'price' => [
+                    'required_if:data.attributes.price,null',
+                    'regex:/^\d{1,6}(\.\d{1,2})?$/',
+                    'max:10000000',
+                    'min:1'
+                ],
                 'quantity' => [
                     'required',
                     'integer'
@@ -50,23 +61,21 @@ class ProductCreateRequest extends JsonApiRelationsValidation
                     'required',
                     'array'
                 ],
-                'attributes.*' => [
-                    'id' => [
-                        'integer',
-                        Rule::exists('product_attributes', 'id')
-                    ],
-                    'value' => [
-                        'required',
-                        'string'
-                    ],
-                    'attribute_name' => [
-                        'required_without:data.relationships.product_variations_combinations.attributes.*.id',
-                        'string'
-                    ],
-                    'type' => [
-                        'required_with:data.relationships.product_variations_combinations.attributes.*.name',
-                        Rule::enum(ProductAttributeTypeEnum::class)
-                    ],
+                'attributes.*.id' => [
+                    'integer',
+                    Rule::exists('product_attributes', 'id')
+                ],
+                'attributes.*.value' => [
+                    'required',
+                    'string'
+                ],
+                'attributes.*.name' => [
+                    'required_without:data.relationships.product_variations_combinations.data.*.attributes.*.id',
+                    'string'
+                ],
+                'attributes.*.type' => [
+                    'required_with:data.relationships.product_variations_combinations.data.*.attributes.*.name',
+                    Rule::enum(ProductAttributeTypeEnum::class)
                 ],
             ],
 
@@ -77,6 +86,7 @@ class ProductCreateRequest extends JsonApiRelationsValidation
             ],
             'product_variation.*' => [
                 'attribute_id' => [
+                    'nullable',
                     'integer',
                     Rule::exists('product_attributes', 'id')
                 ],
@@ -92,16 +102,19 @@ class ProductCreateRequest extends JsonApiRelationsValidation
                     'required',
                     'array'
                 ],
-                'attributes.*' => [
-                    'quantity' => [
-                        'required',
-                        'integer'
-                    ],
-                    'value' => [
-                        'required',
-                        'string'
-                    ],
-                    'price_in_cents' => ['regex:/^\d{1,6}(\.\d{1,2})?$/', 'max:10000000', 'min:1'],
+                'attributes.*.quantity' => [
+                    'required',
+                    'integer'
+                ],
+                'attributes.*.value' => [
+                    'required',
+                    'string'
+                ],
+                'attributes.*.price' => [
+                    'required_if:data.attributes.price,null',
+                    'regex:/^\d{1,6}(\.\d{1,2})?$/',
+                    'max:10000000',
+                    'min:1'
                 ],
             ],
 
@@ -124,7 +137,10 @@ class ProductCreateRequest extends JsonApiRelationsValidation
                 'sku' => 'SKU',
                 'quantity' => 'quantity',
                 'attributes.*.id' => 'product attribute',
-                'attributes.*.value' => 'product attribute value'
+                'attributes.*.value' => 'product attribute value',
+                'attributes.*.price' => 'product price for attribute',
+                'attributes.*.name' => 'attribute name',
+                'attributes.*.type' => 'attribute type'
             ],
             'brands' => [
                 'slug' => 'brand name'
@@ -132,6 +148,14 @@ class ProductCreateRequest extends JsonApiRelationsValidation
             'product_specs.*' => [
                 'id' => 'id',
                 'value' => 'value'
+            ],
+            'product_variation.*' => [
+                'attribute_id' => 'attribute id',
+                'attribute_name' => 'attribute name',
+                'attribute_type' => 'attribute type',
+                'attributes.*.quantity' => 'products quantity for attribute',
+                'attributes.*.value' => 'product attribute value',
+                'attributes.*.price' => 'product price for attribute'
             ]
         ];
     }

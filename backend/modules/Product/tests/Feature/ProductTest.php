@@ -6,11 +6,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 use Modules\Product\Database\Seeders\ProductDatabaseSeeder;
 use Modules\Product\Http\Actions\Product\Create\AddCombinedProductAttributesAction;
-use Modules\Product\Http\Actions\Product\Create\CreateProductAction;
+use Modules\Product\Http\Actions\Product\Create\CreateProduct;
 use Modules\Product\Http\Actions\Product\Create\CreateProductInWarehouse;
 use Modules\Product\Http\DTO\AttributesForCombinedValueDto;
+use Modules\Product\Http\DTO\CreateProductAttributeCombinedVariationsDto;
 use Modules\Product\Http\DTO\CreateProductDto;
-use Modules\Product\Http\DTO\ProductAttributeCombinedVariationsDto;
 use Modules\Product\Http\DTO\ProductSpecsDto;
 use Modules\Product\Models\Product;
 use Modules\Warehouse\Database\Seeders\WarehouseDatabaseSeeder;
@@ -44,7 +44,7 @@ class ProductTest extends TestCase
             ]))
         ]);
 
-        $variations = collect(ProductAttributeCombinedVariationsDto::collect([
+        $variations = collect(CreateProductAttributeCombinedVariationsDto::collect([
             [
                 'skuName' => 'SKU-a-a',
                 'quantity' => 100,
@@ -63,7 +63,7 @@ class ProductTest extends TestCase
             'price' => 90.1
         ]);
 
-        (new CreateProductAction(
+        (new CreateProduct(
             new AddCombinedProductAttributesAction(),
             new CreateProductInWarehouse()
         ))->handle($productDto, $variations, $warehouse);
