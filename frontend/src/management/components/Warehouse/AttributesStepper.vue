@@ -12,15 +12,34 @@ const withCombinedAttr = ref(false);
 const numberOfAttributes = ref(1);
 const numberOfCombinations = ref(null);
 const oneToManyAttributesQuantity = ref(null);
+const oneToManyAttributesNumber = ref(null);
 
 watch(withCombinedAttr, (value) => {
   numberOfAttributes.value = 1;
   if (value) {
     numberOfCombinations.value = 1;
     oneToManyAttributesQuantity.value = 0;
+    oneToManyAttributesNumber.value = 0;
   } else {
     numberOfCombinations.value = null;
     oneToManyAttributesQuantity.value = null;
+    oneToManyAttributesNumber.value = null;
+  }
+});
+
+watch(oneToManyAttributesNumber, (newValue, oldValue) => {
+  if (newValue !== 0 && oneToManyAttributesQuantity.value === 0) {
+    oneToManyAttributesQuantity.value = 1;
+  } else if (newValue === 0 && oldValue !== 0) {
+    oneToManyAttributesQuantity.value = 0;
+  }
+});
+
+watch(oneToManyAttributesQuantity, (newValue, oldValue) => {
+  if (newValue !== 0 && oneToManyAttributesNumber.value === 0) {
+    oneToManyAttributesNumber.value = 1;
+  } else if (newValue === 0 && oldValue !== 0) {
+    oneToManyAttributesNumber.value = 0;
   }
 });
 
@@ -36,6 +55,7 @@ defineExpose({
   numberOfAttributes,
   numberOfCombinations,
   oneToManyAttributesQuantity,
+  oneToManyAttributesNumber,
 });
 </script>
 
@@ -160,7 +180,25 @@ defineExpose({
                 Example: Attribute will be color and number of sizes for that
                 color - XS S M L XL: 5.
               </p>
-              <div class="flex justify-center !mb-4">
+              <p class="underline mt-2 text-start text-sm font-light">
+                Please note that choosing this option will take priority over
+                the previous one.
+              </p>
+              <div class="flex justify-around !mb-4">
+                <div class="flex flex-col">
+                  <label
+                    for="oneToManyAttributesNumber"
+                    class="text-xs text-gray-700 mb-1"
+                    >Number of attributes</label
+                  >
+                  <input
+                    id="oneToManyAttributesNumber"
+                    type="number"
+                    v-model="oneToManyAttributesNumber"
+                    min="0"
+                    class="px-1 py-0.5 text-xs border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none w-20"
+                  />
+                </div>
                 <div class="flex flex-col">
                   <label
                     for="oneToManyAttributesQuantity"
@@ -171,7 +209,7 @@ defineExpose({
                     id="oneToManyAttributesQuantity"
                     type="number"
                     v-model="oneToManyAttributesQuantity"
-                    min="1"
+                    min="0"
                     class="px-1 py-0.5 text-xs border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none w-20"
                   />
                 </div>

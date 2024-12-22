@@ -81,6 +81,7 @@ const getOptions = (values) => (options.value = values);
               ></single-attributes-generator>
               <combined-attributes-generator
                 v-else-if="options.withCombinedAttr === true"
+                :options="options"
               >
               </combined-attributes-generator>
             </div>

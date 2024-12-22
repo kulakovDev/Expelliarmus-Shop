@@ -53,7 +53,7 @@ const search = (event) => {
           name="value[]"
           :key="n"
           placeholder="Your value"
-          :label="`Information about ${n} product attribute value`"
+          :label="`Information about ${n} value`"
           required
         >
         </focused-text-input>
