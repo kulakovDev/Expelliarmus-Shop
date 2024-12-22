@@ -67,7 +67,7 @@ watch(
           ]"
           title="Bold"
         >
-          <i class="fa-solid fa-bold"></i>
+          <i class="fa-solid fa-bold dark:text-black"></i>
         </button>
       </li>
       <li>
@@ -82,7 +82,7 @@ watch(
           ]"
           title="Italic"
         >
-          <i class="fa-solid fa-italic"></i>
+          <i class="fa-solid fa-italic dark:text-black"></i>
         </button>
       </li>
       <li>
@@ -97,7 +97,7 @@ watch(
           ]"
           title="Underline"
         >
-          <i class="fa-solid fa-underline"></i>
+          <i class="fa-solid fa-underline dark:text-black"></i>
         </button>
       </li>
       <li>
@@ -112,7 +112,7 @@ watch(
           ]"
           title="Blockquote"
         >
-          <i class="fa-solid fa-quote-left"></i>
+          <i class="fa-solid fa-quote-left dark:text-black"></i>
         </button>
       </li>
       <li>
@@ -127,7 +127,7 @@ watch(
           ]"
           title="Bullet List"
         >
-          <i class="fa-solid fa-list-ul"></i>
+          <i class="fa-solid fa-list-ul dark:text-black"></i>
         </button>
       </li>
       <li>
@@ -142,7 +142,7 @@ watch(
           ]"
           title="Numeric List"
         >
-          <i class="fa-solid fa-list-ol"></i>
+          <i class="fa-solid fa-list-ol dark:text-black"></i>
         </button>
       </li>
       <li>
@@ -180,7 +180,7 @@ watch(
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="size-5"
+            class="size-5 dark:text-black"
           >
             <path
               stroke-linecap="round"
@@ -210,7 +210,7 @@ watch(
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="size-5"
+            class="size-5 dark:text-black"
           >
             <path
               stroke-linecap="round"
@@ -240,7 +240,7 @@ watch(
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="size-5"
+            class="size-5 dark:text-black"
           >
             <path
               stroke-linecap="round"

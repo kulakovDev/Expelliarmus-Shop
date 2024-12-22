@@ -13,6 +13,7 @@ const getOptionsFromStepper = () => {
   if (attributesStepperRef.value) {
     optionsFromStepper = attributesStepperRef.value;
     isModalOpen.value = false;
+    emit("update-options", optionsFromStepper);
   }
 };
 
@@ -21,20 +22,32 @@ watch(isModalOpen, (value) => {
     isLastStep.value = false;
   }
 });
+
+const emit = defineEmits(["update-options"]);
 </script>
 
 <template>
   <div class="flex items-center gap-x-4">
-    <span
-      >Leave this section, if your product <b>does not have</b> any attributes,
-      like color, sizes etc or
-    </span>
-    <button
-      @click="isModalOpen = true"
-      class="px-10 py-3 bg-blue-500 rounded-lg text-white hover:bg-blue-700"
-    >
-      Generate attribute fields
-    </button>
+    <div v-if="Object.keys(optionsFromStepper).length === 0">
+      <span
+        >Leave this section, if your product <b>does not have</b> any
+        attributes, like color, sizes etc or
+      </span>
+      <button
+        @click="isModalOpen = true"
+        class="px-10 py-3 bg-blue-500 rounded-lg text-white hover:bg-blue-700"
+      >
+        Generate attribute fields
+      </button>
+    </div>
+    <div v-else>
+      <button
+        @click="isModalOpen = true"
+        class="px-10 py-3 bg-red-500 rounded-lg text-white hover:bg-red-700"
+      >
+        Re-generate attribute fields
+      </button>
+    </div>
     <default-modal
       :is-active="isModalOpen"
       @close-modal="isModalOpen = false"

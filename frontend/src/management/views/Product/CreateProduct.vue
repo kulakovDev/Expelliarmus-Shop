@@ -9,8 +9,13 @@ import DescriptionEditor from "@/management/components/Product/DescriptionEditor
 import { ref } from "vue";
 import WarehouseInputs from "@/management/components/Warehouse/WarehouseInputs.vue";
 import ProductAttributesModal from "@/management/components/Warehouse/ProductAttributesModal.vue";
+import SingleAttributesGenerator from "@/management/components/Product/SingleAttributesGenerator.vue";
+import CombinedAttributesGenerator from "@/management/components/Product/CombinedAttributesGenerator.vue";
 
 const description = ref(null);
+
+let options = ref({});
+const getOptions = (values) => (options.value = values);
 </script>
 
 <template>
@@ -56,13 +61,6 @@ const description = ref(null);
       <div class="flex flex-col space-y-6">
         <span class="text-2xl font-semibold">Main Description</span>
         <description-editor v-model="description"></description-editor>
-        <textarea
-          id="main_description"
-          name="main_description"
-          v-model="description"
-          rows="20"
-          class="prose prose-sm max-w-none p-4 rounded-lg bg-white dark:bg-gray-200 text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
-        ></textarea>
       </div>
       <div class="flex flex-col space-y-6">
         <span class="text-2xl font-semibold">Warehouse Information</span>
@@ -73,7 +71,19 @@ const description = ref(null);
           </div>
           <div class="flex flex-col space-y-4">
             <span class="text-xl font-semibold">Product Attributes</span>
-            <product-attributes-modal></product-attributes-modal>
+            <product-attributes-modal
+              @update-options="getOptions"
+            ></product-attributes-modal>
+            <div v-show="Object.keys(options).length !== 0">
+              <single-attributes-generator
+                v-if="options.withCombinedAttr === false"
+                :options="options"
+              ></single-attributes-generator>
+              <combined-attributes-generator
+                v-else-if="options.withCombinedAttr === true"
+              >
+              </combined-attributes-generator>
+            </div>
           </div>
         </div>
       </div>
