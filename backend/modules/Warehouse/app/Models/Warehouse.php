@@ -42,7 +42,7 @@ class Warehouse extends Model
         return $this->hasMany(VariationAttributeValues::class);
     }
 
-    public function pricePerUnit(): float
+    public function pricePerUnit(): ?float
     {
         return $this->price_per_unit_in_cents;
     }

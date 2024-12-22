@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Order\Models\OrderLine;
 use Modules\Product\Traits\Slugger;
+use Modules\Warehouse\Models\ProductAttributeValue;
+use Modules\Warehouse\Models\ProductVariation;
 use Modules\Warehouse\Models\Warehouse;
 
 /**
@@ -56,6 +58,16 @@ class Product extends Model
     public function productSpecs(): HasMany
     {
         return $this->hasMany(ProductSpec::class);
+    }
+
+    public function singleAttributes(): HasMany
+    {
+        return $this->hasMany(ProductAttributeValue::class);
+    }
+
+    public function combinedAttributes(): HasMany
+    {
+        return $this->hasMany(ProductVariation::class);
     }
 
     public function getDescriptionMarkdown(): string

@@ -17,6 +17,8 @@ class ProductSpecAttributes extends Model
 
     protected $table = 'product_specs_attributes';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'spec_name',
         'group_name'

@@ -10,17 +10,6 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        /*Schema::create('product_attributes_combo', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->generatedAs()->always();
-            $table->foreignId('attribute_1_id')->nullable()->constrained('product_attributes')->nullOnDelete();
-            $table->foreignId('attribute_2_id')->nullable()->constrained('product_attributes')->nullOnDelete();
-            $table->foreignId('attribute_3_id')->nullable()->constrained('product_attributes')->nullOnDelete();
-            $table->foreignId('warehouse_id')->constrained()->cascadeOnDelete();
-            $table->integer('quantity')->nullable();
-            $table->decimal('price_in_cents')->nullable();
-            $table->primary('id');
-        });*/
-
         Schema::create('product_variations', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->generatedAs()->always()->primary();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Product\Http\DTO;
+namespace Modules\Warehouse\DTO;
 
 use Illuminate\Support\Collection;
 use Modules\Product\Http\Requests\ProductCreateRequest;

@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->string('product_article')->unique();
             $table->integer('total_quantity');
-            $table->decimal('price_per_unit_in_cents');
+            $table->decimal('price_per_unit_in_cents')->nullable();
             $table->timestamp('arrived_at')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->primary('id');

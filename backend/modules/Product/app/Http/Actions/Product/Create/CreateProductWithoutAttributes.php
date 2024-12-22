@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Product\Http\Actions\Product\Create;
 
+use CreateProductInWarehouse;
 use Illuminate\Support\Facades\DB;
 use Modules\Product\Http\DTO\CreateProductDto;
 use Modules\Warehouse\DTO\CreateWarehouseDto;

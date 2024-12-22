@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Product\Http\DTO;
+namespace Modules\Warehouse\DTO;
 
 use Illuminate\Contracts\Pagination\CursorPaginator as CursorPaginatorContract;
 use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;

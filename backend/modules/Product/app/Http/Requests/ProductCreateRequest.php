@@ -2,11 +2,12 @@
 
 namespace Modules\Product\Http\Requests;
 
+use AllowDynamicProperties;
 use App\Services\Validators\JsonApiRelationsValidation;
 use Illuminate\Validation\Rule;
 use Modules\Warehouse\Enums\ProductAttributeTypeEnum;
 
-class ProductCreateRequest extends JsonApiRelationsValidation
+#[AllowDynamicProperties] class ProductCreateRequest extends JsonApiRelationsValidation
 {
     public function authorize(): bool
     {
@@ -28,7 +29,7 @@ class ProductCreateRequest extends JsonApiRelationsValidation
             ],
             'total_quantity' => ['required', 'integer'],
             'product_article' => ['required', 'string', Rule::unique('warehouses', 'product_article')],
-            'is_combined_attributes' => ['nullable', 'boolean']
+            'is_combined_attributes' => ['present', 'nullable', 'boolean']
         ];
     }
 
@@ -38,6 +39,8 @@ class ProductCreateRequest extends JsonApiRelationsValidation
             'product_variations_combinations' => [
                 'nullable',
                 'present_if:data.attributes.is_combined_attributes,true',
+                'exclude_if:data.attributes.is_combined_attributes,false',
+                'exclude_if:data.attributes.is_combined_attributes,null',
                 'array'
             ],
             'product_variations_combinations.*' => [
@@ -82,6 +85,8 @@ class ProductCreateRequest extends JsonApiRelationsValidation
             'product_variation' => [
                 'nullable',
                 'present_if:data.attributes.is_combined_attributes,false',
+                'exclude_if:data.attributes.is_combined_attributes,true',
+                'exclude_if:data.attributes.is_combined_attributes,null',
                 'array'
             ],
             'product_variation.*' => [

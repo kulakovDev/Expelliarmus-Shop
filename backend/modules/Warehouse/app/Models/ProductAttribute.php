@@ -4,6 +4,7 @@ namespace Modules\Warehouse\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Warehouse\Enums\ProductAttributeTypeEnum;
 
 class ProductAttribute extends Model
 {
@@ -15,4 +16,13 @@ class ProductAttribute extends Model
         'name',
         'type'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'type' => ProductAttributeTypeEnum::class
+        ];
+    }
 }

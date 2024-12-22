@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Product\Http\Actions\Product\Create;
+namespace Modules\Warehouse\Http\Actions;
 
 use Modules\Product\Http\Exceptions\FailedToCreateProductException;
 use Modules\Product\Models\Product;
@@ -22,7 +22,7 @@ class CreateProductInWarehouse
                 'product_id' => $product->id,
                 'product_article' => $dto->productArticle,
                 'total_quantity' => $dto->totalQuantity,
-                'price_per_unit_in_cents' => number_format($dto->price, 2)
+                'price_per_unit_in_cents' => $dto->price ? number_format($dto->price, 2) : null
             ]);
         } catch (Throwable $e) {
             throw new FailedToCreateProductException($e->getMessage(), $e);

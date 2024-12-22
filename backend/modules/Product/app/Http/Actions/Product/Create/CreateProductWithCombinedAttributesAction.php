@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Modules\Product\Http\Actions\Product\Create;
 
+use CreateProductInWarehouse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Modules\Product\Http\DTO\AttributesForCombinedValueDto;
-use Modules\Product\Http\DTO\CreateProductAttributeCombinedVariationsDto;
 use Modules\Product\Http\DTO\CreateProductDto;
 use Modules\Product\Http\Exceptions\FailedToCreateProductException;
 use Modules\Product\Models\Product;
+use Modules\Warehouse\DTO\AttributesForCombinedValueDto;
+use Modules\Warehouse\DTO\CreateProductAttributeCombinedVariationsDto;
 use Modules\Warehouse\DTO\CreateWarehouseDto;
 use Modules\Warehouse\Models\ProductVariation;
 use Modules\Warehouse\Models\Warehouse;
@@ -40,20 +41,18 @@ class CreateProductWithCombinedAttributesAction implements CreateProductActionIn
     /**
      * @throws FailedToCreateProductException
      */
-    private function handleCreatingCombinedAttributes(Product $product, Warehouse $warehouse)
+    private function handleCreatingCombinedAttributes(Product $product, Warehouse $warehouse): void
     {
-        if (! $this->combinedVariationsDto->isEmpty()) {
-            try {
-                $this->combinedVariationsDto->each(
-                    function (CreateProductAttributeCombinedVariationsDto $dto) use ($product, $warehouse) {
-                        $productVariation = $this->createVariation($product, $warehouse, $dto);
+        try {
+            $this->combinedVariationsDto->each(
+                function (CreateProductAttributeCombinedVariationsDto $dto) use ($product, $warehouse) {
+                    $productVariation = $this->createVariation($product, $warehouse, $dto);
 
-                        $this->linkValuesToVariationAttributes($productVariation, $dto->attributes);
-                    }
-                );
-            } catch (Throwable $e) {
-                throw new FailedToCreateProductException($e->getMessage(), $e);
-            }
+                    $this->linkValuesToVariationAttributes($productVariation, $dto->attributes);
+                }
+            );
+        } catch (Throwable $e) {
+            throw new FailedToCreateProductException($e->getMessage(), $e);
         }
     }
 
