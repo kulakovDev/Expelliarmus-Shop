@@ -21,7 +21,7 @@ class CreateProduct
         try {
             $product = $this->createProduct($dto);
 
-            $this->linkAttributesToProduct($product, $dto->productSpecs);
+            $this->linkSpecsToProduct($product, $dto->productSpecs);
 
             return $product;
         } catch (Throwable $e) {
@@ -41,7 +41,7 @@ class CreateProduct
         ]);
     }
 
-    private function linkAttributesToProduct(Product $product, Collection $productSpecs): void
+    private function linkSpecsToProduct(Product $product, Collection $productSpecs): void
     {
         $product->productSpecs()->createMany(
             $productSpecs->map(function (ProductSpecsDto $item) use ($product) {

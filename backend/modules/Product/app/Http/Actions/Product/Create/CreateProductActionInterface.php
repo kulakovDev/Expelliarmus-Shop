@@ -2,7 +2,7 @@
 
 namespace Modules\Product\Http\Actions\Product\Create;
 
-use CreateProductInWarehouse;
+use Modules\Warehouse\Http\Actions\CreateProductInWarehouse;
 
 interface CreateProductActionInterface
 {

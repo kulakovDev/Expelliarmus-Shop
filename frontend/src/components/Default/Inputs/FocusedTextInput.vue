@@ -54,7 +54,7 @@ const props = defineProps({
     type: String,
     default: null,
   },
-  modelValue: String,
+  modelValue: String | Number,
 });
 
 const emit = defineEmits(["update:modelValue"]);

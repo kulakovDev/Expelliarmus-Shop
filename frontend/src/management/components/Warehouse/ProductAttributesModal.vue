@@ -7,15 +7,20 @@ const isModalOpen = ref(false);
 const isLastStep = ref(false);
 const attributesStepperRef = ref(null);
 
-let optionsFromStepper = {};
+const optionsFromStepper = ref({});
 
 const getOptionsFromStepper = () => {
   if (attributesStepperRef.value) {
-    optionsFromStepper = attributesStepperRef.value;
+    optionsFromStepper.value = attributesStepperRef.value;
     isModalOpen.value = false;
-    emit("update-options", optionsFromStepper);
+    emit("update-options", optionsFromStepper.value);
   }
 };
+
+function deleteAttributes() {
+  optionsFromStepper.value = {};
+  emit("update-options", optionsFromStepper.value);
+}
 
 watch(isModalOpen, (value) => {
   if (!value) {
@@ -40,12 +45,18 @@ const emit = defineEmits(["update-options"]);
         Generate attribute fields
       </button>
     </div>
-    <div v-else>
+    <div class="flex gap-4" v-else>
       <button
         @click="isModalOpen = true"
-        class="px-10 py-3 bg-red-500 rounded-lg text-white hover:bg-red-700"
+        class="px-10 py-3 bg-blue-500 rounded-lg text-white hover:bg-blue-700"
       >
         Re-generate attribute fields
+      </button>
+      <button
+        @click="deleteAttributes"
+        class="px-10 py-3 bg-red-500 rounded-lg text-white hover:bg-red-700"
+      >
+        Delete attributes
       </button>
     </div>
     <default-modal

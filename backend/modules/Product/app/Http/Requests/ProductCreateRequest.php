@@ -128,8 +128,10 @@ use Modules\Warehouse\Enums\ProductAttributeTypeEnum;
             ],
             'product_specs' => ['required', 'array'],
             'product_specs.*' => [
-                'id' => ['required', 'integer', Rule::exists('product_specs_attributes', 'id')],
-                'value' => ['required', 'array']
+                'id' => ['nullable', 'integer', Rule::exists('product_specs_attributes', 'id')],
+                'spec_name' => ['required_without:data.relationships.product_specs.*.id', 'string'],
+                'value' => ['required', 'array'],
+                'group' => ['nullable', 'string']
             ]
         ];
     }
@@ -152,6 +154,8 @@ use Modules\Warehouse\Enums\ProductAttributeTypeEnum;
             ],
             'product_specs.*' => [
                 'id' => 'id',
+                'group' => 'group',
+                'spec_name' => 'specification name',
                 'value' => 'value'
             ],
             'product_variation.*' => [

@@ -28,7 +28,7 @@ class CreateProductAttributeSingleVariationDto extends Data
 
         if (! array_key_exists('attribute_id', $attributes[0]) || $attributes[0]['attribute_id'] === null) {
             $newAttribute = ProductAttribute::query()->firstOrCreate([
-                'name' => $attributes[0]['attribute_name'],
+                'name' => strtolower($attributes[0]['attribute_name']),
             ], [
                 'name' => $attributes[0]['attribute_name'],
                 'type' => $attributes[0]['attribute_type']

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Product\Http\Actions\Product\Create;
 
-use CreateProductInWarehouse;
 use Illuminate\Support\Facades\DB;
 use Modules\Product\Http\DTO\CreateProductDto;
 use Modules\Product\Http\Exceptions\FailedToCreateProductException;
@@ -12,6 +11,7 @@ use Modules\Product\Models\Product;
 use Modules\Warehouse\DTO\AttributesForSingleValueDto;
 use Modules\Warehouse\DTO\CreateProductAttributeSingleVariationDto;
 use Modules\Warehouse\DTO\CreateWarehouseDto;
+use Modules\Warehouse\Http\Actions\CreateProductInWarehouse;
 use Modules\Warehouse\Models\ProductAttributeValue;
 use Modules\Warehouse\Models\Warehouse;
 use Throwable;

@@ -11,11 +11,43 @@ import WarehouseInputs from "@/management/components/Warehouse/WarehouseInputs.v
 import ProductAttributesModal from "@/management/components/Warehouse/ProductAttributesModal.vue";
 import SingleAttributesGenerator from "@/management/components/Product/SingleAttributesGenerator.vue";
 import CombinedAttributesGenerator from "@/management/components/Product/CombinedAttributesGenerator.vue";
-
-const description = ref(null);
+import ProductSpecs from "@/management/components/Product/ProductSpecs.vue";
 
 let options = ref({});
+
 const getOptions = (values) => (options.value = values);
+
+const productData = ref({
+  title: null,
+  title_description: null,
+  brand_id: null,
+  category_id: null,
+  description: null,
+});
+
+const warehouseData = ref({
+  product_article: null,
+  total_quantity: null,
+  default_price: null,
+});
+
+const singleAttributesData = ref({});
+
+const comboAttributesData = ref([]);
+
+const updatedProductSpecs = ref([]);
+
+const handleUpdateAttributes = (data) => {
+  singleAttributesData.value = data;
+};
+
+const handleUpdateComboAttributes = (data) => {
+  comboAttributesData.value = data;
+};
+
+const handleUpdatedSpecs = (newSpecs) => {
+  updatedProductSpecs.value = newSpecs;
+};
 </script>
 
 <template>
@@ -41,33 +73,39 @@ const getOptions = (values) => (options.value = values);
               id="title"
               name="title"
               label="Title"
+              v-model="productData.title"
               required
               placeholder="Samsung S55"
-            ></focused-text-input>
+            />
 
             <focused-text-area
               id="title_description"
               name="title_description"
+              v-model="productData.title_description"
               label="Title Description (short)"
               :rows="3"
               required
               placeholder="Discover the latest in electronic & smart appliance technology with Samsung. Find the next big thing from smartphones & tablets to laptops & tvs & more."
-            ></focused-text-area>
-            <brands-combobox></brands-combobox>
-            <category-chooser></category-chooser>
+            />
+            <brands-combobox v-model="productData.brand_id" />
+            <category-chooser v-model="productData.category_id" />
           </div>
         </div>
       </div>
       <div class="flex flex-col space-y-6">
         <span class="text-2xl font-semibold">Main Description</span>
-        <description-editor v-model="description"></description-editor>
+        <description-editor v-model="productData.description" />
       </div>
       <div class="flex flex-col space-y-6">
         <span class="text-2xl font-semibold">Warehouse Information</span>
         <div class="ml-5 space-y-4">
           <div class="space-y-4">
             <span class="text-xl font-semibold">General</span>
-            <warehouse-inputs></warehouse-inputs>
+            <warehouse-inputs
+              v-model:product-article="warehouseData.product_article"
+              v-model:total-quantity="warehouseData.total_quantity"
+              v-model:default-price="warehouseData.default_price"
+            />
           </div>
           <div class="flex flex-col space-y-4">
             <span class="text-xl font-semibold">Product Attributes</span>
@@ -78,13 +116,18 @@ const getOptions = (values) => (options.value = values);
               <single-attributes-generator
                 v-if="options.withCombinedAttr === false"
                 :options="options"
-              ></single-attributes-generator>
+                @update-attributes="handleUpdateAttributes"
+              />
               <combined-attributes-generator
                 v-else-if="options.withCombinedAttr === true"
                 :options="options"
-              >
-              </combined-attributes-generator>
+                @update-combo-attributes="handleUpdateComboAttributes"
+              />
             </div>
+          </div>
+          <div class="flex flex-col space-y-4">
+            <span class="text-xl font-semibold">Product Specifications</span>
+            <product-specs @update-specs="handleUpdatedSpecs" />
           </div>
         </div>
       </div>

@@ -7,6 +7,10 @@ let categories = ref([]);
 let selectedCategoryId = ref(null);
 let selectedCategory = reactive({});
 
+const props = defineProps({
+  modelValue: null,
+});
+
 onMounted(async () => {
   categories.value = await getCategories();
 });
@@ -53,12 +57,16 @@ function findCategoryByKey(key, categories) {
   return null;
 }
 
+const emit = defineEmits(["update:modelValue"]);
+
 watch(selectedCategoryId, (newValue) => {
   if (newValue) {
     selectedCategory = findCategoryByKey(
       Object.keys(newValue)[0],
       categories.value,
     );
+
+    emit("update:modelValue", selectedCategory);
   }
 });
 </script>

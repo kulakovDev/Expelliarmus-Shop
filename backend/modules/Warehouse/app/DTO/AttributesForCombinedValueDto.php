@@ -35,7 +35,7 @@ class AttributesForCombinedValueDto extends Data
         $newItems = collect($items)->map(function ($item) {
             if (! array_key_exists('id', $item) || $item['id'] === null) {
                 $attribute = ProductAttribute::query()->firstOrCreate(
-                    ['name' => $item['name']],
+                    ['name' => strtolower($item['name'])],
                     ['name' => $item['name'], 'type' => $item['type']]
                 );
 

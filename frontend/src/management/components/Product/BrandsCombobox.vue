@@ -128,7 +128,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 import api from "@/utils/api.js";
 import {
   Combobox,
@@ -143,6 +143,10 @@ let brands = reactive([]);
 let selected = ref(brands[0]);
 let query = ref("");
 let isLoading = ref(false);
+
+const props = defineProps({
+  modelValue: null,
+});
 
 let nextBrandsStack = null;
 let totalBrands = 0;
@@ -207,4 +211,10 @@ function searchBrand(event) {
       });
   }
 }
+
+const emit = defineEmits(["update:modelValue"]);
+
+watch(selected, (value) => {
+  emit("update:modelValue", value);
+});
 </script>
