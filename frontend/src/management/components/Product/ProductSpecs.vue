@@ -1,97 +1,144 @@
 <template>
   <div class="space-y-4">
     <div
-      v-for="(item, index) in productSpecs.data"
-      :key="index"
-      class="spec-item"
+      v-for="(group, groupIndex) in productSpecs.data"
+      :key="groupIndex"
+      class="mr-2"
     >
-      <!-- Условие, чтобы рендерить группу даже с пустым именем -->
-      <div v-if="item.group !== undefined" class="space-y-4">
-        <div class="flex items-center gap-4">
+      <div v-if="group.group !== null" class="space-y-4">
+        <div class="flex flex-wrap gap-4 items-center">
           <focused-text-input
+            v-model="group.group"
             id="group_name"
             name="group_name"
-            v-model="item.group"
             label="Group Name"
             placeholder="Enter group name"
             required
+            class="w-full sm:w-80"
           />
-        </div>
-
-        <div
-          v-for="(value, valueIndex) in item.value"
-          :key="valueIndex"
-          class="flex gap-4 ml-5 items-end"
-        >
-          <focused-text-input
-            v-model="item.value[valueIndex].spec_name"
-            id="spec_name"
-            name="spec_name"
-            label="Specification name"
-            required
-          />
-
-          <focused-text-input
-            v-model="item.value[valueIndex].value"
-            id="value"
-            name="Value"
-            label="Value"
-            required
-          />
-
           <button
-            @click="removeGroupField(index, valueIndex)"
-            class="bg-red-500 p-2 text-white rounded-md hover:bg-red-800"
+            type="button"
+            @click="removeGroup(groupIndex)"
+            class="bg-red-500 p-2 text-white rounded-md hover:bg-red-800 ml-4"
           >
-            Delete
+            Delete Group
           </button>
         </div>
 
+        <div
+          v-for="(spec, specIndex) in group.value"
+          :key="specIndex"
+          class="space-y-4 ml-5"
+        >
+          <div class="flex flex-wrap gap-4 items-start flex-col sm:flex-row">
+            <focused-text-input
+              v-model="spec.spec_name"
+              id="spec_name"
+              name="spec_name"
+              label="Specification name"
+              required
+              class="w-full sm:w-80"
+            />
+
+            <div class="flex flex-col gap-4 w-full sm:w-auto">
+              <div
+                v-for="(val, valIndex) in spec.value"
+                :key="valIndex"
+                class="flex gap-4 items-end flex-col sm:flex-row"
+              >
+                <focused-text-input
+                  v-model="spec.value[valIndex]"
+                  id="value"
+                  name="Value"
+                  label="Value"
+                  required
+                  class="w-full sm:w-60"
+                />
+
+                <button
+                  type="button"
+                  @click="removeSpecValue(groupIndex, specIndex, valIndex)"
+                  class="bg-red-500 p-2 text-white rounded-md hover:bg-red-800"
+                >
+                  Delete
+                </button>
+              </div>
+              <button
+                type="button"
+                @click="addSpecValue(groupIndex, specIndex)"
+                class="bg-blue-500 p-2 text-white rounded-md hover:bg-blue-800"
+              >
+                Add Value
+              </button>
+            </div>
+          </div>
+        </div>
+
         <button
-          @click="addGroupField(index)"
-          class="px-10 py-3 bg-blue-500 rounded-lg text-white hover:bg-blue-700"
+          type="button"
+          @click="addGroupField(groupIndex)"
+          class="px-10 py-3 bg-blue-500 rounded-lg text-white hover:bg-blue-700 mt-4 sm:mt-6"
         >
           Add new field to group
         </button>
       </div>
 
-      <!-- Блок для отдельного поля -->
-      <div v-else class="flex gap-4 items-end">
+      <div v-else class="flex flex-wrap gap-4 items-start">
         <focused-text-input
-          v-model="item.value[0].spec_name"
+          v-model="group.value[0].spec_name"
           id="spec_name"
           name="spec_name"
           label="Specification name"
           required
+          class="w-full sm:w-80"
         />
 
-        <focused-text-input
-          v-model="item.value[0].value"
-          id="value"
-          name="Value"
-          label="Value"
-          required
-        />
+        <div class="flex flex-col gap-4 w-full sm:w-auto">
+          <div
+            v-for="(val, valIndex) in group.value[0].value"
+            :key="valIndex"
+            class="flex items-end gap-4 flex-col sm:flex-row"
+          >
+            <focused-text-input
+              v-model="group.value[0].value[valIndex]"
+              id="value"
+              name="Value"
+              label="Value"
+              required
+              class="w-full sm:w-60"
+            />
 
-        <button
-          @click="removeField(index)"
-          class="bg-red-500 p-2 text-white rounded-md hover:bg-red-800"
-        >
-          Delete
-        </button>
+            <button
+              type="button"
+              @click="removeSpecValue(groupIndex, 0, valIndex)"
+              class="bg-red-500 p-2 text-white rounded-md hover:bg-red-800"
+            >
+              Delete
+            </button>
+          </div>
+          <button
+            type="button"
+            @click="addSpecValue(groupIndex, 0)"
+            class="bg-blue-500 p-2 text-white rounded-md hover:bg-blue-800"
+          >
+            Add Value
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="flex gap-4">
+    <div class="flex flex-wrap gap-4 justify-between sm:justify-start">
       <button
+        type="button"
         @click="addGroup"
-        class="px-10 py-3 bg-blue-500 rounded-lg text-white hover:bg-blue-700"
+        class="px-10 py-3 bg-blue-500 rounded-lg text-white hover:bg-blue-700 sm:w-auto w-full"
       >
         Add new group
       </button>
       <button
+        type="button"
         @click="addField"
-        class="px-10 py-3 bg-blue-500 rounded-lg text-white hover:bg-blue-700"
+        class="px-10 py-3 bg-blue-500 rounded-lg text-white hover:bg-blue-700 sm:w-auto w-full"
       >
         Add separate field
       </button>
@@ -100,56 +147,87 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, watch } from "vue";
 import FocusedTextInput from "@/components/Default/Inputs/FocusedTextInput.vue";
 
 const productSpecs = reactive({
-  data: [],
+  data: Array.from({ length: 0 }, () => ({
+    group: null,
+    value: [{ spec_name: "", value: [""] }],
+  })),
 });
 
 const addGroup = () => {
   productSpecs.data.push({
-    id: null,
-    value: [{ spec_name: "", value: "" }],
     group: "",
+    value: [{ spec_name: "", value: [""] }],
   });
-  emitUpdate();
 };
 
 const addField = () => {
   productSpecs.data.push({
-    id: null,
-    value: [{ spec_name: "", value: "" }],
+    group: null,
+    value: [{ spec_name: "", value: [""] }],
   });
-  emitUpdate();
 };
 
 const addGroupField = (groupIndex) => {
-  productSpecs.data[groupIndex].value.push({ spec_name: "", value: "" });
-  emitUpdate();
+  productSpecs.data[groupIndex].value.push({ spec_name: "", value: [""] });
 };
 
-const removeField = (index) => {
-  productSpecs.data.splice(index, 1);
-  emitUpdate();
+const addSpecValue = (groupIndex, specIndex) => {
+  productSpecs.data[groupIndex].value[specIndex].value.push("");
 };
 
-const removeGroupField = (groupIndex, fieldIndex) => {
-  productSpecs.data[groupIndex].value.splice(fieldIndex, 1);
-  if (
-    productSpecs.data[groupIndex].value.length === 0 &&
-    !productSpecs.data[groupIndex].group.trim()
-  ) {
+const removeSpecValue = (groupIndex, specIndex, valIndex) => {
+  const group = productSpecs.data[groupIndex];
+  const spec = group.value[specIndex];
+
+  spec.value.splice(valIndex, 1);
+
+  if (spec.value.length === 0) {
+    group.value.splice(specIndex, 1);
+  }
+
+  if (group.value.length === 0 && !group.group) {
     productSpecs.data.splice(groupIndex, 1);
   }
-  emitUpdate();
+};
+
+// Метод для удаления группы
+const removeGroup = (groupIndex) => {
+  productSpecs.data.splice(groupIndex, 1);
 };
 
 const emit = defineEmits(["updateSpecs"]);
 
-const emitUpdate = () => {
-  emit("updateSpecs", productSpecs.data);
+const prepareDataForBackend = () => {
+  return productSpecs.data.flatMap((item) => {
+    if (item.group) {
+      return item.value.map((spec) => ({
+        spec_name: spec.spec_name.trim(),
+        value: spec.value.map((val) => val.trim()),
+        group: item.group.trim(),
+      }));
+    } else {
+      return item.value.map((spec) => ({
+        spec_name: spec.spec_name.trim(),
+        value: spec.value.map((val) => val.trim()),
+        group: null,
+      }));
+    }
+  });
 };
-</script>
 
-<style scoped></style>
+const emitUpdate = () => {
+  emit("updateSpecs", prepareDataForBackend());
+};
+
+watch(
+  productSpecs.data,
+  () => {
+    emitUpdate();
+  },
+  { deep: true },
+);
+</script>

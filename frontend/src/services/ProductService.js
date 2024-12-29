@@ -1,4 +1,5 @@
 import api from "@/utils/api.js";
+import { useJsonApiFormatter } from "@/composables/useJsonApiFormatter.js";
 
 export const ProductService = {
   async getAvailableAttributes() {
@@ -9,5 +10,17 @@ export const ProductService = {
       name: attribute.name,
       type: attribute.type,
     }));
+  },
+
+  async createProduct(productData, relationships) {
+    const formatter = useJsonApiFormatter();
+
+    const data = formatter.toJsonApi(
+      productData.value,
+      "products",
+      relationships,
+    );
+
+    console.log(data);
   },
 };

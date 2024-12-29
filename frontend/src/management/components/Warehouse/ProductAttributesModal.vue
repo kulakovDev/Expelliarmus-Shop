@@ -39,6 +39,7 @@ const emit = defineEmits(["update-options"]);
         attributes, like color, sizes etc or
       </span>
       <button
+        type="button"
         @click="isModalOpen = true"
         class="px-10 py-3 bg-blue-500 rounded-lg text-white hover:bg-blue-700"
       >
@@ -47,12 +48,14 @@ const emit = defineEmits(["update-options"]);
     </div>
     <div class="flex gap-4" v-else>
       <button
+        type="button"
         @click="isModalOpen = true"
         class="px-10 py-3 bg-blue-500 rounded-lg text-white hover:bg-blue-700"
       >
         Re-generate attribute fields
       </button>
       <button
+        type="button"
         @click="deleteAttributes"
         class="px-10 py-3 bg-red-500 rounded-lg text-white hover:bg-red-700"
       >
@@ -76,12 +79,14 @@ const emit = defineEmits(["update-options"]);
       <template #modalFooter>
         <div class="space-x-4">
           <button
+            type="button"
             @click="isModalOpen = false"
             class="px-4 py-2 bg-gray-300 text-white rounded hover:bg-gray-400"
           >
             Cancel
           </button>
           <button
+            type="button"
             v-show="isLastStep"
             @click="getOptionsFromStepper"
             class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700"
