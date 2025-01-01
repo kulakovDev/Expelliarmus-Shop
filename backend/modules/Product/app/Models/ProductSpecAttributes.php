@@ -41,8 +41,8 @@ class ProductSpecAttributes extends Model
     public function groupName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
-            set: fn(string $value) => strtolower($value)
+            get: fn(?string $value) => ucfirst($value) ?: null,
+            set: fn(?string $value) => strtolower($value) ?: null
         );
     }
 }

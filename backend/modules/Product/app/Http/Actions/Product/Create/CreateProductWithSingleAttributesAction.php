@@ -25,14 +25,16 @@ class CreateProductWithSingleAttributesAction implements CreateProductActionInte
     ) {
     }
 
-    public function handle(CreateProduct $createProduct, CreateProductInWarehouse $createInWarehouse): void
+    public function handle(CreateProduct $createProduct, CreateProductInWarehouse $createInWarehouse): Product
     {
-        DB::transaction(function () use ($createProduct, $createInWarehouse) {
+        return DB::transaction(function () use ($createProduct, $createInWarehouse) {
             $product = $createProduct->handle($this->productDto);
 
             $warehouse = $createInWarehouse->handle($product, $this->warehouseDto);
 
             $this->handleSingleAttributeCreation($product, $warehouse);
+
+            return $product;
         });
     }
 

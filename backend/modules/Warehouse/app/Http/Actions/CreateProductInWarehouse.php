@@ -22,7 +22,7 @@ class CreateProductInWarehouse
                 'product_id' => $product->id,
                 'product_article' => $dto->productArticle,
                 'total_quantity' => $dto->totalQuantity,
-                'price_per_unit_in_cents' => $dto->price ? number_format($dto->price, 2) : null
+                'price_per_unit_in_cents' => $dto->price ? (float)number_format($dto->price, 2) : null
             ]);
         } catch (Throwable $e) {
             throw new FailedToCreateProductException($e->getMessage(), $e);

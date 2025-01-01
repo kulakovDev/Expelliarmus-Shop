@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Product\Http\Actions\Product\Create;
 
-use CreateProductInWarehouse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Product\Http\DTO\CreateProductDto;
@@ -13,6 +12,7 @@ use Modules\Product\Models\Product;
 use Modules\Warehouse\DTO\AttributesForCombinedValueDto;
 use Modules\Warehouse\DTO\CreateProductAttributeCombinedVariationsDto;
 use Modules\Warehouse\DTO\CreateWarehouseDto;
+use Modules\Warehouse\Http\Actions\CreateProductInWarehouse;
 use Modules\Warehouse\Models\ProductVariation;
 use Modules\Warehouse\Models\Warehouse;
 use Throwable;
@@ -27,14 +27,16 @@ class CreateProductWithCombinedAttributesAction implements CreateProductActionIn
     ) {
     }
 
-    public function handle(CreateProduct $createProduct, CreateProductInWarehouse $createInWarehouse): void
+    public function handle(CreateProduct $createProduct, CreateProductInWarehouse $createInWarehouse): Product
     {
-        DB::transaction(function () use ($createProduct, $createInWarehouse) {
+        return DB::transaction(function () use ($createProduct, $createInWarehouse) {
             $product = $createProduct->handle($this->productDto);
 
             $warehouse = $createInWarehouse->handle($product, $this->warehouseDto);
 
             $this->handleCreatingCombinedAttributes($product, $warehouse);
+
+            return $product;
         });
     }
 

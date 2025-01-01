@@ -3,6 +3,9 @@
 namespace Modules\Product\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Product\Http\Contracts\Storage\ProductImagesStorageInterface;
+use Modules\Product\Storages\ProductImages\LocalProductImagesStorage;
+use Modules\Product\Storages\ProductImages\S3ProductImagesStorage;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -24,6 +27,12 @@ class ProductServiceProvider extends ServiceProvider
         $this->registerCommandSchedules();
         $this->registerConfig();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+
+        if (config('filesystems.provider') === 'file') {
+            $this->app->singleton(ProductImagesStorageInterface::class, LocalProductImagesStorage::class);
+        } elseif (config('filesystems.provider') === 's3') {
+            $this->app->singleton(ProductImagesStorageInterface::class, S3ProductImagesStorage::class);
+        }
     }
 
     public function register(): void

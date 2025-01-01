@@ -96,11 +96,11 @@ use Modules\Warehouse\Enums\ProductAttributeTypeEnum;
                     Rule::exists('product_attributes', 'id')
                 ],
                 'attribute_name' => [
-                    'required_without:product_variation.*.attribute_id',
+                    'required_without:data.relationships.product_variation.data.*.attribute_id',
                     'string'
                 ],
                 'attribute_type' => [
-                    'required_with:data.relationships.product_variation.*.attribute_name',
+                    'required_with:data.relationships.product_variation.data.*.attribute_name',
                     Rule::enum(ProductAttributeTypeEnum::class)
                 ],
                 'attributes' => [
@@ -123,8 +123,11 @@ use Modules\Warehouse\Enums\ProductAttributeTypeEnum;
                 ],
             ],
 
-            'brands' => [
-                'id' => ['string', Rule::exists('brands', 'id')]
+            'brand' => [
+                'id' => ['required', 'string', Rule::exists('brands', 'id')]
+            ],
+            'category' => [
+                'id' => ['required', 'string', Rule::exists('brands', 'id')]
             ],
             'product_specs' => ['required', 'array'],
             'product_specs.*' => [
@@ -149,9 +152,12 @@ use Modules\Warehouse\Enums\ProductAttributeTypeEnum;
                 'attributes.*.name' => 'attribute name',
                 'attributes.*.type' => 'attribute type'
             ],
-            'brands' => [
-                'slug' => 'brand name'
+            /*'brand' => [
+                'id' => 'brand id'
             ],
+            'category' => [
+                'id' => 'category id'
+            ],*/
             'product_specs.*' => [
                 'id' => 'id',
                 'group' => 'group',
@@ -162,6 +168,7 @@ use Modules\Warehouse\Enums\ProductAttributeTypeEnum;
                 'attribute_id' => 'attribute id',
                 'attribute_name' => 'attribute name',
                 'attribute_type' => 'attribute type',
+                'attributes' => 'product attributes',
                 'attributes.*.quantity' => 'products quantity for attribute',
                 'attributes.*.value' => 'product attribute value',
                 'attributes.*.price' => 'product price for attribute'

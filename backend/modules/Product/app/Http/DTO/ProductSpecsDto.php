@@ -33,7 +33,7 @@ class ProductSpecsDto extends Data
             if (! array_key_exists('id', $item) || $item['id'] === null) {
                 $spec = ProductSpecAttributes::query()->firstOrCreate(
                     ['spec_name' => strtolower($item['spec_name'])],
-                    ['spec_name' => $item['spec_name'], 'group_name' => $item['group']]
+                    ['spec_name' => $item['spec_name'], 'group_name' => $item['group'] ?? null]
                 );
 
                 return [

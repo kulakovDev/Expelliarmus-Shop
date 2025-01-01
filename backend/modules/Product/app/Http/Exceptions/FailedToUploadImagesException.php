@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Modules\Product\Http\Exceptions;
 
 use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
+use RuntimeException;
 use Throwable;
 
 class FailedToUploadImagesException extends Exception
@@ -21,7 +21,7 @@ class FailedToUploadImagesException extends Exception
 
     public function report(): bool
     {
-        return $this->originalException instanceof QueryException;
+        return $this->originalException instanceof RuntimeException;
     }
 
     public function render(): JsonResponse
