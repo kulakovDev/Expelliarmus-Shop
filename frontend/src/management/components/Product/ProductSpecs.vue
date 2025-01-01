@@ -194,7 +194,6 @@ const removeSpecValue = (groupIndex, specIndex, valIndex) => {
   }
 };
 
-// Метод для удаления группы
 const removeGroup = (groupIndex) => {
   productSpecs.data.splice(groupIndex, 1);
 };

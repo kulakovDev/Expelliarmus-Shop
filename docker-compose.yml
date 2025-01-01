@@ -26,7 +26,7 @@ services:
       - ./frontend:/var/www/expelliarmus/frontend
     ports:
       - "3000:3000"
-    command: ["tail", "-f", "/dev/null"]
+    command: [ "tail", "-f", "/dev/null" ]
 
   nginx:
     build:
@@ -52,7 +52,7 @@ services:
     image: postgres:latest
     restart: always
     ports:
-      - "5433:5432"
+      - "5434:5432"
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}

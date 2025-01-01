@@ -10,6 +10,9 @@
           :displayValue="(brand) => brand.brand_name"
           @change="searchBrand"
           placeholder="Start writing..."
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
         />
         <ComboboxButton
           class="absolute inset-y-0 right-0 flex items-center pr-2"

@@ -21,7 +21,7 @@ const getOptions = (values) => (options.value = values);
 const productData = ref({
   title: null,
   title_description: null,
-  description: null,
+  main_description: null,
   product_article: null,
   total_quantity: null,
   price: null,
@@ -38,6 +38,8 @@ const comboAttributesData = ref([]);
 
 const productSpecs = ref([]);
 
+const images = ref([]);
+
 const handleUpdateAttributes = (data) => {
   singleAttributesData.value = data;
 };
@@ -50,7 +52,11 @@ const handleUpdatedSpecs = (newSpecs) => {
   productSpecs.value = newSpecs;
 };
 
-function submitForm() {
+const handleUpdatedImages = (newImages) => {
+  images.value = newImages;
+};
+
+async function submitForm() {
   let relationships = {
     category: {
       id: category.value.id,
@@ -60,16 +66,34 @@ function submitForm() {
     },
   };
 
-  productData.value.is_combined_attributes = options.value.withCombinedAttr;
+  productData.value.is_combined_attributes =
+    options.value.withCombinedAttr || null;
 
   relationships = addOptionalRelationships(relationships);
 
-  ProductService.createProduct(productData, relationships);
+  await ProductService.createProduct(productData, relationships)
+    .then(async (response) => {
+      if (response?.data?.data?.id) {
+        await ProductService.uploadImagesForProduct(
+          response.data.data.id,
+          images.value,
+        )
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 }
 
 function addOptionalRelationships(relations) {
-  if (productSpecs.value) {
-    relations.product_specs = toRaw(productSpecs.value);
+  if (productSpecs.value.length > 0) {
+    relations.product_specs = productSpecs.value;
   }
 
   if (options.value.withCombinedAttr === true) {
@@ -100,8 +124,9 @@ function addOptionalRelationships(relations) {
             class="flex xl:flex-nowrap flex-wrap items-center justify-between gap-4"
           >
             <product-photo-tabs-form
+              v-model="images"
               class="w-full xl:w-auto"
-            ></product-photo-tabs-form>
+            />
 
             <div class="w-full xl:w-1/3 space-y-2">
               <focused-text-input
@@ -129,7 +154,7 @@ function addOptionalRelationships(relations) {
         </div>
         <div class="flex flex-col space-y-6">
           <span class="text-2xl font-semibold">Main Description</span>
-          <description-editor v-model="productData.description" />
+          <description-editor v-model="productData.main_description" />
         </div>
         <div class="flex flex-col space-y-6">
           <span class="text-2xl font-semibold">Warehouse Information</span>
@@ -144,9 +169,7 @@ function addOptionalRelationships(relations) {
             </div>
             <div class="flex flex-col space-y-4">
               <span class="text-xl font-semibold">Product Attributes</span>
-              <product-attributes-modal
-                @update-options="getOptions"
-              ></product-attributes-modal>
+              <product-attributes-modal @update-options="getOptions" />
               <div v-show="Object.keys(options).length !== 0">
                 <single-attributes-generator
                   v-if="options.withCombinedAttr === false"

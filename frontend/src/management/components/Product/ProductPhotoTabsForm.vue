@@ -17,6 +17,25 @@
           alt="Uploaded image"
           class="rounded-md max-w-full max-h-full"
         />
+        <button
+          class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex justify-center items-center text-sm"
+          @click.stop="deleteImage(index)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18 18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
       </Tab>
 
       <Tab
@@ -70,24 +89,32 @@
 
 <script setup>
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
-import { nextTick, reactive, ref } from "vue";
+import { nextTick, ref } from "vue";
 
-const images = reactive([]);
+const images = ref([]);
 const mainImage = ref("");
 const selectedTab = ref(0);
 
+const emit = defineEmits(["update:modelValue"]);
+
+const props = defineProps({
+  modelValue: null,
+});
+
 function handleFileChange(event) {
   const file = event.target.files[0];
-  if (file && images.length < 4) {
+  if (file && images.value.length < 4) {
     const fileUrl = URL.createObjectURL(file);
 
-    images.push({ file, url: fileUrl, order: images.length + 1 });
+    images.value.push({ file, url: fileUrl });
 
-    selectedTab.value = images.length - 1;
+    selectedTab.value = images.value.length - 1;
+
+    emit("update:modelValue", images.value);
 
     nextTick(() => {
       const lastTab = document.querySelector(
-        `#tab-list > *:nth-child(${images.length})`,
+        `#tab-list > *:nth-child(${images.value.length})`,
       );
       lastTab?.focus();
     });
@@ -95,7 +122,21 @@ function handleFileChange(event) {
 }
 
 function setMainImage(index) {
-  mainImage.value = images[index].url;
+  mainImage.value = images.value[index].url;
   selectedTab.value = index;
+}
+
+function deleteImage(index) {
+  images.value.splice(index, 1);
+
+  if (images.value.length === 0) {
+    selectedTab.value = 0;
+    mainImage.value = "";
+  } else if (selectedTab.value === index) {
+    selectedTab.value = 0;
+    mainImage.value = images.value[0]?.url || "";
+  } else if (selectedTab.value > index) {
+    selectedTab.value -= 1;
+  }
 }
 </script>

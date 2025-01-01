@@ -15,6 +15,8 @@ return [
 
     'default' => env('FILESYSTEM_DISK', 'local'),
 
+    'provider' => env('FILE_STORAGE_PROVIDER', 'file'),
+
     /*
     |--------------------------------------------------------------------------
     | Filesystem Disks
@@ -41,6 +43,14 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
+        'public_products_images' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/products'),
+            'url' => env('APP_URL').'/storage/products',
             'visibility' => 'public',
             'throw' => false,
         ],

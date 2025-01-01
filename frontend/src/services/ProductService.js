@@ -3,7 +3,9 @@ import { useJsonApiFormatter } from "@/composables/useJsonApiFormatter.js";
 
 export const ProductService = {
   async getAvailableAttributes() {
-    const response = await api().get("/available-product-attributes");
+    const response = await api().get(
+      "/management/available-product-attributes",
+    );
 
     return response.data.map((attribute) => ({
       id: attribute.id,
@@ -21,6 +23,28 @@ export const ProductService = {
       relationships,
     );
 
-    console.log(data);
+    return api().post("/management/product", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
+  async uploadImagesForProduct(productId, images) {
+    const formData = new FormData();
+
+    images.forEach((image, index) => {
+      formData.append(`images[]`, image.file);
+    });
+
+    return await api().post(
+      "/management/product/" + productId + "/images",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
   },
 };
