@@ -2,20 +2,24 @@
 
 namespace Modules\Product\Tests\Feature;
 
-use CreateProductInWarehouse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Mockery;
 use Modules\Product\Database\Seeders\ProductDatabaseSeeder;
 use Modules\Product\Http\Actions\Product\Create\CreateProduct;
 use Modules\Product\Http\Actions\Product\Create\CreateProductFactoryAction;
 use Modules\Product\Http\Requests\ProductCreateRequest;
+use Modules\Product\Http\Service\ProductImagesService;
 use Modules\Product\Models\Brand;
 use Modules\Product\Models\Category;
 use Modules\Product\Models\Product;
 use Modules\Product\Models\ProductSpecAttributes;
+use Modules\Product\Storages\ProductImages\LocalProductImagesStorage;
 use Modules\Warehouse\Database\Seeders\WarehouseDatabaseSeeder;
 use Modules\Warehouse\Enums\ProductAttributeTypeEnum;
+use Modules\Warehouse\Http\Actions\CreateProductInWarehouse;
 use Modules\Warehouse\Models\ProductVariation;
 
 class ProductTest extends TestCase
@@ -90,6 +94,38 @@ class ProductTest extends TestCase
 
         $this->assertDatabaseHas('warehouses', ['product_id' => $product->id]);
     }
+
+    public function test_can_upload_product_images_locally(): void
+    {
+        $product = Product::query()->create([
+            'title' => 'Abra cadabra',
+            'title_description' => 'example',
+            'main_description_markdown' => 'example',
+            'category_id' => Category::query()->first(['id'])->id,
+            'brand_id' => Brand::query()->first(['id'])->id
+        ]);
+
+        Storage::fake('public_products_images');
+
+        $images = [
+            UploadedFile::fake()->image('product_image1.png'),
+            UploadedFile::fake()->image('product_image2.png'),
+        ];
+
+        (new ProductImagesService(new LocalProductImagesStorage()))->upload($images, $product);
+
+        $storedFilesNames = [];
+
+        foreach ($images as $image) {
+            $storedFilesNames[] = $image->hashName();
+
+            Storage::disk('public_products_images')
+                ->assertExists("product-id-$product->id-images/".$image->hashName());
+        }
+
+        $this->assertEquals($storedFilesNames, $product->refresh()->images);
+    }
+
 
     private function createRequest(string $title, ?bool $isCombinedAttributes)
     {

@@ -10,13 +10,15 @@ RUN apt-get update && apt-get install -y \
     git \
     zlib1g-dev \
     libicu-dev \
+    libpng-dev \
+    libzip-dev \
+    libfreetype6-dev \
+    libjpeg-dev \
     g++ \
     curl \
     zip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-RUN mkdir -p /var/www/expelliarmus/backend
 
 WORKDIR /var/www/expelliarmus/backend
 
@@ -24,9 +26,15 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 RUN docker-php-ext-install pdo pdo_pgsql pgsql
 
-RUN docker-php-ext-configure intl
-RUN docker-php-ext-install intl
+RUN docker-php-ext-configure intl \
+    && docker-php-ext-install intl
+
 RUN docker-php-ext-install opcache
+
+RUN docker-php-ext-configure gd \
+    --with-freetype=/usr/include/freetype2 \
+    --with-jpeg \
+    && docker-php-ext-install gd
 
 RUN addgroup --system --gid ${GID} laravel
 RUN adduser --system --uid ${UID} --ingroup laravel --shell /bin/sh --no-create-home laravel

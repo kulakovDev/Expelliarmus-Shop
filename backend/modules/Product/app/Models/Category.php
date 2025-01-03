@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Kalnoy\Nestedset\Collection;
 use Kalnoy\Nestedset\NodeTrait;
-use Kalnoy\Nestedset\QueryBuilder;
+use Modules\Product\Builders\CategoryBuilder;
 
 /**
  * @property int $id
@@ -16,7 +16,6 @@ use Kalnoy\Nestedset\QueryBuilder;
  * @property string $slug
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @method static QueryBuilder defaultOrder
  */
 class Category extends Model
 {
@@ -35,6 +34,11 @@ class Category extends Model
     public static function getAllCategoriesInTree(): Collection
     {
         return self::defaultOrder()->withDepth()->get()->toTree();
+    }
+
+    public static function onlyRoot(): Collection
+    {
+        return self::whereIsRoot()->get();
     }
 
     protected function casts(): array

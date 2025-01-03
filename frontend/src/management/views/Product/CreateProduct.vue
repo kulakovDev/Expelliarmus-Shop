@@ -13,8 +13,11 @@ import SingleAttributesGenerator from "@/management/components/Product/SingleAtt
 import CombinedAttributesGenerator from "@/management/components/Product/CombinedAttributesGenerator.vue";
 import ProductSpecs from "@/management/components/Product/ProductSpecs.vue";
 import { ProductService } from "@/services/ProductService.js";
+import { useJsonApiFormatter } from "@/composables/useJsonApiFormatter.js";
 
 const options = ref({});
+
+const errorsFromForm = ref([]);
 
 const getOptions = (values) => (options.value = values);
 
@@ -87,7 +90,11 @@ async function submitForm() {
       }
     })
     .catch((e) => {
-      console.log(e);
+      if (e.response.data?.errors) {
+        errorsFromForm.value = useJsonApiFormatter().fromJsonApiErrorsFields(
+          e.response.data.errors,
+        );
+      }
     });
 }
 
@@ -96,11 +103,17 @@ function addOptionalRelationships(relations) {
     relations.product_specs = productSpecs.value;
   }
 
-  if (options.value.withCombinedAttr === true) {
+  if (
+    options.value.withCombinedAttr === true &&
+    Object.keys(comboAttributesData.value).length !== 0
+  ) {
     relations.product_variations_combinations = toRaw(
       comboAttributesData.value,
     );
-  } else if (options.value.withCombinedAttr === false) {
+  } else if (
+    options.value.withCombinedAttr === false &&
+    Object.keys(singleAttributesData.value).length !== 0
+  ) {
     relations.product_variation = toRaw(singleAttributesData.value);
   }
 
@@ -199,6 +212,16 @@ function addOptionalRelationships(relations) {
           </button>
         </div>
       </form>
+      <section
+        v-if="errorsFromForm.length"
+        class="w-1/2 flex justify-center mx-auto bg-red-500 py-6 rounded-md text-gray-200"
+      >
+        <div class="flex flex-col space-y-4">
+          <p v-for="error in errorsFromForm">
+            {{ Object.values(error)[0] }}
+          </p>
+        </div>
+      </section>
     </section>
   </default-container>
 </template>

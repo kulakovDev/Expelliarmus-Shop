@@ -7,8 +7,10 @@ namespace Modules\Product\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Modules\Product\Http\Resources\RootCategoryResource;
 use Modules\Product\Http\Resources\TreeCategoryResource;
 use Modules\Product\Models\Category;
+use TiMacDonald\JsonApi\JsonApiResourceCollection;
 
 class CategoryController extends Controller
 {
@@ -20,6 +22,17 @@ class CategoryController extends Controller
             return response()->json(['message' => 'Categories not found'], 404);
         }
 
-        return TreeCategoryResource::collection(Category::getAllCategoriesInTree());
+        return TreeCategoryResource::collection($categories);
+    }
+
+    public function rootCategories(): JsonApiResourceCollection|JsonResponse
+    {
+        $categories = Category::onlyRoot();
+
+        if ($categories->isEmpty()) {
+            return response()->json(['message' => 'Categories not found'], 404);
+        }
+
+        return RootCategoryResource::collection($categories);
     }
 }

@@ -51,10 +51,14 @@ abstract class JsonApiRelationsValidation extends BaseJsonApiValidation
 
         return collect($data)
             ->flatMap(function ($item, $relationship) {
-                if (! str_ends_with($relationship, '.*')) {
-                    /*$relationshipKey = str_replace('.*', '', $relationship);*/
+                if (! is_array($item)) {
                     return [self::RELATION_KEY."{$relationship}.data" => $item];
                 }
+
+                if (! str_ends_with($relationship, '.*')) {
+                    return [self::RELATION_KEY."{$relationship}.data" => $item];
+                }
+
                 return collect($item)
                     ->mapWithKeys(function ($value, $field) use ($relationship) {
                         $relationshipKey = str_replace('.*', '', $relationship);

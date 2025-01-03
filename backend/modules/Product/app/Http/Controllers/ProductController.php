@@ -6,14 +6,39 @@ namespace Modules\Product\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Modules\Product\Http\Actions\Product\Create\CreateProduct;
 use Modules\Product\Http\Actions\Product\Create\CreateProductFactoryAction;
+use Modules\Product\Http\Actions\Product\Retrieve\GetProductsByRootCategoryAction;
 use Modules\Product\Http\Exceptions\FailedToCreateProductException;
 use Modules\Product\Http\Requests\ProductCreateRequest;
+use Modules\Product\Http\Resources\ProductPreviewByRootCategory;
+use Modules\Product\Models\Category;
 use Modules\Warehouse\Http\Actions\CreateProductInWarehouse;
+use TiMacDonald\JsonApi\JsonApiResourceCollection;
 
 class ProductController extends Controller
 {
+    public function index(Request $request, GetProductsByRootCategoryAction $action): JsonApiResourceCollection
+    {
+        $category = Category::query()->findOrFail((int)$request->input('filter.category'));
+
+        $products = $action->handle($category);
+
+        return ProductPreviewByRootCategory::collection($products->items())
+            ->additional([
+                'links' => [
+                    'current' => $products->url($products->currentPage()),
+                    'first' => $products->url(1),
+                    'last' => $products->url($products->lastPage()),
+                    'next' => $products->nextPageUrl()
+                ],
+                'meta' => [
+                    'total' => $products->total()
+                ]
+            ]);
+    }
+
     /**
      * @throws FailedToCreateProductException
      */

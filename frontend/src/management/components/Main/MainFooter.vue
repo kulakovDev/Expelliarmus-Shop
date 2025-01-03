@@ -132,6 +132,7 @@ const contentLinks = ref([
 ]);
 
 const productLinks = ref([
+  { url: "/management/products", name: "All Products" },
   { url: "/management/products/create", name: "Add Product" },
   { url: "/management/categories", name: "Categories" },
   { url: "/management/products/attributes", name: "Attributes and other" },

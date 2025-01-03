@@ -142,6 +142,7 @@ use Modules\Warehouse\Enums\ProductAttributeTypeEnum;
     public function jsonApiRelationshipsCustomAttributes(): array
     {
         return [
+            'product_variations_combinations' => 'product combinations of attributes',
             'product_variations_combinations.*' => [
                 'price_in_cents' => 'price',
                 'sku' => 'SKU',
@@ -152,18 +153,20 @@ use Modules\Warehouse\Enums\ProductAttributeTypeEnum;
                 'attributes.*.name' => 'attribute name',
                 'attributes.*.type' => 'attribute type'
             ],
-            /*'brand' => [
+            'brand' => [
                 'id' => 'brand id'
             ],
             'category' => [
                 'id' => 'category id'
-            ],*/
+            ],
+            'product_specs' => 'product specification',
             'product_specs.*' => [
                 'id' => 'id',
                 'group' => 'group',
                 'spec_name' => 'specification name',
                 'value' => 'value'
             ],
+            'product_variation' => 'product variation of attributes',
             'product_variation.*' => [
                 'attribute_id' => 'attribute id',
                 'attribute_name' => 'attribute name',
@@ -181,6 +184,9 @@ use Modules\Warehouse\Enums\ProductAttributeTypeEnum;
         return [
             'product_variations_combinations.*' => [
                 'sku.unique' => 'The SKU must be unique.',
+            ],
+            'product_specs.*' => [
+                'spec_name.required_without' => 'The specification name is required'
             ]
         ];
     }
@@ -193,7 +199,16 @@ use Modules\Warehouse\Enums\ProductAttributeTypeEnum;
             'total_quantity' => 'total quantity',
             'price' => 'default price',
             'title' => 'title',
-            'product_article' => 'product article'
+            'product_article' => 'product article',
+        ];
+    }
+
+    public function jsonApiCustomErrorMessages(): array
+    {
+        return [
+            'price' => [
+                'required_if' => 'The price is required'
+            ]
         ];
     }
 }

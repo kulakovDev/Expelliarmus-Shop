@@ -11,6 +11,7 @@ services:
       - "9000:9000"
     volumes:
       - ./backend:/var/www/expelliarmus/backend
+      - .docker/php/php.ini:/usr/local/etc/php/php.ini
     networks:
       - expelliarmus
     depends_on:

@@ -9,12 +9,18 @@ use Modules\Product\Http\Controllers\ProductImagesController;
 //TODO: guards
 
 Route::prefix('management')->group(function () {
-    Route::post('/product', [ProductController::class, 'store']);
+    Route::prefix('products')->group(function () {
+        Route::post('/create', [ProductController::class, 'store']);
+        Route::get('/', [ProductController::class, 'index']);
+    });
+
 
     Route::get('/brands', [BrandsController::class, 'getPaginated']);
 
-    Route::resource('categories', CategoryController::class)
-        ->only('index');
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [CategoryController::class, 'index']);
+        Route::get('/root', [CategoryController::class, 'rootCategories']);
+    });
 
     Route::post('/product/{product}/images', [ProductImagesController::class, 'store']);
 });
