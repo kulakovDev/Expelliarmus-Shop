@@ -10,8 +10,8 @@ use Modules\Product\Http\Controllers\ProductImagesController;
 
 Route::prefix('management')->group(function () {
     Route::prefix('products')->group(function () {
+        Route::get('/', [ProductController::class, 'getProductsByRootCategory']);
         Route::post('/create', [ProductController::class, 'store']);
-        Route::get('/', [ProductController::class, 'index']);
     });
 
 

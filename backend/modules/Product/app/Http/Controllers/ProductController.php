@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Product\Http\Actions\Product\Create\CreateProduct;
 use Modules\Product\Http\Actions\Product\Create\CreateProductFactoryAction;
-use Modules\Product\Http\Actions\Product\Retrieve\GetProductsByRootCategoryAction;
+use Modules\Product\Http\Actions\Product\Retrieve\GetProductsByRootCategoryAction as RootCategoryProducts;
 use Modules\Product\Http\Exceptions\FailedToCreateProductException;
 use Modules\Product\Http\Requests\ProductCreateRequest;
 use Modules\Product\Http\Resources\ProductPreviewByRootCategory;
@@ -19,7 +19,7 @@ use TiMacDonald\JsonApi\JsonApiResourceCollection;
 
 class ProductController extends Controller
 {
-    public function index(Request $request, GetProductsByRootCategoryAction $action): JsonApiResourceCollection
+    public function getProductsByRootCategory(Request $request, RootCategoryProducts $action): JsonApiResourceCollection
     {
         $category = Category::query()->findOrFail((int)$request->input('filter.category'));
 
