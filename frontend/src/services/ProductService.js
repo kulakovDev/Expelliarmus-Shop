@@ -23,7 +23,7 @@ export const ProductService = {
       relationships,
     );
 
-    return api().post("/management/product", data, {
+    return api().post("/management/products", data, {
       headers: {
         "Content-Type": "application/json",
       },

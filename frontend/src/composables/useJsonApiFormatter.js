@@ -23,7 +23,27 @@ export function useJsonApiFormatter() {
     return JSON.stringify(result);
   }
 
+  function fromJsonApiErrorsFields(errors) {
+    const formattedErrors = [];
+
+    Object.keys(errors).forEach((key) => {
+      const errorMessages = errors[key];
+
+      let formattedKey = key
+        .replace(/(\.data|data\.)/g, "")
+        .replace(/\.(\d+)\./g, "[$1].")
+        .replace(/relationships\s/gi, "");
+
+      errorMessages.forEach((message) => {
+        formattedErrors.push({ [formattedKey]: message });
+      });
+    });
+
+    return formattedErrors;
+  }
+
   return {
     toJsonApi,
+    fromJsonApiErrorsFields,
   };
 }
