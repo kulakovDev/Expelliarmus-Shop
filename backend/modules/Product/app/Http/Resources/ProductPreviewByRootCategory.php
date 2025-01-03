@@ -16,6 +16,7 @@ class ProductPreviewByRootCategory extends JsonApiResource
             'slug' => $this->slug,
             'title' => $this->title,
             'category_id' => $this->category_id,
+            'image' => $this->preview_image,
             'created_at' => $this->created_at->format('Y-m-d')
         ];
     }

@@ -17,6 +17,8 @@ RUN apt-get update && apt-get install -y \
     g++ \
     curl \
     zip \
+    libmagickwand-dev \
+    imagemagick \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -26,8 +28,18 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 RUN docker-php-ext-install pdo pdo_pgsql pgsql
 
-RUN docker-php-ext-configure intl \
-    && docker-php-ext-install intl
+# Broken php 8.3
+#RUN pecl install imagick && docker-php-ext-enable imagick
+
+# instead
+RUN git clone https://github.com/Imagick/imagick.git --depth 1 /tmp/imagick && \
+    cd /tmp/imagick && \
+    phpize && \
+    ./configure && \
+    make && \
+    make install && \
+    docker-php-ext-enable imagick && \
+    rm -rf /tmp/imagick
 
 RUN docker-php-ext-install opcache
 

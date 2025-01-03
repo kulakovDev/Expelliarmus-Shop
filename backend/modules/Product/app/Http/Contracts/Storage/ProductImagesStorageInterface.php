@@ -3,6 +3,7 @@
 namespace Modules\Product\Http\Contracts\Storage;
 
 use Illuminate\Http\UploadedFile;
+use Modules\Product\Models\Product;
 
 interface ProductImagesStorageInterface
 {
@@ -11,7 +12,7 @@ interface ProductImagesStorageInterface
     /**@var array<int, UploadedFile> $files */
     public function uploadMany(array $files, int $productId): array;
 
-    public function get(string $fileId): string|false;
+    public function get(Product $product): string|false;
 
     public function delete(string $fileId): bool;
 

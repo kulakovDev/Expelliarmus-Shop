@@ -8,6 +8,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Modules\Product\Http\Contracts\Storage\S3ProductImagesStorageInterface;
 use Modules\Product\Http\Exceptions\FailedToUploadImagesException;
+use Modules\Product\Models\Product;
 use RuntimeException;
 use Throwable;
 
@@ -51,7 +52,7 @@ class S3ProductImagesStorage implements S3ProductImagesStorageInterface
         return $images;
     }
 
-    public function get(string $fileId): string|false
+    public function get(Product $product): string|false
     {
         // TODO: Implement get() method.
     }
@@ -64,5 +65,15 @@ class S3ProductImagesStorage implements S3ProductImagesStorageInterface
     public function isExists(string $fileId): bool
     {
         // TODO: Implement isExists() method.
+    }
+
+    public function saveResized(Product $product, string $imageId, int $width, int $height): void
+    {
+        // TODO: Implement saveResized() method.
+    }
+
+    public function getResized(Product $product, string $imageId, int $width, int $height): string
+    {
+        // TODO: Implement getResized() method.
     }
 }

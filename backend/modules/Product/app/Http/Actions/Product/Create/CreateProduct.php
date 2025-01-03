@@ -37,7 +37,7 @@ class CreateProduct
             'main_description_markdown' => $dto->mainDesc,
             'category_id' => $dto->categoryId,
             'brand_id' => $dto->brandId,
-            'images' => $dto->images
+            'images' => ['product_preview.png']
         ]);
     }
 

@@ -19,6 +19,7 @@ use TiMacDonald\JsonApi\JsonApiResourceCollection;
 
 class ProductController extends Controller
 {
+
     public function getProductsByRootCategory(Request $request, RootCategoryProducts $action): JsonApiResourceCollection
     {
         $category = Category::query()->findOrFail((int)$request->input('filter.category'));

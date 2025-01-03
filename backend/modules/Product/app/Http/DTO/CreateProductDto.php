@@ -18,7 +18,6 @@ class CreateProductDto extends Data
         public readonly int $brandId,
         /**@var Collection<int, ProductSpecsDto> */
         public readonly Collection $productSpecs,
-        public readonly ?array $images = null,
     ) {
     }
 

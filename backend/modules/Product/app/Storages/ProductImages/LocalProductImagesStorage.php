@@ -6,8 +6,10 @@ namespace Modules\Product\Storages\ProductImages;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
 use Modules\Product\Http\Contracts\Storage\LocalProductImagesStorageInterface;
 use Modules\Product\Http\Exceptions\FailedToCreateProductException;
+use Modules\Product\Models\Product;
 use RuntimeException;
 use Throwable;
 
@@ -51,9 +53,45 @@ class LocalProductImagesStorage implements LocalProductImagesStorageInterface
         return $images;
     }
 
-    public function get(string $fileId): string|false
+    public function get(Product $product): string|false
     {
         // TODO: Implement get() method.
+    }
+
+    public function saveResized(Product $product, string $imageId, int $width, int $height): void
+    {
+        $resizedImageId = $width."_".$height."_".$imageId;
+
+        if ($imageId === 'product_preview.png') {
+            $image = ImageManager::imagick()->read(
+                storage_path("app/public/product_preview.png")
+            );
+
+            Storage::disk($this->disk)->makeDirectory("product-id-$product->id-images");
+        } else {
+            $image = ImageManager::imagick()->read(
+                storage_path("app/public/products/product-id-$product->id-images/$imageId")
+            );
+        }
+
+        $image->resize($width, $height);
+
+        $image->save(
+            storage_path("app/public/products/".$this->getImageFullPath($product, $resizedImageId))
+        );
+    }
+
+    public function getResized(Product $product, string $imageId, int $width, int $height): string
+    {
+        $resizedImageId = $width."_".$height."_".$imageId;
+
+        if (Storage::disk($this->disk)->exists($this->getImageFullPath($product, $resizedImageId))) {
+            return Storage::disk($this->disk)->url($this->getImageFullPath($product, $resizedImageId));
+        }
+
+        $this->saveResized($product, $imageId, $width, $height);
+
+        return Storage::disk($this->disk)->url($this->getImageFullPath($product, $resizedImageId));
     }
 
     public function delete(string $fileId): bool
@@ -64,5 +102,10 @@ class LocalProductImagesStorage implements LocalProductImagesStorageInterface
     public function isExists(string $fileId): bool
     {
         // TODO: Implement isExists() method.
+    }
+
+    private function getImageFullPath(Product $product, string $imageId): string
+    {
+        return "product-id-$product->id-images/$imageId";
     }
 }

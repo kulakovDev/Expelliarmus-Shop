@@ -26,4 +26,9 @@ class ProductImagesService
 
         $product->save();
     }
+
+    public function getResizedImage(Product $product, int $width, int $height): string
+    {
+        return $this->imagesStorage->getResized($product, $product->images[0], $width, $height);
+    }
 }
