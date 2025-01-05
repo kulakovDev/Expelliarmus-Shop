@@ -15,6 +15,7 @@ export default [
   {
     path: "products",
     component: AllProducts,
+    name: "product-list",
   },
   {
     path: "/:any(.*)*",

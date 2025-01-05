@@ -14,10 +14,18 @@ import CombinedAttributesGenerator from "@/management/components/Product/Combine
 import ProductSpecs from "@/management/components/Product/ProductSpecs.vue";
 import { ProductService } from "@/services/ProductService.js";
 import { useJsonApiFormatter } from "@/composables/useJsonApiFormatter.js";
+import { useToastStore } from "@/stores/useToastStore.js";
+import defaultSuccessSettings from "@/components/Default/Toasts/Default/defaultSuccessSettings.js";
+import defaultErrorSetting from "@/components/Default/Toasts/Default/defaultErrorSetting.js";
+import { useRouter } from "vue-router";
 
 const options = ref({});
 
 const errorsFromForm = ref([]);
+
+const toast = useToastStore();
+
+const router = useRouter();
 
 const getOptions = (values) => (options.value = values);
 
@@ -55,10 +63,6 @@ const handleUpdatedSpecs = (newSpecs) => {
   productSpecs.value = newSpecs;
 };
 
-const handleUpdatedImages = (newImages) => {
-  images.value = newImages;
-};
-
 async function submitForm() {
   let relationships = {
     category: {
@@ -82,10 +86,17 @@ async function submitForm() {
           images.value,
         )
           .then((response) => {
-            console.log(response);
+            toast.showToast(
+              "Product was successfully created",
+              defaultSuccessSettings,
+            );
+            router.push({ name: "product-list" });
           })
           .catch((e) => {
-            console.log(e);
+            if (e.response?.data?.message) {
+              toast.showToast(e.response.data.message, defaultErrorSetting);
+              router.push({ name: "product-list" });
+            }
           });
       }
     })
