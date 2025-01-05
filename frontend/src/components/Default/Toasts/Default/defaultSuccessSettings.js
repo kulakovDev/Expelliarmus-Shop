@@ -1,7 +1,7 @@
 export default {
   type: "success",
   position: "bottom-center",
-  timeout: 3000,
+  timeout: 4000,
   closeOnClick: false,
   pauseOnFocusLoss: false,
   pauseOnHover: false,

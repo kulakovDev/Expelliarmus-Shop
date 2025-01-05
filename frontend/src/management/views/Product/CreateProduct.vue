@@ -21,6 +21,8 @@ import { useRouter } from "vue-router";
 
 const options = ref({});
 
+const isLoading = ref(false);
+
 const errorsFromForm = ref([]);
 
 const toast = useToastStore();
@@ -64,6 +66,8 @@ const handleUpdatedSpecs = (newSpecs) => {
 };
 
 async function submitForm() {
+  isLoading.value = true;
+
   let relationships = {
     category: {
       id: category.value.id,
@@ -94,7 +98,10 @@ async function submitForm() {
           })
           .catch((e) => {
             if (e.response?.data?.message) {
-              toast.showToast(e.response.data.message, defaultErrorSetting);
+              toast.showToast(
+                "Product image was not successfully uploads. Try again or contact us.",
+                defaultErrorSetting,
+              );
               router.push({ name: "product-list" });
             }
           });
@@ -106,7 +113,8 @@ async function submitForm() {
           e.response.data.errors,
         );
       }
-    });
+    })
+    .finally(() => (isLoading.value = false));
 }
 
 function addOptionalRelationships(relations) {
@@ -234,7 +242,35 @@ function addOptionalRelationships(relations) {
         </div>
       </section>
     </section>
+    <div
+      v-if="isLoading"
+      class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50"
+    >
+      <div
+        class="flex flex-col justify-center text-center gap-y-4 items-center"
+      >
+        <div class="loader"></div>
+        <p class="text-white font-bold text-xl">
+          Creating product, please wait...
+        </p>
+      </div>
+    </div>
   </default-container>
 </template>
 
-<style scoped></style>
+<style scoped>
+.loader {
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top: 5px solid #e8a439;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>
