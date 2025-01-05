@@ -9,15 +9,33 @@ use TiMacDonald\JsonApi\JsonApiResource;
 
 class ProductPreviewByRootCategory extends JsonApiResource
 {
+    // TODO: change
     public function toAttributes(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'name' => $this->name,
             'slug' => $this->slug,
-            'title' => $this->title,
-            'category_id' => $this->category_id,
-            'image' => $this->preview_image,
-            'created_at' => $this->created_at->format('Y-m-d')
+            'products' => [
+                'products' => $this->products->items(),
+                'links' => [
+                    'current' => $this->products->url($this->products->currentPage()),
+                    'last' => $this->products->url($this->products->lastPage()),
+                    'next' => $this->products->nextPageUrl()
+                ],
+                'meta' => [
+                    'total' => $this->products->total()
+                ]
+            ]
         ];
+    }
+
+    public function toId(Request $request): string
+    {
+        return (string)$this->category_id;
+    }
+
+    public function toType(Request $request): string
+    {
+        return 'products';
     }
 }

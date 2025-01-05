@@ -3,11 +3,13 @@
 namespace Modules\Product\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Order\Models\OrderLine;
+use Modules\Product\Observers\ProductObserver;
 use Modules\Product\Traits\Slugger;
 use Modules\Warehouse\Models\ProductAttributeValue;
 use Modules\Warehouse\Models\ProductVariation;
@@ -25,6 +27,7 @@ use Modules\Warehouse\Models\Warehouse;
  * @property array $images
  * @property Carbon $created_at
  */
+#[ObservedBy(ProductObserver::class)]
 class Product extends Model
 {
     use HasFactory;
@@ -106,13 +109,7 @@ class Product extends Model
         });
 
         static::saving(function (Product $product) {
-            $product->fill([
-                'main_description_html' => str($product->main_description_markdown)->markdown([
-                    'html_input' => 'strip',
-                    'allow_unsafe_links' => false,
-                    'max_nesting_level' => 5
-                ])
-            ]);
+            $product->slug = $product->createSlug($product->title);
         });
     }
 }

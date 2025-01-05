@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Modules\Product\Storages\ProductImages;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
@@ -33,19 +32,21 @@ class LocalProductImagesStorage extends BaseProductImagesStorage implements Loca
     /**
      * @throws FailedToUploadImagesException
      */
-    public function uploadMany(array $files, int $productId): array
+    public function uploadMany(array $files, Product $product, Size $size): array
     {
         try {
             $images = [];
 
             foreach ($files as $file) {
-                $this->upload($file, $productId);
+                $this->upload($file, $product->id);
+
+                $this->saveResized($product, $file->hashName(), $size);
 
                 $images[] = $file->hashName();
             }
         } catch (Throwable $e) {
-            Log::info($e);
             throw new FailedToUploadImagesException($e->getMessage(), $e);
+            // TODO: delete all images on error
         }
 
         return $images;

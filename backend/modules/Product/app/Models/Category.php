@@ -3,12 +3,13 @@
 namespace Modules\Product\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Kalnoy\Nestedset\Collection;
 use Kalnoy\Nestedset\NodeTrait;
-use Modules\Product\Builders\CategoryBuilder;
+use Modules\Product\Observers\CategoryObserver;
 
 /**
  * @property int $id
@@ -17,6 +18,7 @@ use Modules\Product\Builders\CategoryBuilder;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
+#[ObservedBy(CategoryObserver::class)]
 class Category extends Model
 {
     use HasFactory;

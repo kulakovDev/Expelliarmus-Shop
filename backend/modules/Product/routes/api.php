@@ -10,7 +10,6 @@ use Modules\Product\Http\Controllers\ProductImagesController;
 
 Route::prefix('management')->group(function () {
     Route::prefix('products')->group(function () {
-        Route::get('/', [ProductController::class, 'getProductsByRootCategory']);
         Route::post('/create', [ProductController::class, 'store']);
     });
 
@@ -18,6 +17,7 @@ Route::prefix('management')->group(function () {
     Route::get('/brands', [BrandsController::class, 'getPaginated']);
 
     Route::prefix('categories')->group(function () {
+        Route::get('/products', [ProductController::class, 'getProductsByRootCategory']);
         Route::get('/', [CategoryController::class, 'index']);
         Route::get('/root', [CategoryController::class, 'rootCategories']);
     });

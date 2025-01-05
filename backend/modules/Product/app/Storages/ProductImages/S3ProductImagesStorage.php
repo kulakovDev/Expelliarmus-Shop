@@ -27,18 +27,21 @@ class S3ProductImagesStorage extends BaseProductImagesStorage implements S3Produ
     /**
      * @throws FailedToUploadImagesException
      */
-    public function uploadMany(array $files, int $productId): array
+    public function uploadMany(array $files, Product $product, Size $size): array
     {
         try {
             $images = [];
 
             foreach ($files as $file) {
-                $this->upload($file, $productId);
+                $this->upload($file, $product->id);
+
+                $this->saveResized($product, $file->hashName(), $size);
 
                 $images[] = $file->hashName();
             }
         } catch (Throwable $e) {
             throw new FailedToUploadImagesException($e->getMessage(), $e);
+            // TODO: delete all images on error
         }
 
         return $images;

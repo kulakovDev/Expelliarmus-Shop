@@ -4,13 +4,14 @@ namespace Modules\Product\Http\Contracts\Storage;
 
 use Illuminate\Http\UploadedFile;
 use Modules\Product\Models\Product;
+use Modules\Product\Storages\ProductImages\Size;
 
 interface ProductImagesStorageInterface
 {
     public function upload(UploadedFile $file, int $productId): string;
 
     /**@var array<int, UploadedFile> $files */
-    public function uploadMany(array $files, int $productId): array;
+    public function uploadMany(array $files, Product $product, Size $size): array;
 
     public function getOne(Product $product, string $imageId): string;
 

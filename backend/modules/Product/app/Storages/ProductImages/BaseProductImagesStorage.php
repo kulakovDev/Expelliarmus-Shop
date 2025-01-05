@@ -12,30 +12,21 @@ use Modules\Product\Models\Product;
 
 abstract class BaseProductImagesStorage implements ProductImagesStorageInterface, ImageManipulationInterface
 {
-    public function saveResized(Product $product, string $imageId, int $width, int $height): void
+    public function saveResized(Product $product, string $imageId, Size $size): void
     {
-        $resizedImageId = $width."_".$height."_".$imageId;
-
-        $image = $this->getInterventionImage($product, $imageId)->resize($width, $height);
+        $image = $this->getInterventionImage($product, $imageId)->resize($size->width, $size->height);
 
         $encodedImage = (string)$image->encode();
 
-        Storage::disk($this->disk())->makeDirectory("product-id-$product->id-images");
-
-        Storage::disk($this->disk())->put($this->getImageFullPath($product, $resizedImageId), $encodedImage);
+        Storage::disk($this->disk())->put(
+            $this->getImageFullPath($product, $this->getResizedImageId($imageId, $size->width, $size->height)),
+            $encodedImage
+        );
     }
 
-    public function getResized(Product $product, string $imageId, int $width, int $height): string
+    public function getResized(Product $product, string $imageId, Size $size): string
     {
-        $resizedImageId = $width."_".$height."_".$imageId;
-
-        if ($this->isExists($product, $resizedImageId)) {
-            return Storage::disk($this->disk())->url($this->getImageFullPath($product, $resizedImageId));
-        }
-
-        $this->saveResized($product, $imageId, $width, $height);
-
-        return $this->getOne($product, $resizedImageId);
+        return $this->getOne($product, $this->getResizedImageId($imageId, $size->width, $size->height));
     }
 
     public function isExists(Product $product, string $imageId): bool
@@ -46,6 +37,11 @@ abstract class BaseProductImagesStorage implements ProductImagesStorageInterface
     protected function defaultImageId(): string
     {
         return 'product_preview.png';
+    }
+
+    private function getResizedImageId(string $imageId, int $width, int $height): string
+    {
+        return $width."_".$height."_".$imageId;
     }
 
     abstract protected function getInterventionImage(Product $product, string $imageId): Image;

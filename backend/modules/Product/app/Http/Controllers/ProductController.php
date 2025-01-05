@@ -13,7 +13,6 @@ use Modules\Product\Http\Actions\Product\Retrieve\GetProductsByRootCategoryActio
 use Modules\Product\Http\Exceptions\FailedToCreateProductException;
 use Modules\Product\Http\Requests\ProductCreateRequest;
 use Modules\Product\Http\Resources\ProductPreviewByRootCategory;
-use Modules\Product\Models\Category;
 use Modules\Warehouse\Http\Actions\CreateProductInWarehouse;
 use TiMacDonald\JsonApi\JsonApiResourceCollection;
 
@@ -22,22 +21,9 @@ class ProductController extends Controller
 
     public function getProductsByRootCategory(Request $request, RootCategoryProducts $action): JsonApiResourceCollection
     {
-        $category = Category::query()->findOrFail((int)$request->input('filter.category'));
+        $products = $action->handle();
 
-        $products = $action->handle($category);
-
-        return ProductPreviewByRootCategory::collection($products->items())
-            ->additional([
-                'links' => [
-                    'current' => $products->url($products->currentPage()),
-                    'first' => $products->url(1),
-                    'last' => $products->url($products->lastPage()),
-                    'next' => $products->nextPageUrl()
-                ],
-                'meta' => [
-                    'total' => $products->total()
-                ]
-            ]);
+        return ProductPreviewByRootCategory::collection($products);
     }
 
     /**

@@ -10,7 +10,7 @@ class ProductImageRequest extends FormRequest
     {
         return [
             'images' => ['required', 'array', 'max:4'],
-            'images.*' => ['image']
+            'images.*' => ['image', 'max:10240']
         ];
     }
 

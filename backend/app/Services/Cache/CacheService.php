@@ -19,12 +19,12 @@ readonly class CacheService
         return $identifier === null ? $configKey : sprintf($configKey, $identifier);
     }
 
-    public static function forgetKey(string $prefix, string|int|null $identifier = null): void
+    public static function forgetKey(string $configKey, string|int|null $identifier = null): void
     {
         if ($identifier === null) {
-            Cache::forget('cache.keys'.$prefix);
+            Cache::forget($configKey);
         } else {
-            Cache::forget(sprintf(config('cache.keys.'.$prefix), $identifier));
+            Cache::forget(sprintf($configKey, $identifier));
         }
     }
 }
