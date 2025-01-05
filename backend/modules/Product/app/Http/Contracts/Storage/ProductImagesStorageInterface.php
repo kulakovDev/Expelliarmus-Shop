@@ -12,9 +12,11 @@ interface ProductImagesStorageInterface
     /**@var array<int, UploadedFile> $files */
     public function uploadMany(array $files, int $productId): array;
 
-    public function get(Product $product): string|false;
+    public function getOne(Product $product, string $imageId): string;
+
+    public function getAll(Product $product): array;
 
     public function delete(string $fileId): bool;
 
-    public function isExists(string $fileId): bool;
+    public function isExists(Product $product, string $imageId): bool;
 }

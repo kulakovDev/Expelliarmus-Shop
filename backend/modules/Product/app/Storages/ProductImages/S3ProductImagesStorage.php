@@ -6,30 +6,22 @@ namespace Modules\Product\Storages\ProductImages;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManager;
 use Modules\Product\Http\Contracts\Storage\S3ProductImagesStorageInterface;
 use Modules\Product\Http\Exceptions\FailedToUploadImagesException;
 use Modules\Product\Models\Product;
-use RuntimeException;
 use Throwable;
 
-class S3ProductImagesStorage implements S3ProductImagesStorageInterface
+class S3ProductImagesStorage extends BaseProductImagesStorage implements S3ProductImagesStorageInterface
 {
-
-    private string $disk = 's3';
-
     public function upload(UploadedFile $file, int $productId): string
     {
-        $path = "product/product-id-$productId-images";
+        $path = "products/product-id-$productId-images";
 
-        Storage::disk($this->disk)->makeDirectory($path);
+        Storage::disk($this->disk())->makeDirectory($path);
 
-        $filePath = Storage::disk($this->disk)->putFile($path, $file);
-
-        if ($filePath === false) {
-            throw new RuntimeException('Failed to upload the file');
-        }
-
-        return $filePath;
+        return Storage::disk($this->disk())->putFile($path, $file);
     }
 
     /**
@@ -46,15 +38,30 @@ class S3ProductImagesStorage implements S3ProductImagesStorageInterface
                 $images[] = $file->hashName();
             }
         } catch (Throwable $e) {
-            throw new FailedToUploadImagesException('Failed to upload images', $e);
+            throw new FailedToUploadImagesException($e->getMessage(), $e);
         }
 
         return $images;
     }
 
-    public function get(Product $product): string|false
+    public function getOne(Product $product, string $imageId): string
     {
-        // TODO: Implement get() method.
+        if ($this->isExists($product, $imageId)) {
+            return Storage::disk($this->disk())->url($this->getImageFullPath($product, $imageId));
+        }
+
+        return Storage::disk($this->disk())->url('products/'.$this->defaultImageId());
+    }
+
+    public function getAll(Product $product): array
+    {
+        if (count($product->images) === 1 && $product->images[0] === $this->defaultImageId()) {
+            return [$this->getOne($product, $this->defaultImageId())];
+        }
+
+        return collect($product->images)->each(function (string $imageId) use ($product) {
+            return $this->getOne($product, $imageId);
+        })->toArray();
     }
 
     public function delete(string $fileId): bool
@@ -62,18 +69,24 @@ class S3ProductImagesStorage implements S3ProductImagesStorageInterface
         // TODO: Implement delete() method.
     }
 
-    public function isExists(string $fileId): bool
+    protected function getInterventionImage(Product $product, string $imageId): Image
     {
-        // TODO: Implement isExists() method.
+        if ($imageId === $this->defaultImageId()) {
+            $imageContent = Storage::disk($this->disk())->get('products/'.$this->defaultImageId());
+        } else {
+            $imageContent = Storage::disk($this->disk())->get($this->getImageFullPath($product, $imageId));
+        }
+
+        return ImageManager::imagick()->read($imageContent);
     }
 
-    public function saveResized(Product $product, string $imageId, int $width, int $height): void
+    protected function getImageFullPath(Product $product, string $resizedImageId): string
     {
-        // TODO: Implement saveResized() method.
+        return "products/product-id-$product->id-images/$resizedImageId";
     }
 
-    public function getResized(Product $product, string $imageId, int $width, int $height): string
+    protected function disk(): string
     {
-        // TODO: Implement getResized() method.
+        return 's3';
     }
 }

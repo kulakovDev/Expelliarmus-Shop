@@ -5,36 +5,33 @@ declare(strict_types=1);
 namespace Modules\Product\Storages\ProductImages;
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
 use Modules\Product\Http\Contracts\Storage\LocalProductImagesStorageInterface;
-use Modules\Product\Http\Exceptions\FailedToCreateProductException;
+use Modules\Product\Http\Exceptions\FailedToUploadImagesException;
 use Modules\Product\Models\Product;
-use RuntimeException;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Throwable;
 
-class LocalProductImagesStorage implements LocalProductImagesStorageInterface
+class LocalProductImagesStorage extends BaseProductImagesStorage implements LocalProductImagesStorageInterface
 {
-
-    private string $disk = 'public_products_images';
-
     public function upload(UploadedFile $file, int $productId): string
     {
-        $path = "product-id-$productId-images";
+        try {
+            $path = "product-id-$productId-images";
 
-        Storage::disk($this->disk)->makeDirectory($path);
+            Storage::disk($this->disk())->makeDirectory($path);
 
-        $filePath = Storage::disk($this->disk)->putFile($path, $file);
-
-        if ($filePath === false) {
-            throw new RuntimeException('Failed to upload the file');
+            return Storage::disk($this->disk())->putFile($path, $file);
+        } catch (Throwable $e) {
+            throw new FileException($e->getMessage());
         }
-
-        return $filePath;
     }
 
     /**
-     * @throws FailedToCreateProductException
+     * @throws FailedToUploadImagesException
      */
     public function uploadMany(array $files, int $productId): array
     {
@@ -47,51 +44,31 @@ class LocalProductImagesStorage implements LocalProductImagesStorageInterface
                 $images[] = $file->hashName();
             }
         } catch (Throwable $e) {
-            throw new FailedToCreateProductException('Failed to upload images', $e);
+            Log::info($e);
+            throw new FailedToUploadImagesException($e->getMessage(), $e);
         }
 
         return $images;
     }
 
-    public function get(Product $product): string|false
+    public function getOne(Product $product, string $imageId): string
     {
-        // TODO: Implement get() method.
-    }
-
-    public function saveResized(Product $product, string $imageId, int $width, int $height): void
-    {
-        $resizedImageId = $width."_".$height."_".$imageId;
-
-        if ($imageId === 'product_preview.png') {
-            $image = ImageManager::imagick()->read(
-                storage_path("app/public/product_preview.png")
-            );
-
-            Storage::disk($this->disk)->makeDirectory("product-id-$product->id-images");
-        } else {
-            $image = ImageManager::imagick()->read(
-                storage_path("app/public/products/product-id-$product->id-images/$imageId")
-            );
+        if ($this->isExists($product, $imageId)) {
+            return Storage::disk($this->disk())->url($this->getImageFullPath($product, $imageId));
         }
 
-        $image->resize($width, $height);
-
-        $image->save(
-            storage_path("app/public/products/".$this->getImageFullPath($product, $resizedImageId))
-        );
+        return Storage::disk($this->disk())->url('products/'.$this->defaultImageId());
     }
 
-    public function getResized(Product $product, string $imageId, int $width, int $height): string
+    public function getAll(Product $product): array
     {
-        $resizedImageId = $width."_".$height."_".$imageId;
-
-        if (Storage::disk($this->disk)->exists($this->getImageFullPath($product, $resizedImageId))) {
-            return Storage::disk($this->disk)->url($this->getImageFullPath($product, $resizedImageId));
+        if (count($product->images) === 1 && $product->images[0] === $this->defaultImageId()) {
+            return [$this->getOne($product, $this->defaultImageId())];
         }
 
-        $this->saveResized($product, $imageId, $width, $height);
-
-        return Storage::disk($this->disk)->url($this->getImageFullPath($product, $resizedImageId));
+        return collect($product->images)->each(function (string $imageId) use ($product) {
+            return $this->getOne($product, $imageId);
+        })->toArray();
     }
 
     public function delete(string $fileId): bool
@@ -99,13 +76,22 @@ class LocalProductImagesStorage implements LocalProductImagesStorageInterface
         // TODO: Implement delete() method.
     }
 
-    public function isExists(string $fileId): bool
+    protected function getImageFullPath(Product $product, string $resizedImageId): string
     {
-        // TODO: Implement isExists() method.
+        return "product-id-$product->id-images/$resizedImageId";
     }
 
-    private function getImageFullPath(Product $product, string $imageId): string
+    protected function disk(): string
     {
-        return "product-id-$product->id-images/$imageId";
+        return 'public_products_images';
+    }
+
+    protected function getInterventionImage(Product $product, string $imageId): Image
+    {
+        return $imageId === $this->defaultImageId()
+            ? ImageManager::imagick()->read(storage_path("app/public/".$this->defaultImageId()))
+            : ImageManager::imagick()->read(
+                storage_path("app/public/products/product-id-$product->id-images/$imageId")
+            );
     }
 }

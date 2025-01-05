@@ -6,7 +6,6 @@ namespace App\Services\Cache;
 
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\Cache;
-use InvalidArgumentException;
 
 readonly class CacheService
 {
@@ -15,14 +14,8 @@ readonly class CacheService
     ) {
     }
 
-    public function key(string $prefix, string|int|null $identifier = null)
+    public function key(string $configKey, string|int|null $identifier = null): string
     {
-        $configKey = config('cache.keys.'.$prefix);
-
-        if ($configKey === null) {
-            throw new InvalidArgumentException('Cache key prefix must be defined in cache config in \'keys\' array');
-        }
-
         return $identifier === null ? $configKey : sprintf($configKey, $identifier);
     }
 

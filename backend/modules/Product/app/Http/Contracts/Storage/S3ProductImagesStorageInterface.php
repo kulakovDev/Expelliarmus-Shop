@@ -2,7 +2,7 @@
 
 namespace Modules\Product\Http\Contracts\Storage;
 
-interface S3ProductImagesStorageInterface extends ProductImagesStorageInterface, ImageManipulationInterface
+interface S3ProductImagesStorageInterface
 {
 
 }
