@@ -26,55 +26,32 @@ class GetProductsByRootCategoryAction
             ->whereNull('parent_id')
             ->get();
 
-        $lastChildCategories = $this->getAllChildCategoriesRelatedToRootCategories($rootCategories);
-
-        return $rootCategories->map(function (Category $category) use ($lastChildCategories) {
+        return $rootCategories->map(function (Category $category) {
+            $products = $this->getProducts($category);
             return (object)[
-                'category_id' => $category->id,
+                'id' => $category->id,
                 'name' => $category->name,
                 'slug' => $category->slug,
-                'products' => $this->getProducts($category, $lastChildCategories)
+                'products' => $products->getCollection(),
+                'pagination' => (object)[
+                    'next' => $products->nextPageUrl(),
+                    'total' => $products->total()
+                ],
             ];
         });
     }
 
-    private function getAllChildCategoriesRelatedToRootCategories(Collection $rootCategories): Collection
-    {
-        return $rootCategories->mapWithKeys(function (Category $category) {
-            return [
-                $category->id => $category->descendants()
-                    ->whereDoesntHave('children')
-                    ->pluck('id')
-                    ->toArray()
-            ];
-        });
-    }
-
-    private function getAllProductsByCategories(array $categories): LengthAwarePaginator
-    {
-        return Product::query()
-            ->whereIn('category_id', $categories)
-            ->paginate(10, [
-                'id',
-                'slug',
-                'title',
-                'images',
-                'category_id',
-                'created_at'
-            ]);
-    }
-
-    private function getProducts(Category $category, Collection $lastChildCategories): LengthAwarePaginator
+    private function getProducts(Category $category): LengthAwarePaginator
     {
         $key = $this->cacheService->key(config('product.cache.products-by-category'), $category->id);
 
         return $this->cacheService->repository->remember(
             key: $key,
             ttl: now()->addWeek(),
-            callback: function () use ($lastChildCategories, $category) {
-                $childCategoryIds = $lastChildCategories[$category->id] ?? [];
+            callback: function () use ($category) {
+                $descendantCategoryIds = $category->descendants()->pluck('id');
 
-                $products = $this->getAllProductsByCategories($childCategoryIds);
+                $products = $this->getProductsByCategories($descendantCategoryIds);
 
                 $products->getCollection()->transform(function (Product $product) {
                     $product->preview_image = $this->imagesService->getResizedImage($product, new Size(300, 300));
@@ -84,5 +61,19 @@ class GetProductsByRootCategoryAction
                 return $products;
             }
         );
+    }
+
+    private function getProductsByCategories(Collection $categories): LengthAwarePaginator
+    {
+        return Product::query()
+            ->whereIn('category_id', $categories->toArray())
+            ->paginate(10, [
+                'id',
+                'slug',
+                'title',
+                'images',
+                'category_id',
+                'created_at',
+            ]);
     }
 }
