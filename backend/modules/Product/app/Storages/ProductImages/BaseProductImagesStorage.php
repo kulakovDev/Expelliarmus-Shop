@@ -26,7 +26,13 @@ abstract class BaseProductImagesStorage implements ProductImagesStorageInterface
 
     public function getResized(Product $product, string $imageId, Size $size): string
     {
-        return $this->getOne($product, $this->getResizedImageId($imageId, $size->width, $size->height));
+        $resizedImageId = $this->getResizedImageId($imageId, $size->width, $size->height);
+
+        if (! $this->isExists($product, $resizedImageId)) {
+            $this->saveResized($product, $imageId, $size);
+        }
+
+        return $this->getOne($product, $resizedImageId);
     }
 
     public function isExists(Product $product, string $imageId): bool

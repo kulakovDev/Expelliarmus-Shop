@@ -11,6 +11,7 @@ use Intervention\Image\ImageManager;
 use Modules\Product\Http\Contracts\Storage\S3ProductImagesStorageInterface;
 use Modules\Product\Http\Exceptions\FailedToUploadImagesException;
 use Modules\Product\Models\Product;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Throwable;
 
 class S3ProductImagesStorage extends BaseProductImagesStorage implements S3ProductImagesStorageInterface
@@ -74,10 +75,18 @@ class S3ProductImagesStorage extends BaseProductImagesStorage implements S3Produ
 
     protected function getInterventionImage(Product $product, string $imageId): Image
     {
-        if ($imageId === $this->defaultImageId()) {
-            $imageContent = Storage::disk($this->disk())->get('products/'.$this->defaultImageId());
-        } else {
-            $imageContent = Storage::disk($this->disk())->get($this->getImageFullPath($product, $imageId));
+        try {
+            if ($imageId === $this->defaultImageId()) {
+                $imageContent = Storage::disk($this->disk())->get('products/'.$this->defaultImageId());
+            } else {
+                $imageContent = Storage::disk($this->disk())->get($this->getImageFullPath($product, $imageId));
+            }
+
+            if ($imageContent === null) {
+                throw new FileException('Image not found');
+            }
+        } catch (Throwable $e) {
+            throw new FailedToUploadImagesException($e->getMessage(), $e);
         }
 
         return ImageManager::imagick()->read($imageContent);

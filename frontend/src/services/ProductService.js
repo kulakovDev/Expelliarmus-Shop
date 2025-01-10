@@ -47,4 +47,8 @@ export const ProductService = {
       },
     );
   },
+
+  async getProductsForEachRootCategory() {
+    return await api().get("/management/categories/products?include=products");
+  },
 };

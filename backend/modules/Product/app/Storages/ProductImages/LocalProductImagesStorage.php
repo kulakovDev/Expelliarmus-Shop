@@ -89,10 +89,18 @@ class LocalProductImagesStorage extends BaseProductImagesStorage implements Loca
 
     protected function getInterventionImage(Product $product, string $imageId): Image
     {
-        return $imageId === $this->defaultImageId()
-            ? ImageManager::imagick()->read(storage_path("app/public/".$this->defaultImageId()))
-            : ImageManager::imagick()->read(
-                storage_path("app/public/products/product-id-$product->id-images/$imageId")
-            );
+        try {
+            if ($imageId === $this->defaultImageId()) {
+                $imageContent = ImageManager::imagick()->read(storage_path("app/public/".$this->defaultImageId()));
+            } else {
+                $imageContent = ImageManager::imagick()->read(
+                    storage_path("app/public/products/product-id-$product->id-images/$imageId")
+                );
+            }
+        } catch (Throwable $e) {
+            throw new FailedToUploadImagesException($e->getMessage(), $e);
+        }
+
+        return $imageContent;
     }
 }

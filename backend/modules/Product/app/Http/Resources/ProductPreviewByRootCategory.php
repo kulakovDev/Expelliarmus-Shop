@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Modules\Product\Http\Resources;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use TiMacDonald\JsonApi\JsonApiResource;
 use TiMacDonald\JsonApi\Link;
 
@@ -25,11 +24,6 @@ class ProductPreviewByRootCategory extends JsonApiResource
         return [
             'products' => fn() => ProductResource::collection($this->products)
         ];
-    }
-
-    public function included(Request $request): Collection
-    {
-        return collect(ProductResource::collection($this->products));
     }
 
     public function toLinks(Request $request): array

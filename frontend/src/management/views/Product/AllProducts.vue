@@ -1,5 +1,51 @@
 <script setup>
+import { onMounted, reactive, ref } from "vue";
+import { ProductService } from "@/services/ProductService.js";
 import DefaultContainer from "@/management/components/Main/DefaultContainer.vue";
+import ProductsSkeleton from "@/management/components/Product/ProductsSkeleton.vue";
+
+const categoriesWithProducts = reactive([]);
+const isProductsFetched = ref(false);
+
+onMounted(() => {
+  isProductsFetched.value = false;
+
+  ProductService.getProductsForEachRootCategory()
+    .then((response) => {
+      const data = response.data.data;
+      const included = response.data.included;
+
+      const productMap = {};
+      included.forEach((product) => {
+        productMap[product.id] = product.attributes;
+      });
+
+      categoriesWithProducts.splice(
+        0,
+        categoriesWithProducts.length,
+        ...data.map((category) => {
+          const productIds = category.relationships.products.data.map(
+            (prod) => prod.id,
+          );
+
+          return {
+            id: category.id,
+            name: category.attributes.name,
+            slug: category.attributes.slug,
+            products: productIds.map((id) => productMap[id]),
+          };
+        }),
+      );
+
+      console.log(categoriesWithProducts);
+    })
+    .catch((e) => {
+      console.log(e);
+    })
+    .finally(() => {
+      isProductsFetched.value = true;
+    });
+});
 </script>
 
 <template>
@@ -8,6 +54,12 @@ import DefaultContainer from "@/management/components/Main/DefaultContainer.vue"
       <div>
         <h1 class="font-semibold text-4xl">Products</h1>
       </div>
+
+      <div>
+        <products-skeleton :card-number="6" v-if="!isProductsFetched" />
+      </div>
+
+      <div></div>
     </section>
   </default-container>
 </template>

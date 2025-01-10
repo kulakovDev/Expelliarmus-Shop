@@ -97,13 +97,11 @@ async function submitForm() {
             router.push({ name: "product-list" });
           })
           .catch((e) => {
-            if (e.response?.data?.message) {
-              toast.showToast(
-                "Product image was not successfully uploads. Try again or contact us.",
-                defaultErrorSetting,
-              );
-              router.push({ name: "product-list" });
-            }
+            toast.showToast(
+              "Product image was not successfully uploads. Try again or contact us.",
+              defaultErrorSetting,
+            );
+            router.push({ name: "product-list" });
           });
       }
     })
