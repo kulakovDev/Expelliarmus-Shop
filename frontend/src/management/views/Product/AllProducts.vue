@@ -56,10 +56,12 @@ onMounted(() => {
       </div>
 
       <div>
-        <products-skeleton :card-number="6" v-if="!isProductsFetched" />
+        <products-skeleton :card-number="6" v-if="!isProductsFetched"/>
       </div>
 
-      <div></div>
+      <div>
+        <!-- test -->
+      </div>
     </section>
   </default-container>
 </template>
