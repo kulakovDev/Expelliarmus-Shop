@@ -3,6 +3,7 @@ import { onMounted, reactive, ref } from "vue";
 import { ProductService } from "@/services/ProductService.js";
 import DefaultContainer from "@/management/components/Main/DefaultContainer.vue";
 import ProductsSkeleton from "@/management/components/Product/ProductsSkeleton.vue";
+import ProductCard from "@/management/components/Product/ProductCard.vue";
 
 const categoriesWithProducts = reactive([]);
 const isProductsFetched = ref(false);
@@ -55,13 +56,9 @@ onMounted(() => {
         <h1 class="font-semibold text-4xl">Products</h1>
       </div>
 
-      <div>
-        <products-skeleton :card-number="6" v-if="!isProductsFetched"/>
-      </div>
+      <products-skeleton :card-number="6" v-if="!isProductsFetched"/>
 
-      <div>
-        <!-- test -->
-      </div>
+      <product-card :card-number="14" v-else/>
     </section>
   </default-container>
 </template>
